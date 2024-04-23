@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "285651524524",
+    "project_id": "inteco-df8d9",
+    "storage_bucket": "inteco-df8d9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285651524524:android:795561b6d3ecfb92823809",
+        "android_client_info": {
+          "package_name": "fr.umontpellier.etu.inteco"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnRuou_Fz4A6xOMv1My-usybA3VHHGv_Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
