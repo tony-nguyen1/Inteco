@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".FirstScreen">
 
+    <Button
+        android:id="@+id/myButton2"
+        android:layout_width="166dp"
+        android:layout_height="52dp"
+        android:background="@drawable/heavy_green_button"
+        android:text="Apply"
+        android:textColor="#FFFFFF"
+        tools:layout_editor_absoluteX="125dp"
+        tools:layout_editor_absoluteY="239dp" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +23,29 @@
         android:text="Hello, World!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.531" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/my_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="Home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="67dp"
+        app:srcCompat="@drawable/sharp_arrow_cricle_right_24"
+        app:tint="#EEFFFFFF" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
