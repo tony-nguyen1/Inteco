@@ -3,4 +3,6 @@
     <string name="discover_your_ideal_interim_position_today">Discover Your Ideal Interim Position Today!</string>
     <string name="share_your_position_for_the_best_expereince">Share Your Position For The Best Expereince!</string>
     <string name="share_my_location">SHARE MY LOCATION</string>
+    <string name="you_forgot_your_passowrd_reset_it"> You forgot your passowrd? <u>Reset it</u> </string>
+    <string name="you_don_t_have_an_account_yet_sign_up"> You don\'t have an account yet? <u>Sign up</u> </string>
 </resources>

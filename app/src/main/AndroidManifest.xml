@@ -10,18 +10,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.App.Starting"
+        android:theme="@style/Theme.Inteco"
         tools:targetApi="31">
+        <activity
+            android:name=".NewPassword"
+            android:exported="false" />
+        <activity
+            android:name=".SignUp"
+            android:exported="false" />
+        <activity
+            android:name=".ResetPassword"
+            android:exported="false" />
         <activity
             android:name=".shareLocation"
             android:exported="false"
-            android:theme="@style/Theme.App.Starting"
-            />
+            android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".LoginFirstActivity"
-            android:exported="false"
-            android:theme="@style/Theme.App.Starting"
-            />
+            android:exported="false" />
         <activity
             android:name=".FirstScreen"
             android:exported="true"
