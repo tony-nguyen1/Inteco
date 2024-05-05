@@ -13,8 +13,15 @@
         android:theme="@style/Theme.App.Starting"
         tools:targetApi="31">
         <activity
+            android:name=".shareLocation"
+            android:exported="false"
+            android:theme="@style/Theme.App.Starting"
+            />
+        <activity
             android:name=".LoginFirstActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.App.Starting"
+            />
         <activity
             android:name=".FirstScreen"
             android:exported="true"
