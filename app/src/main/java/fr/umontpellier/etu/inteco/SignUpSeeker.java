@@ -65,13 +65,14 @@ public class SignUpSeeker extends AppCompatActivity {
 
     private boolean verifyEmailExists(String email){
         //TODO complete ( true if it exists and false if not)
-        return true;
+        return false;
     }
     private void handleSignUp(String email, String password) {
-        if (email == null || email.isEmpty() || verifyEmailExists(email)) {
-            showRedundantEmailAlert();
-        }
-        else{
+        if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+            showRedundantEmailAlert(false);
+        } else if (verifyEmailExists(email)) {
+            showRedundantEmailAlert(true);
+        } else{
             Intent intent = new Intent(SignUpSeeker.this, SignUpEnterprise.class);
             intent.putExtra("email",email);
             intent.putExtra("password",password);
@@ -85,10 +86,17 @@ public class SignUpSeeker extends AppCompatActivity {
 
 
 
-    private void showRedundantEmailAlert() {
+
+
+    private void showRedundantEmailAlert(boolean option) {
         AlertDialog.Builder builder = new AlertDialog.Builder(SignUpSeeker.this);
         builder.setTitle("SigningUp failed");
-        builder.setMessage("The email you entered is already registerd. Please try again.");
+        if(option){
+            builder.setMessage("The email you entered is already registerd or your . Please try again.");
+        }
+        else{
+            builder.setMessage("The informations you entered are not complete. Please try again.");
+        }
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

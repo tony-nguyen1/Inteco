@@ -32,13 +32,16 @@ public class ResetPassword extends AppCompatActivity {
                 String email = emailEditText.getText().toString();
 
                 //TODO complete verification method if the mail exists in our data
-                if(email == null || email.isEmpty() || verifyEmailExists(email)){
+                if(email == null || email.isEmpty() ){
+                    showIncorrectEmailAlert(false);
+                }
+                else if(verifyEmailExists(email)){
+                    showIncorrectEmailAlert(true);
+                }
+                else{
                     Intent intent = new Intent(ResetPassword.this, NewPassword.class);
                     intent.putExtra("email", email);
                     startActivity(intent);
-                }
-                else{
-                    showIncorrectEmailAlert();
                 }
 
 
@@ -49,18 +52,22 @@ public class ResetPassword extends AppCompatActivity {
 
 
     private boolean verifyEmailExists(String email){
-        //TODO complete
-        return true;
+        //TODO complete ( true if it exists and false if not)
+        return false;
     }
 
 
 
 
-    private void showIncorrectEmailAlert() {
+    private void showIncorrectEmailAlert(boolean option) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ResetPassword.this);
         builder.setTitle("Reseting Failed");
-        builder.setMessage("The email you entered is incorrect. Please try again.");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        if(option) {
+            builder.setMessage("The email you entered is incorrect. Please try again.");
+        }else{
+            builder.setMessage("Please enter your mail.");
+        }
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // User clicked OK button
