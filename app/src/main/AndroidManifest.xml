@@ -13,10 +13,13 @@
         android:theme="@style/Theme.Inteco"
         tools:targetApi="31">
         <activity
+            android:name=".SignUpEnterprise"
+            android:exported="false" />
+        <activity
             android:name=".NewPassword"
             android:exported="false" />
         <activity
-            android:name=".SignUp"
+            android:name=".SignUpSeeker"
             android:exported="false" />
         <activity
             android:name=".ResetPassword"

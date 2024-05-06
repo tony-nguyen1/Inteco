@@ -16,12 +16,15 @@ public class NewPassword extends AppCompatActivity {
     private TextInputEditText passwordEditText1;
     private TextInputEditText passwordEditText2;
     private Button btnResetPassword;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_password);
 
+        Intent intent = getIntent();
+        email = intent.getStringExtra("email");
         passwordEditText1 = findViewById(R.id.passwordEditText1);
         passwordEditText2 = findViewById(R.id.passwordEditText2);
         btnResetPassword = findViewById(R.id.btnResetPassword);
@@ -33,7 +36,7 @@ public class NewPassword extends AppCompatActivity {
 
                 if(pass1.equals(pass2)){
                     //TODO Save the password
-                    savePassword(pass1);
+                    savePassword(email, pass1);
                     Intent intent = new Intent(NewPassword.this, LoginFirstActivity.class);
                     startActivity(intent);
                 }
@@ -44,7 +47,7 @@ public class NewPassword extends AppCompatActivity {
         });
 
     }
-    private void savePassword(String password){
+    private void savePassword(String email,String password){
         //TODO complete
     }
 

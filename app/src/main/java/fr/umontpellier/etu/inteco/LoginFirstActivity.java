@@ -1,14 +1,15 @@
 package fr.umontpellier.etu.inteco;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginFirstActivity extends AppCompatActivity {
@@ -38,18 +39,19 @@ public class LoginFirstActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                // Handle login logic here with email and password
+                handleSignIn(email,password);
+
             }
         });
 
         btnAnonymous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Handle anonymous login logic here
+                //TODO Add the Ays activity
             }
         });
 
-        // Set up text click listeners
+
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,10 +63,43 @@ public class LoginFirstActivity extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginFirstActivity.this, SignUp.class);
+                Intent intent = new Intent(LoginFirstActivity.this, SignUpSeeker.class);
                 startActivity(intent);
             }
         });
+    }
+    private void handleSignIn(String email, String password) {
+        if (email == null || email.isEmpty() || password==null|| password.isEmpty()|| !verifyLoggingInInfo(email,password)) {
+            showRedundantEmailAlert();
+        }
+        else{
+            //TODO Add the intenent to the first activity after signin
+        /*    Intent intent = new Intent(LoginFirstActivity.this, OffersActivity.class);
+              intent.putExtra("email",email);
+              startActivity(intent);
+
+         */
+        }
+    }
+
+    private boolean verifyLoggingInInfo(String email, String password){
+        //TODO complete ( true if info are correct and false if not)
+        return true;
+    }
+    private void showRedundantEmailAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginFirstActivity.this);
+        builder.setTitle("LoggingIn failed");
+        builder.setMessage("The email or the password you entered is incorrect. Please try again.");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // User clicked OK button
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 }
 
