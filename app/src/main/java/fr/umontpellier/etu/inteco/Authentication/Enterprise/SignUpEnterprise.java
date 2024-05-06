@@ -1,4 +1,4 @@
-package fr.umontpellier.etu.inteco;
+package fr.umontpellier.etu.inteco.Authentication.Enterprise;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import fr.umontpellier.etu.inteco.Authentication.LoginFirstActivity;
+import fr.umontpellier.etu.inteco.R;
+//TODO problem with company name
 public class SignUpEnterprise extends AppCompatActivity {
     private TextInputEditText emailEditText;
     private TextInputEditText companyEditText;
@@ -58,6 +61,7 @@ public class SignUpEnterprise extends AppCompatActivity {
     }
 
         private boolean verifyEmailExists(String email) {
+
             //TODO complete ( true if it exists and false if not)
             return false;
         }
@@ -71,7 +75,7 @@ public class SignUpEnterprise extends AppCompatActivity {
                 showRedundantEmailAlert(true);
             }
             else {
-                Intent intent = new Intent(SignUpEnterprise.this, SignUpEnterprise.class);
+                Intent intent = new Intent(SignUpEnterprise.this, SignUpEnterprise1.class);
                 intent.putExtra("email", email);
                 intent.putExtra("password", password);
                 intent.putExtra("companyName", companyName);

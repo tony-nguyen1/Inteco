@@ -1,4 +1,4 @@
-package fr.umontpellier.etu.inteco;
+package fr.umontpellier.etu.inteco.Authentication;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
+
+import fr.umontpellier.etu.inteco.Authentication.Enterprise.SignUpEnterprise;
+import fr.umontpellier.etu.inteco.Authentication.Enterprise.SignUpEnterprise1;
+import fr.umontpellier.etu.inteco.Authentication.Seeker.SignUpSeeker;
+import fr.umontpellier.etu.inteco.HomePageSeeker;
+import fr.umontpellier.etu.inteco.R;
 
 public class LoginFirstActivity extends AppCompatActivity {
     private TextInputEditText emailEditText;
@@ -47,7 +53,8 @@ public class LoginFirstActivity extends AppCompatActivity {
         btnAnonymous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO Add the Ays activity
+                Intent intent = new Intent(LoginFirstActivity.this, HomePageSeeker.class);
+                startActivity(intent);
             }
         });
 

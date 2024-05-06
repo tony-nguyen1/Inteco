@@ -1,4 +1,4 @@
-package fr.umontpellier.etu.inteco;
+package fr.umontpellier.etu.inteco.Authentication.Seeker;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
+
+import fr.umontpellier.etu.inteco.Authentication.Enterprise.SignUpEnterprise;
+import fr.umontpellier.etu.inteco.Authentication.LoginFirstActivity;
+import fr.umontpellier.etu.inteco.R;
 
 public class SignUpSeeker extends AppCompatActivity {
 
@@ -73,7 +77,7 @@ public class SignUpSeeker extends AppCompatActivity {
         } else if (verifyEmailExists(email)) {
             showRedundantEmailAlert(true);
         } else{
-            Intent intent = new Intent(SignUpSeeker.this, SignUpEnterprise.class);
+            Intent intent = new Intent(SignUpSeeker.this, SignUpSeeker1.class);
             intent.putExtra("email",email);
             intent.putExtra("password",password);
             startActivity(intent);

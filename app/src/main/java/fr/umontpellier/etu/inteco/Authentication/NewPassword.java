@@ -1,4 +1,4 @@
-package fr.umontpellier.etu.inteco;
+package fr.umontpellier.etu.inteco.Authentication;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.textfield.TextInputEditText;
+
+import fr.umontpellier.etu.inteco.R;
 
 public class NewPassword extends AppCompatActivity {
 
@@ -35,7 +37,6 @@ public class NewPassword extends AppCompatActivity {
                 String pass2 = passwordEditText2.getText().toString();
 
                 if(pass1.equals(pass2)){
-                    //TODO Save the password
                     savePassword(email, pass1);
                     Intent intent = new Intent(NewPassword.this, LoginFirstActivity.class);
                     startActivity(intent);

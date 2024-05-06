@@ -1,4 +1,4 @@
-package fr.umontpellier.etu.inteco;
+package fr.umontpellier.etu.inteco.Authentication;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.textfield.TextInputEditText;
+
+import fr.umontpellier.etu.inteco.R;
 
 public class ResetPassword extends AppCompatActivity {
 

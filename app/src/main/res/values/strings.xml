@@ -1,8 +1,23 @@
 <resources>
+    <string-array name="sex_options">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
     <string name="app_name">Inteco</string>
     <string name="discover_your_ideal_interim_position_today">Discover Your Ideal Interim Position Today!</string>
     <string name="share_your_position_for_the_best_expereince">Share Your Position For The Best Expereince!</string>
     <string name="share_my_location">SHARE MY LOCATION</string>
-    <string name="you_forgot_your_passowrd_reset_it"> You forgot your passowrd? <u>Reset it</u> </string>
-    <string name="you_don_t_have_an_account_yet_sign_up"> You don\'t have an account yet? <u>Sign up</u> </string>
+    <string name="you_forgot_your_passowrd_reset_it"> You forgot your passowrd? <font color='#D7E96A'><u>Reset it</u></font> </string>
+    <string name="you_don_t_have_an_account_yet_sign_up"> You don\'t have an account yet?<font color='#D7E96A'> <u>Sign up</u> </font></string>
+    <string name="next">NEXT</string>
+    <string name="first_name">First name<font color='#E30202'>*</font></string>
+    <string name="last_name">Last name <font color='#E30202'>*</font></string>
+    <string name="sex">Sex</string>
+    <string name="birthday">Birthday</string>
+    <string name="phone_number">Phone number</string>
+    <string name="city_name">City name</string>
+    <string name="nationality">Nationality</string>
+    <string name="already_have_an_account_sign_in">Already have an account? <font color='#D7E96A'><u>Sign in</u></font></string>
+    <string name="you_are_an_enterprise_who_wants_to_recrute_sign_up">You are an enterprise who wants to recrute?<font color='#D7E96A'><u> Sign up</u></font></string>
 </resources>
