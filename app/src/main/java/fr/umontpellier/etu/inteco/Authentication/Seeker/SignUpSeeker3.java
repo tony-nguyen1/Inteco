@@ -1,5 +1,7 @@
 package fr.umontpellier.etu.inteco.Authentication.Seeker;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,10 +9,19 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import fr.umontpellier.etu.inteco.Seeker.HomePageSeeker;
 import fr.umontpellier.etu.inteco.R;
 
 public class SignUpSeeker3 extends AppCompatActivity {
+    private static final String TAG = "debug signUp";
     private String email;
     private String password;
     private String firstName ;
@@ -51,6 +62,8 @@ public class SignUpSeeker3 extends AppCompatActivity {
 
         btnNext.setOnClickListener(v -> {
             Log.i("Test Inputs",email+password+firstName+lastName+birthday+nationality+phoneNumber+city+address+sex);
+            //TODO check if inputs are empty or not ???
+            createAccount(email,password,firstName,lastName,birthday,nationality,phoneNumber,city,address,sex);
             Intent intent2 = new Intent(SignUpSeeker3.this, HomePageSeeker.class);
             intent2.putExtra("email", email);
             startActivity(intent2);
@@ -63,7 +76,35 @@ public class SignUpSeeker3 extends AppCompatActivity {
                                String city, String address, String sex){
         //TODO add CV to the parameters
         //TODO create the account for the user
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        // Create a new user with a first and last name
+        Map<String, Object> user = new HashMap<>();
+        user.put("email", email);
+        user.put("password", password);
+        user.put("firstname", firstName);
+        user.put("lastname", lastName);
+        user.put("birthday",birthday);
+        user.put("nationality",nationality);
+        user.put("phoneNumber",phoneNumber);
+        user.put("city",city);
+        user.put("address",address);
+        user.put("sex",sex);
+
+        db.collection("users")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
     }
     private void performFileSearch() {
         //TODO implement filesearch + permissions
