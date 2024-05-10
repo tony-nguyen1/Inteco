@@ -23,3 +23,9 @@
 [Trello](https://trello.com/b/5MKgHEgs/inteco)
 
 [Useful Symbols](https://www.figma.com/file/jjUAZzAHVu6f84k77VfsPK/App-Permissions-Popup-Screen-(Community)?type=design&node-id=1-68&mode=design&t=OXhK4keFbU8Drb9C-0)
+
+git push origin main:dev-backend
+
+COmment faire ?
+Faire l'autheufication par firebase
+QUand on crée un compte on tuilise l'email comme clé primaire dans la base pour stocker les infos liés à cet utilisateur sans enregistrer son password

@@ -9,8 +9,13 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -34,6 +39,7 @@ public class SignUpSeeker3 extends AppCompatActivity {
     private String sex;
     private Button btnUploadCV ;
     private Button btnNext;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +72,15 @@ public class SignUpSeeker3 extends AppCompatActivity {
             createAccount(email,password,firstName,lastName,birthday,nationality,phoneNumber,city,address,sex);
             Intent intent2 = new Intent(SignUpSeeker3.this, HomePageSeeker.class);
             intent2.putExtra("email", email);
+            intent2.putExtra("firstname", firstName);
+            intent2.putExtra("lastname", lastName);
             startActivity(intent2);
         });
 
+
+        // ...
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
     }
 
     private void createAccount(String email, String password, String firstName, String lastName,
@@ -103,6 +115,26 @@ public class SignUpSeeker3 extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error adding document", e);
+                    }
+                });
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+//                            updateUI(user);
+                            Log.d(TAG, "onComplete: "+user.toString());
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(SignUpSeeker3.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+//                            updateUI(null);
+                        }
                     }
                 });
     }
