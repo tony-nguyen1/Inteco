@@ -1,0 +1,14 @@
+<!-- res/drawable/icon_plus_with_circle.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Green Circle Background -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#00FF00" /> <!-- Adjust color as needed -->
+            <size
+                android:width="48dp"
+                android:height="48dp" />
+        </shape>
+    </item>
+    <!-- Plus Icon in the Foreground -->
+    <item android:drawable="@drawable/icon_plus" />
+</layer-list>

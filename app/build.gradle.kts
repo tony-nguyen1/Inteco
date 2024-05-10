@@ -45,6 +45,7 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
 
 
+
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
 

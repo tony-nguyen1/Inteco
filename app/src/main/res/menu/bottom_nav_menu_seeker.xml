@@ -1,0 +1,19 @@
+<!-- res/menu/bottom_nav_menu.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/icon_setting"
+        android:title="Settings" />
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/icon_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_notifications"
+        android:icon="@drawable/icon_bell"
+        android:title="Notifications" />
+    <item
+        android:id="@+id/nav_saved"
+        android:icon="@drawable/icon_save"
+        android:title="Saved" />
+</menu>
