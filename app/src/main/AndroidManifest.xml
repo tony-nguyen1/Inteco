@@ -13,10 +13,10 @@
         android:theme="@style/Theme.Inteco"
         tools:targetApi="31">
         <activity
-            android:name=".HomePageSeeker"
+            android:name=".Seeker.HomePageSeeker"
             android:exported="false" />
         <activity
-            android:name=".HomePageEnterprise"
+            android:name=".Enterprise.HomePageEnterprise"
             android:exported="false" />
         <activity
             android:name=".Authentication.Enterprise.SignUpEnterprise2"

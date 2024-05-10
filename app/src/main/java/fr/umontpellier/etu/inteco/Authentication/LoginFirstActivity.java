@@ -12,10 +12,8 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import fr.umontpellier.etu.inteco.Authentication.Enterprise.SignUpEnterprise;
-import fr.umontpellier.etu.inteco.Authentication.Enterprise.SignUpEnterprise1;
 import fr.umontpellier.etu.inteco.Authentication.Seeker.SignUpSeeker;
-import fr.umontpellier.etu.inteco.HomePageSeeker;
+import fr.umontpellier.etu.inteco.Seeker.HomePageSeeker;
 import fr.umontpellier.etu.inteco.R;
 
 public class LoginFirstActivity extends AppCompatActivity {

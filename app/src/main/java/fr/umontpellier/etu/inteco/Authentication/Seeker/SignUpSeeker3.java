@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
-import fr.umontpellier.etu.inteco.HomePageSeeker;
+import fr.umontpellier.etu.inteco.Seeker.HomePageSeeker;
 import fr.umontpellier.etu.inteco.R;
 
 public class SignUpSeeker3 extends AppCompatActivity {

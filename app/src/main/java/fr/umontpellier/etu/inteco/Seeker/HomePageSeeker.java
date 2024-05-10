@@ -1,8 +1,10 @@
-package fr.umontpellier.etu.inteco;
+package fr.umontpellier.etu.inteco.Seeker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import fr.umontpellier.etu.inteco.R;
 
 public class HomePageSeeker extends AppCompatActivity {
 

@@ -10,9 +10,7 @@ import android.widget.Button;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import fr.umontpellier.etu.inteco.Authentication.Seeker.SignUpSeeker3;
-import fr.umontpellier.etu.inteco.HomePageEnterprise;
-import fr.umontpellier.etu.inteco.HomePageSeeker;
+import fr.umontpellier.etu.inteco.Enterprise.HomePageEnterprise;
 import fr.umontpellier.etu.inteco.R;
 
 public class SignUpEnterprise2 extends AppCompatActivity {

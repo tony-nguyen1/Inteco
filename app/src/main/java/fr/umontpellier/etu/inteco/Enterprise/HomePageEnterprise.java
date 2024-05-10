@@ -1,8 +1,10 @@
-package fr.umontpellier.etu.inteco;
+package fr.umontpellier.etu.inteco.Enterprise;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import fr.umontpellier.etu.inteco.R;
 
 public class HomePageEnterprise extends AppCompatActivity {
 
