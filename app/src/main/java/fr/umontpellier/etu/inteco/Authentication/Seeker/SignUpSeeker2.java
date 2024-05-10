@@ -72,9 +72,6 @@ public class SignUpSeeker2 extends AppCompatActivity {
                 intent.putExtra("nationality",nationality);
 
                 startActivity(intent);
-
-
-
             }
         });
     }

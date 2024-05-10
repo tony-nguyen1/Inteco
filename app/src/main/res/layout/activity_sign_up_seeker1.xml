@@ -39,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:background="@drawable/white_curvy"
+            android:textColor="@color/black"
 
             android:hint="@string/first_name"
             android:inputType="text" />
@@ -59,6 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:background="@drawable/white_curvy"
+            android:textColor="@color/black"
+
             android:hint="@string/last_name"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -102,6 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:background="@drawable/white_curvy"
+            android:textColor="@color/black"
 
             android:hint="@string/birthday"
             android:inputType="date" />

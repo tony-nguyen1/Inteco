@@ -55,7 +55,7 @@ public class FirstScreen extends ComponentActivity {
         user.put("lastname", "Almalaoui");
 
         // Add a new document with a generated ID
-        db.collection("users")
+/*        db.collection("users")
             .add(user)
             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
@@ -69,7 +69,7 @@ public class FirstScreen extends ComponentActivity {
                     Log.w(TAG, "Error adding document", e);
                 }
             });
-
+*/
         // read
         db.collection("users")
             .get()
