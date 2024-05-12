@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!--
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>-->
-<!--    <uses-permission android:name="stor"-->
-
+    
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -36,36 +33,47 @@
         </activity>
         <activity
             android:name=".Seeker.HomePageSeeker"
+            android:theme="@style/Theme.Inteco"
             android:exported="false" />
         <activity
             android:name=".Enterprise.HomePageEnterprise"
+            android:theme="@style/Theme.Inteco"
             android:exported="false" />
         <activity
             android:name=".Authentication.Enterprise.SignUpEnterprise2"
+            android:theme="@style/Theme.Inteco"
             android:exported="false" />
         <activity
             android:name=".Authentication.Enterprise.SignUpEnterprise1"
+            android:theme="@style/Theme.Inteco"
             android:exported="false" />
         <activity
             android:name=".Authentication.Seeker.SignUpSeeker3"
+            android:theme="@style/Theme.Inteco"
             android:exported="false" />
         <activity
             android:name=".Authentication.Seeker.SignUpSeeker2"
+            android:theme="@style/Theme.Inteco"
             android:exported="false" />
         <activity
             android:name=".Authentication.Seeker.SignUpSeeker1"
+            android:theme="@style/Theme.Inteco"
             android:exported="false" />
         <activity
             android:name=".Authentication.Enterprise.SignUpEnterprise"
+            android:theme="@style/Theme.Inteco"
             android:exported="false" />
         <activity
             android:name=".Authentication.NewPassword"
+            android:theme="@style/Theme.Inteco"
             android:exported="false" />
         <activity
             android:name=".Authentication.Seeker.SignUpSeeker"
+            android:theme="@style/Theme.Inteco"
             android:exported="false" />
         <activity
             android:name=".Authentication.ResetPassword"
+            android:theme="@style/Theme.Inteco"
             android:exported="false" />
         <activity
             android:name=".shareLocation"
@@ -73,6 +81,7 @@
             android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".Authentication.LoginFirstActivity"
+            android:theme="@style/Theme.Inteco"
             android:exported="false" />
         <activity
             android:name=".FirstScreen"
