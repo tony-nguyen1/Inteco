@@ -29,6 +29,16 @@
             android:id="@+id/emailTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnTest"
+            
+            android:text="CONTINUE AS ANONYMOUS"
+            android:textColor="@color/white"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="coucou"/>
     </LinearLayout>
 
 

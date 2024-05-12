@@ -7,15 +7,20 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.autofill.AutofillId;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import fr.umontpellier.etu.inteco.Authentication.NewPassword;
+import fr.umontpellier.etu.inteco.Authentication.ResetPassword;
 import fr.umontpellier.etu.inteco.R;
 
 public class HomePageSeeker extends AppCompatActivity {
 
     private static final String TAG = "debug login";
+    private Button btnTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,15 @@ public class HomePageSeeker extends AppCompatActivity {
 
         tv = findViewById(R.id.lastnameTextView);
         tv.setText(lastname);
+
+        btnTest = findViewById(R.id.btnTest);
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomePageSeeker.this, TestAddDocumentActivity.class);
+                startActivity(intent);
+            }
+        });
 
         /*TextView valueTV = new TextView(this);
         valueTV.setText(email);
