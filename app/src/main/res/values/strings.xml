@@ -20,4 +20,6 @@
     <string name="nationality">Nationality</string>
     <string name="already_have_an_account_sign_in">Already have an account? <font color='#D7E96A'><u>Sign in</u></font></string>
     <string name="you_are_an_enterprise_who_wants_to_recrute_sign_up">You are an enterprise who wants to recrute?<font color='#D7E96A'><u> Sign up</u></font></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

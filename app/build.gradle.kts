@@ -46,6 +46,7 @@ dependencies {
     implementation ("com.google.android.gms:play-services-location:21.0.1")
 
 
+
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
 
