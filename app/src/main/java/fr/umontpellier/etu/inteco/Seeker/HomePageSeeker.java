@@ -1,26 +1,39 @@
 package fr.umontpellier.etu.inteco.Seeker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.autofill.AutofillId;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import fr.umontpellier.etu.inteco.Authentication.LoginFirstActivity;
 import fr.umontpellier.etu.inteco.Authentication.NewPassword;
 import fr.umontpellier.etu.inteco.Authentication.ResetPassword;
+import fr.umontpellier.etu.inteco.Enterprise.fragements.HomeEnterprise;
 import fr.umontpellier.etu.inteco.R;
+import fr.umontpellier.etu.inteco.Seeker.fragements.HomeSeeker;
+import fr.umontpellier.etu.inteco.Seeker.fragements.NotificationsSeeker;
+import fr.umontpellier.etu.inteco.Seeker.fragements.SavedSeeker;
+import fr.umontpellier.etu.inteco.Seeker.fragements.SettingsSeeker;
 
 public class HomePageSeeker extends AppCompatActivity {
 
     private static final String TAG = "debug login";
-    private Button btnTest;
+    private String email, firstname, lastname;;
+//    private Button btnTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +44,6 @@ public class HomePageSeeker extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: "+intent.toString());
 
-        String email, firstname, lastname;
         email = intent.getStringExtra("email");
         firstname = intent.getStringExtra("firstname");
         lastname = intent.getStringExtra("lastname");
@@ -39,6 +51,50 @@ public class HomePageSeeker extends AppCompatActivity {
         Log.d(TAG, "onCreate: "+email);
         Log.d(TAG, "onCreate: "+firstname);
         Log.d(TAG, "onCreate: "+lastname);
+
+
+
+
+
+
+
+
+        /*********** Navigation Bar **********/
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment = null;
+
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_settings) {
+                    fragment = new SettingsSeeker();
+                } else if (itemId == R.id.nav_home) {
+                    fragment = new HomeSeeker();
+                } else if (itemId == R.id.nav_notifications) {
+                    fragment = new NotificationsSeeker();
+                } else if (itemId == R.id.nav_saved) {
+                    fragment = new SavedSeeker();
+                }
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+                return true;
+            }
+        });
+
+        // Set default selection
+        if (savedInstanceState == null) {
+            bottomNavigationView.setSelectedItemId(R.id.nav_home); // default screen
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new HomeSeeker())
+                    .commit();
+        }
+    }
+/*
+
 
         TextView tv;
 
@@ -59,7 +115,7 @@ public class HomePageSeeker extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+ */
         /*TextView valueTV = new TextView(this);
         valueTV.setText(email);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -91,4 +147,3 @@ public class HomePageSeeker extends AppCompatActivity {
         constraintLayout.addView(firstnameTV);
         constraintLayout.addView(lastnameTV);*/
     }
-}
