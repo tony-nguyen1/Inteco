@@ -24,10 +24,7 @@ import fr.umontpellier.etu.inteco.Authentication.NewPassword;
 import fr.umontpellier.etu.inteco.Authentication.ResetPassword;
 import fr.umontpellier.etu.inteco.Enterprise.fragements.HomeEnterprise;
 import fr.umontpellier.etu.inteco.R;
-import fr.umontpellier.etu.inteco.Seeker.fragements.HomeSeeker;
-import fr.umontpellier.etu.inteco.Seeker.fragements.NotificationsSeeker;
-import fr.umontpellier.etu.inteco.Seeker.fragements.SavedSeeker;
-import fr.umontpellier.etu.inteco.Seeker.fragements.SettingsSeeker;
+import fr.umontpellier.etu.inteco.Seeker.fragements.*;
 
 public class HomePageSeeker extends AppCompatActivity {
 
@@ -64,13 +61,13 @@ public class HomePageSeeker extends AppCompatActivity {
 
                 int itemId = item.getItemId();
                 if (itemId == R.id.nav_settings) {
-                    fragment = new SettingsSeeker();
+                    fragment = SettingsSeeker.newInstance(email, firstname, lastname);
                 } else if (itemId == R.id.nav_home) {
-                    fragment = new HomeSeeker();
+                    fragment = HomeSeeker.newInstance(email, firstname, lastname);
                 } else if (itemId == R.id.nav_notifications) {
-                    fragment = new NotificationsSeeker();
+                    fragment = NotificationsSeeker.newInstance(email, firstname, lastname);
                 } else if (itemId == R.id.nav_saved) {
-                    fragment = new SavedSeeker();
+                    fragment = SavedSeeker.newInstance(email, firstname, lastname);
                 }
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, fragment)

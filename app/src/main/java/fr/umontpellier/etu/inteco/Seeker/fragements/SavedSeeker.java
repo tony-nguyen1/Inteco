@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,34 +17,24 @@ import fr.umontpellier.etu.inteco.R;
  * create an instance of this fragment.
  */
 public class SavedSeeker extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String email = "AYS";
+    private static final String firstName = "";
+    private static final String LastName = "";
+    private String mEmail;
+    private String mFirstName;
+    private String mLastName;
 
     public SavedSeeker() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SavedSeeker.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SavedSeeker newInstance(String param1, String param2) {
+
+    public static SavedSeeker newInstance(String param1, String param2, String param3) {
         SavedSeeker fragment = new SavedSeeker();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(email, param1);
+        args.putString(firstName, param2);
+        args.putString(LastName, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,8 +43,9 @@ public class SavedSeeker extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mEmail = getArguments().getString(email);
+            mFirstName = getArguments().getString(firstName);
+            mLastName = getArguments().getString(LastName);
         }
     }
 
@@ -61,6 +53,7 @@ public class SavedSeeker extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.v("My email", email);
         return inflater.inflate(R.layout.fragment_saved_seeker, container, false);
     }
 }
