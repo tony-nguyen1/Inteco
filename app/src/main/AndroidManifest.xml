@@ -26,22 +26,32 @@
         <activity
             android:name=".Enterprise.HomePageEnterprise"
             android:exported="true"
-            android:theme="@style/Theme.Inteco" >
+            android:theme="@style/Theme.Inteco" />
+
+        <activity
+            android:name=".Seeker.SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Seeker.TestAddDocumentActivity"
+            android:exported="true">
+
+            <!--
+>>>>>>> 7b5458c3f478d20c539fab29c7ca324f2011a27d
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
-        <activity
-            android:name=".Seeker.TestAddDocumentActivity"
-            android:exported="true">
-        </activity>
+
         <activity
             android:name=".Seeker.HomePageSeeker"
             android:exported="false"
             android:theme="@style/Theme.Inteco" >
         </activity>
+
+
         <activity
             android:name=".Authentication.Enterprise.SignUpEnterprise2"
             android:exported="false"

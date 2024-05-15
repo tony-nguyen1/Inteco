@@ -1,39 +1,35 @@
-package fr.umontpellier.etu.inteco.Seeker.fragements;
+package fr.umontpellier.etu.inteco.Seeker;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 
 import fr.umontpellier.etu.inteco.R;
-import fr.umontpellier.etu.inteco.Seeker.HomePageSeeker;
-import fr.umontpellier.etu.inteco.Seeker.SearchActivity;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HomeSeeker#newInstance} factory method to
+ * Use the {@link OfferCardFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeSeeker extends Fragment {
+public class OfferCardFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "debug OfferCardFragment";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private Button btnTest, btnSearch;
-
-
-    public HomeSeeker() {
+    public OfferCardFragment() {
         // Required empty public constructor
     }
 
@@ -43,11 +39,11 @@ public class HomeSeeker extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeSeeker.
+     * @return A new instance of fragment OfferCardFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeSeeker newInstance(String param1, String param2) {
-        HomeSeeker fragment = new HomeSeeker();
+    public static OfferCardFragment newInstance(String param1, String param2) {
+        OfferCardFragment fragment = new OfferCardFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,23 +58,24 @@ public class HomeSeeker extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_home_seeker, container, false);
-        btnSearch = rootView.findViewById(R.id.btnDevGoToSearch);
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SearchActivity.class);
-                startActivity(intent);
-            }
-        });
+        View inf = inflater.inflate(R.layout.fragment_offer_card, container, false);
 
+        // TODO
+        String s = requireArguments().getString("theText");
+        Log.d(TAG, "onCreateView: theText="+s);
 
-        return rootView;
+        TextView tv = inf.findViewById(R.id.textOfCard);
+        tv.setText(s);
+
+        return inf;
     }
 }

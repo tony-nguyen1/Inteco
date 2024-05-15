@@ -31,9 +31,9 @@ import fr.umontpellier.etu.inteco.Seeker.fragements.SettingsSeeker;
 
 public class HomePageSeeker extends AppCompatActivity {
 
-    private static final String TAG = "debug login";
-    private String email, firstname, lastname;;
-//    private Button btnTest;
+    private String email, firstname, lastname;
+    ;
+    private static final String TAG = "debug login HomePageSeeker";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,21 +42,15 @@ public class HomePageSeeker extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        Log.d(TAG, "onCreate: "+intent.toString());
+        Log.d(TAG, "onCreate: " + intent.toString());
 
         email = intent.getStringExtra("email");
         firstname = intent.getStringExtra("firstname");
         lastname = intent.getStringExtra("lastname");
 
-        Log.d(TAG, "onCreate: "+email);
-        Log.d(TAG, "onCreate: "+firstname);
-        Log.d(TAG, "onCreate: "+lastname);
-
-
-
-
-
-
+        Log.d(TAG, "onCreate: " + email);
+        Log.d(TAG, "onCreate: " + firstname);
+        Log.d(TAG, "onCreate: " + lastname);
 
 
         /*********** Navigation Bar **********/
@@ -92,7 +86,7 @@ public class HomePageSeeker extends AppCompatActivity {
                     .replace(R.id.fragment_container, new HomeSeeker())
                     .commit();
         }
-    }
+
 /*
 
 
@@ -115,7 +109,12 @@ public class HomePageSeeker extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
  */
+
+
+
+
         /*TextView valueTV = new TextView(this);
         valueTV.setText(email);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -147,3 +146,4 @@ public class HomePageSeeker extends AppCompatActivity {
         constraintLayout.addView(firstnameTV);
         constraintLayout.addView(lastnameTV);*/
     }
+}
