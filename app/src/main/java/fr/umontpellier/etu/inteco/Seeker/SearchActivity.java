@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.umontpellier.etu.inteco.R;
+import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.PlaceholderContent;
 
 public class SearchActivity extends AppCompatActivity {
@@ -75,10 +76,11 @@ public class SearchActivity extends AppCompatActivity {
         mutableContent.observe(SearchActivity.this, new Observer<Map<String, QuerySnapshot>>() {
             @Override
             public void onChanged(Map<String, QuerySnapshot> stringObjectMap) {
-                ArrayList<PlaceholderContent.PlaceholderItem> myList = new ArrayList<>();
+                ArrayList<Offer> myList = new ArrayList<>();
                 for (QueryDocumentSnapshot document : stringObjectMap.get("result")) {
                     Log.d(TAG, document.getId() + " => " + document.getData());
-                    PlaceholderContent.PlaceholderItem p = new PlaceholderContent.PlaceholderItem("-1",
+                    Offer p = new Offer(
+                            document.getId(),
                             document.get("jobTitle", String.class),
                             document.get("companyName", String.class),
                             document.get("place", String.class),
@@ -90,7 +92,13 @@ public class SearchActivity extends AppCompatActivity {
                 }
 
 
-                MyItemRecyclerViewAdapter customAdaptator = new MyItemRecyclerViewAdapter(myList);
+                MyItemRecyclerViewAdapter customAdaptator = new MyItemRecyclerViewAdapter(myList, new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
+                    @Override
+                    public void onItemClickListener(Offer item, int position) {
+                        // TODO : lancer une nouvelle activité : description post
+                        Log.d(TAG, "onItemClickListener: appuyé sur n°"+position+": "+item.toString());
+                    }
+                });
 
                 RecyclerView recyclerView = findViewById(R.id.recyclerView);
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
