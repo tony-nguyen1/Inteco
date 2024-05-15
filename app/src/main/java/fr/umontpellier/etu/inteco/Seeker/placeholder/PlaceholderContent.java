@@ -16,14 +16,16 @@ public class PlaceholderContent {
     /**
      * An array of sample (placeholder) items.
      */
-    public static final List<PlaceholderItem> ITEMS = new ArrayList<PlaceholderItem>();
+    public static final List<Offer> ITEMS = new ArrayList<Offer>();
 
     /**
      * A map of sample (placeholder) items, by ID.
      */
-    public static final Map<String, PlaceholderItem> ITEM_MAP = new HashMap<String, PlaceholderItem>();
+    public static final Map<String, Offer> ITEM_MAP = new HashMap<String, Offer>();
 
-    private static final int COUNT = 25;
+    private static final int COUNT = 10;
+
+    private static final String TAG = "debug PlaceholderContent";
 
     static {
         // Add some sample items.
@@ -32,13 +34,20 @@ public class PlaceholderContent {
         }
     }
 
-    private static void addItem(PlaceholderItem item) {
+    private static void addItem(Offer item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
 
-    private static PlaceholderItem createPlaceholderItem(int position) {
-        return new PlaceholderItem(String.valueOf(position), "Item " + position, makeDetails(position));
+    private static Offer createPlaceholderItem(int position) {
+        /**
+         * TODO : db request for all offers
+         * - db request
+         * - add attributes
+         * - add xml tag in layout in preparation ...
+         * - give the tag its value
+         */
+        return new Offer(String.valueOf(position), "Item " + position, makeDetails(position),"","","");
     }
 
     private static String makeDetails(int position) {
@@ -53,20 +62,5 @@ public class PlaceholderContent {
     /**
      * A placeholder item representing a piece of content.
      */
-    public static class PlaceholderItem {
-        public final String id;
-        public final String content;
-        public final String details;
 
-        public PlaceholderItem(String id, String content, String details) {
-            this.id = id;
-            this.content = content;
-            this.details = details;
-        }
-
-        @Override
-        public String toString() {
-            return content;
-        }
-    }
 }
