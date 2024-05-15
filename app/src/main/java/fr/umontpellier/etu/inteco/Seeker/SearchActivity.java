@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.umontpellier.etu.inteco.Authentication.Enterprise.SignUpEnterprise;
+import fr.umontpellier.etu.inteco.Authentication.Seeker.SignUpSeeker;
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.PlaceholderContent;
@@ -97,6 +100,16 @@ public class SearchActivity extends AppCompatActivity {
                     public void onItemClickListener(Offer item, int position) {
                         // TODO : lancer une nouvelle activité : description post
                         Log.d(TAG, "onItemClickListener: appuyé sur n°"+position+": "+item.toString());
+                        Intent intent = new Intent(SearchActivity.this, JobDetailsActivity.class);
+                        intent.putExtra("test","test");
+                        intent.putExtra("id",item.id);
+                        intent.putExtra("jobTitle",item.content);
+                        intent.putExtra("companyName",item.details);
+                        intent.putExtra("place",item.place);
+                        intent.putExtra("postDate",item.postDate);
+                        intent.putExtra("salary",item.salary);
+
+                        startActivity(intent);
                     }
                 });
 
