@@ -42,7 +42,6 @@ public class HomeEnterprise extends Fragment {
         if (getArguments() != null) {
             mCompanyName = getArguments().getString(ARG_COMPANY_NAME);
             mEmail = getArguments().getString(ARG_EMAIL);
-            //TODO Get the value from the back end
 
         }
     }
