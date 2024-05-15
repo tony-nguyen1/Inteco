@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
 
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,72 +18,78 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Inteco"
-        android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
         <activity
+            android:name=".Seeker.SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".Seeker.TestAddDocumentActivity"
-            android:exported="true" >
+            android:exported="true">
+
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".Seeker.HomePageSeeker"
-            android:theme="@style/Theme.Inteco"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".Enterprise.HomePageEnterprise"
-            android:theme="@style/Theme.Inteco"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".Authentication.Enterprise.SignUpEnterprise2"
-            android:theme="@style/Theme.Inteco"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".Authentication.Enterprise.SignUpEnterprise1"
-            android:theme="@style/Theme.Inteco"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".Authentication.Seeker.SignUpSeeker3"
-            android:theme="@style/Theme.Inteco"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".Authentication.Seeker.SignUpSeeker2"
-            android:theme="@style/Theme.Inteco"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".Authentication.Seeker.SignUpSeeker1"
-            android:theme="@style/Theme.Inteco"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".Authentication.Enterprise.SignUpEnterprise"
-            android:theme="@style/Theme.Inteco"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".Authentication.NewPassword"
-            android:theme="@style/Theme.Inteco"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".Authentication.Seeker.SignUpSeeker"
-            android:theme="@style/Theme.Inteco"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".Authentication.ResetPassword"
-            android:theme="@style/Theme.Inteco"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".shareLocation"
             android:exported="false"
             android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".Authentication.LoginFirstActivity"
-            android:theme="@style/Theme.Inteco"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Inteco" />
         <activity
             android:name=".FirstScreen"
             android:exported="true"

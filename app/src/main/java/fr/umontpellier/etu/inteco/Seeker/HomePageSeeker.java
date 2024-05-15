@@ -19,8 +19,8 @@ import fr.umontpellier.etu.inteco.R;
 
 public class HomePageSeeker extends AppCompatActivity {
 
-    private static final String TAG = "debug login";
-    private Button btnTest;
+    private static final String TAG = "debug login HomePageSeeker";
+    private Button btnTest, btnSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,15 @@ public class HomePageSeeker extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomePageSeeker.this, TestAddDocumentActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnSearch = findViewById(R.id.btnDevGoToSearch);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomePageSeeker.this, SearchActivity.class);
                 startActivity(intent);
             }
         });

@@ -1,5 +1,7 @@
 # Inteco
 
+pdflatex -output-directory rapport/ rapport/rapport.tex 
+
 # Dates des rendues
 
 1. 17 avril 2024: maquettes (voir informations complémentaires sur le dépôt).
