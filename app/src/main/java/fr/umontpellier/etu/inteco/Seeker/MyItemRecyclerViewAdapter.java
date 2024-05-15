@@ -33,10 +33,14 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        // on met les valeurs dans les vues
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);
         holder.mDetailsView.setText(mValues.get(position).details);
+        holder.mPlaceView.setText(mValues.get(position).place);
+        holder.mPostDateView.setText(mValues.get(position).postDate);
+        holder.mSalaryView.setText(mValues.get(position).salary);
     }
 
     @Override
@@ -48,13 +52,21 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public final TextView mIdView;
         public final TextView mContentView;
         public final TextView mDetailsView;
+
+        public final TextView mPlaceView;
+        public final TextView mPostDateView;
+        public final TextView mSalaryView;
         public PlaceholderItem mItem;
 
         public ViewHolder(FragmentItemBinding binding) {
+            // on associe aux vues, leur emplacement grâce à l'id (binding.id)
             super(binding.getRoot());
             mIdView = binding.itemNumber;
             mContentView = binding.content;
             mDetailsView = binding.details;
+            mPlaceView = binding.place;
+            mPostDateView = binding.postDate;
+            mSalaryView = binding.salary;
         }
 
         @Override

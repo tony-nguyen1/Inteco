@@ -1,5 +1,15 @@
 package fr.umontpellier.etu.inteco.Seeker.placeholder;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +33,9 @@ public class PlaceholderContent {
      */
     public static final Map<String, PlaceholderItem> ITEM_MAP = new HashMap<String, PlaceholderItem>();
 
-    private static final int COUNT = 25;
+    private static final int COUNT = 10;
+
+    private static final String TAG = "debug PlaceholderContent";
 
     static {
         // Add some sample items.
@@ -45,7 +57,7 @@ public class PlaceholderContent {
          * - add xml tag in layout in preparation ...
          * - give the tag its value
          */
-        return new PlaceholderItem(String.valueOf(position), "Item " + position, makeDetails(position));
+        return new PlaceholderItem(String.valueOf(position), "Item " + position, makeDetails(position),"","","");
     }
 
     private static String makeDetails(int position) {
@@ -64,16 +76,34 @@ public class PlaceholderContent {
         public final String id;
         public final String content;
         public final String details;
+        public final String place;
+        public final String postDate;
+        public final String salary;
 
-        public PlaceholderItem(String id, String content, String details) {
+        /**
+         *
+         * @param id
+         * @param content == jobTitle
+         * @param details == companyName
+         */
+        public PlaceholderItem(String id, String content, String details, String place, String postDate, String salary) {
             this.id = id;
             this.content = content;
             this.details = details;
+            this.place = place;
+            this.postDate = postDate;
+            this.salary = salary;
         }
 
         @Override
         public String toString() {
-            return content;
+            return "PlaceholderItem{" +
+                    "content='" + content + '\'' +
+                    ", details='" + details + '\'' +
+                    ", place='" + place + '\'' +
+                    ", postDate='" + postDate + '\'' +
+                    ", salary='" + salary + '\'' +
+                    '}';
         }
     }
 }
