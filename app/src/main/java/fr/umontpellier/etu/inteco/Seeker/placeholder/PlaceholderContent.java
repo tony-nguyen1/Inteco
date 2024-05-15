@@ -38,6 +38,13 @@ public class PlaceholderContent {
     }
 
     private static PlaceholderItem createPlaceholderItem(int position) {
+        /**
+         * TODO : db request for all offers
+         * - db request
+         * - add attributes
+         * - add xml tag in layout in preparation ...
+         * - give the tag its value
+         */
         return new PlaceholderItem(String.valueOf(position), "Item " + position, makeDetails(position));
     }
 
