@@ -27,8 +27,8 @@ public class HomeEnterprise extends Fragment {
         // Required empty public constructor
     }
 
-    public static SttingsEnterprise newInstance(String companyName, String email) {
-        SttingsEnterprise fragment = new SttingsEnterprise();
+    public static HomeEnterprise newInstance(String companyName, String email) {
+        HomeEnterprise fragment = new HomeEnterprise();
         Bundle args = new Bundle();
         args.putString(ARG_COMPANY_NAME, companyName);
         args.putString(ARG_EMAIL, email);
@@ -43,16 +43,7 @@ public class HomeEnterprise extends Fragment {
             mCompanyName = getArguments().getString(ARG_COMPANY_NAME);
             mEmail = getArguments().getString(ARG_EMAIL);
             //TODO Get the value from the back end
-            /*
-            mPhoneNumber = ;
-            mCity =
-            mAddress =
-            mWebsite =
-            mFacebook =
-            mLinkedin =
-            mInstagram =
 
-             */
         }
     }
     @Override

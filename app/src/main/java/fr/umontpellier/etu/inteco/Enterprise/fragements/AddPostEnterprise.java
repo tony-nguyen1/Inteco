@@ -26,8 +26,8 @@ public class AddPostEnterprise extends Fragment {
     public AddPostEnterprise() {
         // Required empty public constructor
     }
-    public static SttingsEnterprise newInstance(String companyName, String email) {
-        SttingsEnterprise fragment = new SttingsEnterprise();
+    public static AddPostEnterprise newInstance(String companyName, String email) {
+        AddPostEnterprise fragment = new AddPostEnterprise();
         Bundle args = new Bundle();
         args.putString(ARG_COMPANY_NAME, companyName);
         args.putString(ARG_EMAIL, email);

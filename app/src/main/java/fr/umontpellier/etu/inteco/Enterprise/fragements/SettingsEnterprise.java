@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import fr.umontpellier.etu.inteco.R;
 
-public class SttingsEnterprise extends Fragment {
+public class SettingsEnterprise extends Fragment {
 
     private static final String ARG_COMPANY_NAME = "companyName";
     private static final String ARG_EMAIL = "email";
@@ -42,12 +42,12 @@ public class SttingsEnterprise extends Fragment {
     private String mLinkedin;
     private String mInstagram;
 
-    public SttingsEnterprise() {
+    public SettingsEnterprise() {
         // Required empty public constructor
     }
 
-    public static SttingsEnterprise newInstance(String companyName, String email) {
-        SttingsEnterprise fragment = new SttingsEnterprise();
+    public static SettingsEnterprise newInstance(String companyName, String email) {
+        SettingsEnterprise fragment = new SettingsEnterprise();
         Bundle args = new Bundle();
         args.putString(ARG_COMPANY_NAME, companyName);
         args.putString(ARG_EMAIL, email);
