@@ -4,6 +4,34 @@
         <item>Female</item>
         <item>Other</item>
     </string-array>
+
+    <!-- Job Types -->
+    <string-array name="job_types">
+        <item>Full-Time</item>
+        <item>Part-Time</item>
+        <item>Remote</item>
+    </string-array>
+
+    <!-- Contract Types -->
+    <string-array name="contract_types">
+        <item>Permanent contract</item>
+        <item>Fixed termed contract</item>
+        <item>Student contract</item>
+    </string-array>
+
+    <!-- Categories -->
+    <string-array name="categories">
+        <item>Social</item>
+        <item>Economy</item>
+        <item>Computer Science</item>
+        <item>Biology</item>
+        <item>Education</item>
+        <item>Engineering</item>
+        <item>Design</item>
+        <item>Catering</item>
+        <item>Other</item>
+    </string-array>
+
     <string name="app_name">Inteco</string>
     <string name="discover_your_ideal_interim_position_today">Discover Your Ideal Interim Position Today!</string>
     <string name="share_your_position_for_the_best_expereince">Share Your Position For The Best Expereince!</string>

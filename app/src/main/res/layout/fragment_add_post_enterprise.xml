@@ -8,7 +8,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
+        android:padding="20dp"
         android:clipToPadding="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +20,7 @@
                 android:id="@+id/newPostTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="30dp"
+                android:padding="20dp"
                 android:text="New Post"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -38,7 +38,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/newPostTitle"
                 app:layout_constraintStart_toStartOf="parent"
-                 android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp" />
 
             <!-- Title Input -->
             <EditText
@@ -47,14 +47,13 @@
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Title"
-                android:text="Dev"
+                android:hint="Engineer in computer science"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/titleLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                 android:layout_marginTop="8dp" />
+                android:layout_marginTop="8dp" />
 
             <!-- Description Label -->
             <TextView
@@ -65,7 +64,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/title"
                 app:layout_constraintStart_toStartOf="parent"
-                 android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp" />
 
             <!-- Description Input -->
             <EditText
@@ -74,14 +73,13 @@
                 android:id="@+id/description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Add description here"
-                android:text="Add description here"
+                android:hint="searching for an engineer in our base in Chicago for ..."
                 android:padding="12dp"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/descriptionLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                 android:layout_marginTop="8dp" />
+                android:layout_marginTop="8dp" />
 
             <!-- Requirements Label -->
             <TextView
@@ -92,7 +90,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/description"
                 app:layout_constraintStart_toStartOf="parent"
-                 android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp" />
 
             <!-- Requirements Input -->
             <EditText
@@ -101,25 +99,24 @@
                 android:id="@+id/requirements"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Add requirements here"
-                android:text="Add requirements here"
+                android:hint="BAC+3, SMART, HAPPY, FUNNY"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/requirementsLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                 android:layout_marginTop="8dp" />
+                android:layout_marginTop="8dp" />
 
             <!-- Salary Label -->
             <TextView
                 android:id="@+id/salaryLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Salary"
+                android:text="Salary $/Month"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/requirements"
                 app:layout_constraintStart_toStartOf="parent"
-                 android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp" />
 
             <!-- Salary Input -->
             <EditText
@@ -129,13 +126,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Salary"
-                android:text="15 000 $/Month"
+                android:text="15 000"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/salaryLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                 android:layout_marginTop="8dp" />
+                android:layout_marginTop="8dp" />
 
             <!-- Starting Time Label -->
             <TextView
@@ -146,7 +143,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/salary"
                 app:layout_constraintStart_toStartOf="parent"
-                 android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp" />
 
             <!-- Starting Time Input -->
             <EditText
@@ -162,7 +159,7 @@
                 app:layout_constraintTop_toBottomOf="@id/startingTimeLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                 android:layout_marginTop="8dp" />
+                android:layout_marginTop="8dp" />
 
             <!-- Job Type Label -->
             <TextView
@@ -173,23 +170,19 @@
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/startingTime"
                 app:layout_constraintStart_toStartOf="parent"
-                 android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp" />
 
-            <!-- Job Type Input -->
-            <EditText
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:background="@drawable/white_curvy"
-                android:id="@+id/jobType"
+            <!-- Job Type Spinner -->
+            <Spinner
+                android:id="@+id/jobTypeSpinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Job Type"
-                android:text="Full-Time"
                 android:padding="12dp"
-                android:textColor="@color/black"
+                android:background="@drawable/white_curvy"
                 app:layout_constraintTop_toBottomOf="@id/jobTypeLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                 android:layout_marginTop="8dp" />
+                android:layout_marginTop="8dp" />
 
             <!-- Contract Type Label -->
             <TextView
@@ -198,36 +191,32 @@
                 android:layout_height="wrap_content"
                 android:text="Contract Type"
                 android:textColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/jobType"
+                app:layout_constraintTop_toBottomOf="@id/jobTypeSpinner"
                 app:layout_constraintStart_toStartOf="parent"
-                 android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp" />
 
-            <!-- Contract Type Input -->
-            <EditText
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:background="@drawable/white_curvy"
-                android:id="@+id/contractType"
+            <!-- Contract Type Spinner -->
+            <Spinner
+                android:id="@+id/contractTypeSpinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Contract Type"
-                android:text="Fixed Termed Contract"
                 android:padding="12dp"
-                android:textColor="@color/black"
+                android:background="@drawable/white_curvy"
                 app:layout_constraintTop_toBottomOf="@id/contractTypeLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                 android:layout_marginTop="8dp" />
+                android:layout_marginTop="8dp" />
 
             <!-- Duration Label -->
             <TextView
                 android:id="@+id/durationLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Duration"
+                android:text="Duration by month"
                 android:textColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/contractType"
+                app:layout_constraintTop_toBottomOf="@id/contractTypeSpinner"
                 app:layout_constraintStart_toStartOf="parent"
-                 android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp" />
 
             <!-- Duration Input -->
             <EditText
@@ -236,8 +225,7 @@
                 android:id="@+id/duration"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Duration"
-                android:text="6 months"
+                android:hint="6"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/durationLabel"
@@ -250,11 +238,11 @@
                 android:id="@+id/experienceLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Experience"
+                android:text="Experience by year"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/duration"
                 app:layout_constraintStart_toStartOf="parent"
-                 android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp" />
 
             <!-- Experience Input -->
             <EditText
@@ -263,14 +251,13 @@
                 android:id="@+id/experience"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Experience"
-                android:text="6 months"
+                android:hint="4"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/experienceLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                 android:layout_marginTop="8dp" />
+                android:layout_marginTop="8dp" />
 
             <!-- Qualification Label -->
             <TextView
@@ -281,7 +268,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/experience"
                 app:layout_constraintStart_toStartOf="parent"
-                 android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp" />
 
             <!-- Qualification Input -->
             <EditText
@@ -297,7 +284,7 @@
                 app:layout_constraintTop_toBottomOf="@id/qualificationLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                 android:layout_marginTop="8dp" />
+                android:layout_marginTop="8dp" />
 
             <!-- Location Label -->
             <TextView
@@ -308,7 +295,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/qualification"
                 app:layout_constraintStart_toStartOf="parent"
-                 android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp" />
 
             <!-- Location Input -->
             <EditText
@@ -317,14 +304,35 @@
                 android:id="@+id/location"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Location"
-                android:text="Greenland"
+                android:hint="Add the address here"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/locationLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                 android:layout_marginTop="8dp" />
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/categoryLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/location"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <!-- Category Spinner -->
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:background="@drawable/white_curvy"
+                app:layout_constraintTop_toBottomOf="@id/categoryLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
 
             <!-- Confirm Button -->
             <Button
@@ -335,13 +343,13 @@
                 android:text="CONFIRM"
                 android:textColor="@color/white"
                 android:padding="12dp"
-                app:layout_constraintTop_toBottomOf="@id/location"
+                android:layout_marginBottom="50dp"
+                app:layout_constraintTop_toBottomOf="@id/categorySpinner"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                 android:layout_marginTop="24dp"
+                android:layout_marginTop="24dp"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

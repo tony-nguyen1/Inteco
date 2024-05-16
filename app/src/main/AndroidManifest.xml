@@ -29,7 +29,14 @@
         <activity
             android:name=".Enterprise.HomePageEnterprise"
             android:exported="true"
-            android:theme="@style/Theme.Inteco" />
+            android:theme="@style/Theme.Inteco" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+
+        </activity>
         <activity
             android:name=".Seeker.SearchActivity"
             android:exported="false" />
@@ -98,11 +105,7 @@
             android:name=".FirstScreen"
             android:exported="true"
             android:theme="@style/Theme.App.Starting">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
