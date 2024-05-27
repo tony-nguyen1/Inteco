@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -22,13 +25,20 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import fr.umontpellier.etu.inteco.R;
+import fr.umontpellier.etu.inteco.Seeker.MyItemRecyclerViewAdapter;
+import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SavedSeeker#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * Layout : fragment_saved_seeker fragment_offer_saved_list fragment_offer_saved_card
  */
 public class SavedSeeker extends Fragment {
     private static final String email = "AYS";
@@ -42,7 +52,8 @@ public class SavedSeeker extends Fragment {
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private final MutableLiveData<ArrayList<QueryDocumentSnapshot>> listen = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<String>> listen = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<QueryDocumentSnapshot>> listen2 = new MutableLiveData<>();
 
     public SavedSeeker() {
         // Required empty public constructor
@@ -79,57 +90,114 @@ public class SavedSeeker extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        ArrayList<DocumentReference> idOfferList = null;
+                        ArrayList<String> aux = new ArrayList<>();
                         if (task.isSuccessful()) {
-                            boolean found = false;
-                            QueryDocumentSnapshot infoUser = null;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String s = document.get("email",String.class);
                                 if (currentUser.getEmail().equals(s)) {
-                                    found = true;
-//                                    infoUser = document;
                                     Log.d(TAG, "onComplete: "+document.get("saved").getClass().getName());
-                                    idOfferList = (ArrayList<DocumentReference>) document.get("saved");
+                                    ((ArrayList<DocumentReference>) document.get("saved")).stream().forEach(e -> aux.add(e.getId()));
+
                                 }
 //                                Log.d(TAG, document.getId() + " => " + document.getData());
                             }
-//                            listen.postValue(infoUser);
-                            Log.d(TAG, "onComplete: "+idOfferList);
-                            for (DocumentReference s :
-                                    idOfferList) {
-                                Log.d(TAG, "onComplete: "+s);
-                            }
+                            listen.postValue(aux);
+//                            Log.d(TAG, "onComplete: "+aux);
+//                            for (String s :
+//                                    aux) {
+//                                Log.d(TAG, "onComplete: "+s);
+//                            }
 
-//                            db.collection("offers")
-//                                    .get()
-//                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                        @Override
-//                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                            if (task.isSuccessful()) {
-//                                                boolean found = false;
-//                                                QueryDocumentSnapshot infoOffer = null;
-//                                                for (QueryDocumentSnapshot document : task.getResult()) {
-//                                                    String s = document.getId();
-//                                                    if (currentUser.getEmail().equals(s)) {
-//                                                        found = true;
-//                                                        infoOffer = document;
-//                                                    }
-////                                Log.d(TAG, document.getId() + " => " + document.getData());
-//                                                }
-////                                                listen.postValue(infoUser);
-//                                            } else {
-//                                                Log.w(TAG, "Error getting documents.", task.getException());
-//                                            }
-//                                        }
-//                                    });
+                            /**
+                             * TODO :
+                             * - db request for offer info DONE
+                             * - post into mutable live data DONE
+                             * - create array of object containing the data DONE
+                             * - use SaveJobRecyclerViewAdapter
+                             * - it should work
+                             */
+
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
                     }
                 });
 
-        
+        listen.observe(SavedSeeker.this, new Observer<ArrayList<String>>() {
+            @Override
+            public void onChanged(ArrayList<String> documentReferences) {
+                db.collection("offers")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                ArrayList<QueryDocumentSnapshot> aux = new ArrayList<>();
+                                if (task.isSuccessful()) {
+                                    Log.d(TAG, "onComplete: requesting offers");
+//                                                boolean found = false;
+//                                                QueryDocumentSnapshot infoOffer = null;
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                                        Log.d(TAG, "onComplete: "+document.getId()+"=>"+document.getData());
+
+                                        if (documentReferences.contains(document.getId())) {
+//                                            Log.d(TAG, "onComplete: match"+document.getId()+"=>"+document.getData().toString());
+                                            aux.add(document);
+                                        }
+                                    }
+                                    listen2.postValue(aux);
+                                } else {
+                                    Log.w(TAG, "Error getting documents.", task.getException());
+                                }
+                            }
+                        });
+
+            }
+        });
+
+        listen2.observe(SavedSeeker.this, new Observer<ArrayList<QueryDocumentSnapshot>>() {
+            @Override
+            public void onChanged(ArrayList<QueryDocumentSnapshot> queryDocumentSnapshots) {
+                ArrayList<Offer> myList = new ArrayList<>();
+                for (QueryDocumentSnapshot document :
+                        queryDocumentSnapshots) {
+
+                    Timestamp t = document.get("postDate", Timestamp.class);
+                    Date d = t.toDate();
+//                    Log.d(TAG, "onChanged: Timestamp="+t+" Date="+d);
+                    String theDateGoodFormat = ""+d.getDate()+"/"+d.getMonth()+"/"+d.getYear();
+                    Log.d(TAG, "onChanged: good date ?="+theDateGoodFormat);
+
+                    myList.add(new Offer(document.getId(),
+                            document.get("jobTitle", String.class),
+                            document.get("companyName", String.class),
+                            document.get("place", String.class),
+                            theDateGoodFormat,//(new Date(document.get("postDate", String.class))).toString(),
+                            document.get("salary", String.class)
+                    ));
+                }
+
+                Log.d(TAG, "onChanged: the offers saved by this user:");
+                Log.d(TAG, "onChanged: "+myList);
+
+                // TODO : utiliser recycler view ici
+                SaveJobRecyclerViewAdapter customAdaptator = new SaveJobRecyclerViewAdapter(myList);
+
+                RecyclerView recyclerView = SavedSeeker.this.getView().findViewById(R.id.recyclerView);
+                LinearLayoutManager mLayoutManager = new LinearLayoutManager(SavedSeeker.this.getContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setAdapter(customAdaptator);
+
+                Log.d(TAG, "onChanged: ça devrait faire un truc");
+            }
+        });
     }
+
+    /*@Override
+            public void onChanged(ArrayList<Map<String, Object>> maps) {
+                ArrayList<Offer> myList = new ArrayList<>();
+                myList.add(new Offer(maps.get()));
+            }
+        });*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

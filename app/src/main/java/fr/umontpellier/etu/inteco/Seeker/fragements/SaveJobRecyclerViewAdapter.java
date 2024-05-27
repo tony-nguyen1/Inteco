@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fr.umontpellier.etu.inteco.Seeker.fragements.placeholder.PlaceholderContent.PlaceholderItem;
+import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 import fr.umontpellier.etu.inteco.databinding.FragmentOfferSavedCardBinding;
 
 import java.util.List;
@@ -18,9 +19,9 @@ import java.util.List;
  */
 public class SaveJobRecyclerViewAdapter extends RecyclerView.Adapter<SaveJobRecyclerViewAdapter.ViewHolder> {
 
-    private final List<PlaceholderItem> mValues;
+    private final List<Offer> mValues;
 
-    public SaveJobRecyclerViewAdapter(List<PlaceholderItem> items) {
+    public SaveJobRecyclerViewAdapter(List<Offer> items) {
         mValues = items;
     }
 
@@ -36,6 +37,9 @@ public class SaveJobRecyclerViewAdapter extends RecyclerView.Adapter<SaveJobRecy
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);
+        holder.mDetailsView.setText(mValues.get(position).details);
+        holder.mPlaceView.setText(mValues.get(position).place);
+        holder.mSalaryView.setText(mValues.get(position).salary);
     }
 
     @Override
@@ -46,12 +50,18 @@ public class SaveJobRecyclerViewAdapter extends RecyclerView.Adapter<SaveJobRecy
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mIdView;
         public final TextView mContentView;
-        public PlaceholderItem mItem;
+        public final TextView mDetailsView;
+        public final TextView mPlaceView;
+        public final TextView mSalaryView;
+        public Offer mItem;
 
         public ViewHolder(FragmentOfferSavedCardBinding binding) {
             super(binding.getRoot());
             mIdView = binding.itemNumber;
             mContentView = binding.content;
+            mDetailsView = binding.details;
+            mPlaceView = binding.place;
+            mSalaryView = binding.salary;
         }
 
         @Override
