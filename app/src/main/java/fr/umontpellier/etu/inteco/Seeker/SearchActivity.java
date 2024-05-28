@@ -30,11 +30,15 @@ import fr.umontpellier.etu.inteco.Seeker.placeholder.PlaceholderContent;
 public class SearchActivity extends AppCompatActivity {
 
     private static final String TAG = "debug SearchActivity";
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        Intent intent = getIntent();
+        this.email = intent.getStringExtra("email");
+        Log.d(TAG, "onCreate: this.email="+email);
         if (savedInstanceState == null) {
             Bundle bundle1 = new Bundle();
             bundle1.putString("theText", "Hello");

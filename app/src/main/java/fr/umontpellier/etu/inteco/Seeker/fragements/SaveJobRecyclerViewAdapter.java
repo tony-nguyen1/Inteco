@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import fr.umontpellier.etu.inteco.Seeker.MyItemRecyclerViewAdapter;
 import fr.umontpellier.etu.inteco.Seeker.fragements.placeholder.PlaceholderContent.PlaceholderItem;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 import fr.umontpellier.etu.inteco.databinding.FragmentOfferSavedCardBinding;
@@ -21,8 +23,13 @@ public class SaveJobRecyclerViewAdapter extends RecyclerView.Adapter<SaveJobRecy
 
     private final List<Offer> mValues;
 
-    public SaveJobRecyclerViewAdapter(List<Offer> items) {
+    MyItemRecyclerViewAdapter.AdapterItemClickListener itemClickListener;
+    MyItemRecyclerViewAdapter.AdapterItemClickListener itemClickListener2;
+
+    public SaveJobRecyclerViewAdapter(List<Offer> items, MyItemRecyclerViewAdapter.AdapterItemClickListener itemClickListener, MyItemRecyclerViewAdapter.AdapterItemClickListener itemClickListener2) {
         mValues = items;
+        this.itemClickListener = itemClickListener;
+        this.itemClickListener2 = itemClickListener2;
     }
 
     @Override
@@ -40,6 +47,21 @@ public class SaveJobRecyclerViewAdapter extends RecyclerView.Adapter<SaveJobRecy
         holder.mDetailsView.setText(mValues.get(position).details);
         holder.mPlaceView.setText(mValues.get(position).place);
         holder.mSalaryView.setText(mValues.get(position).salary);
+
+        // click functionality
+        Offer item = mValues.get(position);
+        holder.buttonApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onItemClickListener(item, holder.getBindingAdapterPosition());
+            }
+        });
+        holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener2.onItemClickListener(item, holder.getBindingAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -55,6 +77,9 @@ public class SaveJobRecyclerViewAdapter extends RecyclerView.Adapter<SaveJobRecy
         public final TextView mSalaryView;
         public Offer mItem;
 
+        public Button buttonApply;
+        public Button buttonDelete;
+
         public ViewHolder(FragmentOfferSavedCardBinding binding) {
             super(binding.getRoot());
             mIdView = binding.itemNumber;
@@ -62,6 +87,9 @@ public class SaveJobRecyclerViewAdapter extends RecyclerView.Adapter<SaveJobRecy
             mDetailsView = binding.details;
             mPlaceView = binding.place;
             mSalaryView = binding.salary;
+            buttonApply = binding.buttonApply;
+            buttonDelete = binding.buttonDecline;
+            // à gauche l'objet qu'on peut manipuler, à droite l'id de la balise qui correspond à l'objet à manipuler
         }
 
         @Override

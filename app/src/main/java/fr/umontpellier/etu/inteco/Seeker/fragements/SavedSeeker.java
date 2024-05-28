@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -180,7 +181,17 @@ public class SavedSeeker extends Fragment {
                 Log.d(TAG, "onChanged: "+myList);
 
                 // TODO : utiliser recycler view ici
-                SaveJobRecyclerViewAdapter customAdaptator = new SaveJobRecyclerViewAdapter(myList);
+                SaveJobRecyclerViewAdapter customAdaptator = new SaveJobRecyclerViewAdapter(myList, new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
+                    @Override
+                    public void onItemClickListener(Offer item, int position) {
+                        Toast.makeText(SavedSeeker.this.getContext(), "J'ai appuyé sur APPLY (id:"+item.id+")", Toast.LENGTH_SHORT).show();
+                    }
+                }, new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
+                    @Override
+                    public void onItemClickListener(Offer item, int position) {
+                        Toast.makeText(SavedSeeker.this.getContext(), "J'ai appuyé sur DELETE (id:"+item.id+")", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
                 RecyclerView recyclerView = SavedSeeker.this.getView().findViewById(R.id.recyclerView);
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(SavedSeeker.this.getContext());

@@ -65,7 +65,7 @@ public class OfferFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new SaveJobRecyclerViewAdapter(PlaceholderContent.ITEMS));
+            recyclerView.setAdapter(new SaveJobRecyclerViewAdapter(PlaceholderContent.ITEMS,null, null));
         }
         return view;
     }
