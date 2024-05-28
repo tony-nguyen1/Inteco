@@ -50,6 +50,10 @@ public class Offer {
         this.salary = salary;
     }
 
+    public Offer() {
+        this("","","","","","");
+    }
+
     @Override
     public String toString() {
         return "Offer{" +

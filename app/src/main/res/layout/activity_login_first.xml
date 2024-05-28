@@ -41,6 +41,7 @@
             android:textColor="@color/black"
 
             android:hint="Email"
+            android:text="test@gmail.com"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -63,6 +64,7 @@
             android:textColor="@color/black"
 
             android:hint="Password"
+            android:text="password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 

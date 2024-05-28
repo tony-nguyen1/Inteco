@@ -9,10 +9,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import fr.umontpellier.etu.inteco.R;
 
@@ -26,6 +35,7 @@ public class SettingsSeeker extends Fragment {
     private static final String ARG_EMAIL = "email";
     private static final String ARG_FIRST_NAME = "firstName";
     private static final String ARG_LAST_NAME = "lastName";
+    private static final String TAG = "debug SettingsSeeker";
 
     private EditText mEmailEditText;
     private EditText mFirstNameEditText;
@@ -44,6 +54,8 @@ public class SettingsSeeker extends Fragment {
     private String mEmail;
     private String mFirstName;
     private String mLastName;
+
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public SettingsSeeker() {
         // Required empty public constructor
@@ -101,6 +113,79 @@ public class SettingsSeeker extends Fragment {
         mLastNameEditText.setText(mLastName);
 
         //TODO set the rest of the inputs to their values in the database
+        /**
+         * TODO :
+         * db request
+         */
+
+        MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
+        db.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            boolean foundEmail = false;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                String s = document.get("email", String.class);
+                                if (mEmail.equals(s)){
+                                    listen.postValue(document); // post a value
+                                    foundEmail = true;
+                                }
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
+        listen.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
+            @Override
+            public void onChanged(QueryDocumentSnapshot queryDocumentSnapshot) {
+                mDobEditText.setText(queryDocumentSnapshot.get("birthday",String.class));
+                mPhoneNumberEditText.setText(queryDocumentSnapshot.get("phoneNumber",String.class));
+                mLocationEditText.setText(queryDocumentSnapshot.get("location",String.class));
+                mCityEditText.setText(queryDocumentSnapshot.get("city",String.class));
+                mNationalityEditText.setText(queryDocumentSnapshot.get("nationality",String.class));
+                String gender = queryDocumentSnapshot.get("gender",String.class);
+                switch (gender) {
+                    case "Male":
+                        mGenderMale.setChecked(true);
+                        break;
+                    case "Female":
+                        mGenderFemale.setChecked(true);
+                        break;
+                    case "Other":
+                        mGenderOther.setChecked(true);
+                        break;
+                }
+                mGenderGroup = view.findViewById(R.id.genderGroup);
+
+                TextView userNameTextView, userLocationTextView;
+                userNameTextView = view.findViewById(R.id.userName);
+                userLocationTextView = view.findViewById(R.id.userLocation);
+
+                userNameTextView.setText(mFirstName + " " + mLastName);
+                userLocationTextView.setText(queryDocumentSnapshot.get("location",String.class));
+
+
+//                mDobEditText = view.findViewById(R.id.dob);
+//                mPhoneNumberEditText = view.findViewById(R.id.phoneNumber);
+//                mLocationEditText = view.findViewById(R.id.location);
+//                mCityEditText = view.findViewById(R.id.city);
+//                mNationalityEditText = view.findViewById(R.id.nationality);
+//                mGenderGroup = view.findViewById(R.id.genderGroup);
+//                mGenderMale = view.findViewById(R.id.genderMale);
+//                mGenderFemale = view.findViewById(R.id.genderFemale);
+//                mGenderOther = view.findViewById(R.id.genderOther);
+//                mSaveButton = view.findViewById(R.id.saveButton);
+            }
+        });
+
+
+
+
         /*
         mDobEditText.setText();
         mPhoneNumberEditText.setText();
@@ -147,6 +232,8 @@ public class SettingsSeeker extends Fragment {
         Log.v("SettingsSeeker", "City: " + city);
         Log.v("SettingsSeeker", "Nationality: " + nationality);
         Log.v("SettingsSeeker", "Gender: " + gender);
+
+        //TODO db request here to save
     }
 
     private void setGender(String gender) {
