@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -66,6 +68,24 @@ public class SearchActivity extends AppCompatActivity {
 //                    .commit();
 //        }
 
+        MyItemRecyclerViewAdapter.AdapterItemClickListener myClickListernerReusable = new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
+            @Override
+            public void onItemClickListener(Offer item, int position) {
+                // TODO : lancer une nouvelle activité : description post
+                Log.d(TAG, "onItemClickListener: appuyé sur n°"+position+": "+item.toString());
+                Intent intent = new Intent(SearchActivity.this, JobDetailsActivity.class);
+                intent.putExtra("test","test");
+                intent.putExtra("id",item.id);
+                intent.putExtra("jobTitle",item.content);
+                intent.putExtra("companyName",item.details);
+                intent.putExtra("place",item.place);
+                intent.putExtra("postDate",item.postDate);
+                intent.putExtra("salary",item.salary);
+
+                startActivity(intent);
+            }
+        };
+
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         MutableLiveData<Map<String,QuerySnapshot>> mutableContent = new MutableLiveData<>();
@@ -108,23 +128,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
 
 
-                MyItemRecyclerViewAdapter customAdaptator = new MyItemRecyclerViewAdapter(myList, new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
-                    @Override
-                    public void onItemClickListener(Offer item, int position) {
-                        // TODO : lancer une nouvelle activité : description post
-                        Log.d(TAG, "onItemClickListener: appuyé sur n°"+position+": "+item.toString());
-                        Intent intent = new Intent(SearchActivity.this, JobDetailsActivity.class);
-                        intent.putExtra("test","test");
-                        intent.putExtra("id",item.id);
-                        intent.putExtra("jobTitle",item.content);
-                        intent.putExtra("companyName",item.details);
-                        intent.putExtra("place",item.place);
-                        intent.putExtra("postDate",item.postDate);
-                        intent.putExtra("salary",item.salary);
-
-                        startActivity(intent);
-                    }
-                });
+                MyItemRecyclerViewAdapter customAdaptator = new MyItemRecyclerViewAdapter(myList, myClickListernerReusable);
 
                 RecyclerView recyclerView = findViewById(R.id.recyclerView);
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -139,74 +143,107 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         EditText editTextJobTitle = findViewById(R.id.jobTitleEditText);
-        editTextJobTitle.addTextChangedListener(new TextWatcher() {
+        EditText editTextLocation = findViewById(R.id.locationEditText);
+
+        Button btnSearch = findViewById(R.id.search_button);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void onClick(View v) {
+                Toast.makeText(SearchActivity.this, "Searching", Toast.LENGTH_SHORT).show();
+                String[] tab1 = editTextJobTitle.getText().toString().replace("\n","").toLowerCase().split(" ");
+                String[] tab2 = editTextLocation.getText().toString().replace("\n","").toLowerCase().split(" ");
+                List<String> keywords1 = Arrays.asList(tab1);
+                List<String> keywords2 = Arrays.asList(tab2);
+//                List<String> keywords = new ArrayList<>();
+//                keywords.addAll(keywords1);
+//                keywords.addAll(keywords2);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().contains("\n")) {
-                    Toast.makeText(SearchActivity.this, "TODO: launch search", Toast.LENGTH_SHORT).show();
-
-                    String[] tab = s.toString().replace("\n","").toLowerCase().split(" ");
-                    List keywords = Arrays.asList(tab);
-
-                    searchForJob(keywords, null);
+                MutableLiveData<ArrayList<QueryDocumentSnapshot>> answer = new MutableLiveData<>();
+                searchForJob(keywords1, keywords2, answer);
 
 
-                    //TODO modifier cette liste
-                    ArrayList<Offer> myList = new ArrayList<Offer>();
-                    MyItemRecyclerViewAdapter customAdaptator = new MyItemRecyclerViewAdapter(myList, new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
-                        @Override
-                        public void onItemClickListener(Offer item, int position) {
-
+                answer.observe(SearchActivity.this, new Observer<ArrayList<QueryDocumentSnapshot>>() {
+                    @Override
+                    public void onChanged(ArrayList<QueryDocumentSnapshot> queryDocumentSnapshots) {
+                        Log.d(TAG, "onChanged: It is changing");
+                        ArrayList<Offer> myList = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+                            Offer p = new Offer(
+                                    document.getId(),
+                                    document.get("jobTitle", String.class),
+                                    document.get("companyName", String.class),
+                                    document.get("place", String.class),
+                                    "theDate",//document.get("postDate", String.class),
+                                    "1000"//document.get("salary", String.class)
+                            );
+//                                Log.d(TAG, "onChanged: "+p);
+                            myList.add(p);
+//                                myList = new ArrayList<>();
+//                                MyItemRecyclerViewAdapter customAdaptator = new MyItemRecyclerViewAdapter(myList, new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
+//                                    @Override
+//                                    public void onItemClickListener(Offer item, int position) {
+//
+//                                    }
+//                                });
+//                                RecyclerView recyclerView = findViewById(R.id.recyclerView);
+//                                LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+//                                recyclerView.setLayoutManager(mLayoutManager);
+//                                recyclerView.setAdapter(customAdaptator);
                         }
-                    });
-                    RecyclerView recyclerView = findViewById(R.id.recyclerView);
-                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-                    recyclerView.setLayoutManager(mLayoutManager);
-                    recyclerView.setAdapter(customAdaptator);
+                        Log.d(TAG, "onChanged: list created, ready to change recycler view");
+                        Log.d(TAG, "onChanged: "+myList);
+                        MyItemRecyclerViewAdapter customAdaptator = new MyItemRecyclerViewAdapter(myList, myClickListernerReusable);
+                        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+                        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                        recyclerView.setLayoutManager(mLayoutManager);
+                        recyclerView.setAdapter(customAdaptator);
 
-                }
+                    }
+                });
             }
         });
-
-
     }
 
-    public void searchForJob(List<String> keywords, MutableLiveData<QueryDocumentSnapshot> response) {
-        Log.d(TAG, "searchForJob: keywords="+keywords);
+    public void searchForJob(List<String> keywordsTitle, List<String> keywordsLocation, MutableLiveData<ArrayList<QueryDocumentSnapshot>> response) {
+        Log.d(TAG, "searchForJob: keywordsTitle="+keywordsTitle+"    keywordsLocation="+keywordsLocation);
         db.collection("offers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                ArrayList<QueryDocumentSnapshot> matchingDocumentsArrayList = new ArrayList<>();
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-//                        if (Collections.)
+                        boolean thisDocumentIsSelected = false;
                         String jobTitle = document.get("jobTitle", String.class);
+                        String location = document.getString("place");
 
                         String[] tab = jobTitle.toLowerCase().split(" ");
                         List l = Arrays.asList(tab);
-                        Log.d(TAG, "onComplete: "+l);
-
-                        for (String keyword : keywords) {
+                        for (String keyword : keywordsTitle) {
                             if (l.contains(keyword)) {
-                                Log.d(TAG, "onComplete: keyword="+keyword);
+//                                Log.d(TAG, "onComplete: keyword="+keyword);
+                                thisDocumentIsSelected = true;
                             }
                         }
 
-//                        if (Collections.disjoint(l,keywords)) {
-//                            Log.d(TAG, "onComplete: disjoint");
-//                        } else {
-//                            Log.d(TAG, "onComplete: overlap");
-//                        }
+                        tab = location.toLowerCase().split(" ");
+                        l = Arrays.asList(tab);
+                        Log.d(TAG, "onComplete: searching in"+l);
+                        Log.d(TAG, "onComplete: keywordsLocation="+keywordsLocation);
+                        for (String keyword : keywordsLocation) {
+                            if (l.contains(keyword)) {
+//                                Log.d(TAG, "onComplete: keyword="+keyword);
+                                thisDocumentIsSelected = true;
+                            }
+                        }
+
+                        if (thisDocumentIsSelected) {
+                            matchingDocumentsArrayList.add(document);
+                            Log.d(TAG, "onComplete: match");
+                        }
                     }
+                    Log.d(TAG, "onComplete: matched :"+matchingDocumentsArrayList);
+                    response.postValue(matchingDocumentsArrayList);
                 } else {
                     Log.w(TAG, "Error getting documents.", task.getException());
                 }

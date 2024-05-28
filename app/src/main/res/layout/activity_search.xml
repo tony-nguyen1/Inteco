@@ -19,7 +19,19 @@
             android:layout_height="wrap_content"
 
             android:hint="Search"
-            android:text="design"/>
+            android:text="lead"/>
+        <EditText
+            android:id="@+id/locationEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:hint="Location"
+            android:text="USA"/>
+        <Button
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"/>
 <!--        <androidx.fragment.app.FragmentContainerView-->
 <!--            android:id="@+id/fragment_container_view"-->
 <!--            android:layout_width="match_parent"-->
