@@ -109,17 +109,10 @@ public class JobDetailsActivity extends AppCompatActivity {
 //                        Log.d(TAG, "onChanged: "+document);
                         // Récupération des ids des documents
                         ArrayList<String> savedListId = new ArrayList<>();
-                        ArrayList<DocumentReference> savedListRef = new ArrayList<>();
 
                         ((ArrayList<DocumentReference>) document.get("saved")).stream().forEach(e -> {
                             savedListId.add(e.getId());
-//                            savedListRef.add(e);
-//                            if (idOffer.equals(e.getId())) {
-//                                myDocRef = e;
-//                            }
-
                         });
-//                        Log.d(TAG, "onChanged: savedList="+savedListId);
                         
                         if (savedListId.contains(idOffer)) {
                             Log.d(TAG, "onChanged: current offer already saved");
@@ -127,12 +120,6 @@ public class JobDetailsActivity extends AppCompatActivity {
 
                         } else {
                             Log.d(TAG, "onChanged: current offer not already saved");
-//                            savedListId.add("/offers/"+idOffer);
-//                            ArrayList<DocumentReference> docRefList = new ArrayList<>();
-//                            docRefList.add(new DocumentReference());
-
-//                            Map<String, Object> uneOffre = new HashMap<>();
-//                            uneOffre.put();
                             DocumentReference userRef = db.collection("users").document(idDocumentUser);
 
                             db.collection("offers")
@@ -144,12 +131,8 @@ public class JobDetailsActivity extends AppCompatActivity {
                                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                                     String id = document.getId();
                                                     if (id.equals(idOffer)){
-
-//                                                        Log.d(TAG, "onComplete: "+document.getData());
-//                                                        waiter.postValue(document);
-//                                                        idDocumentUser = document.getId();
-//                                                        break;
                                                         myDocRef = document.getReference();
+                                                        break;
                                                     }
                                                 }
 
@@ -164,21 +147,6 @@ public class JobDetailsActivity extends AppCompatActivity {
                                             }
                                         }
                                     });
-
-//                            userRef.update("saved", FieldValue.arrayUnion(myDocRef)).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    Toast.makeText(JobDetailsActivity.this,"Success",Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
-
-//                            userRef.update("saved",savedListId).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    Toast.makeText(getApplicationContext(),"Offer " + idOffer + " saved",Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
-//                            user.put("email", "tony.nguyen@etu.umontpellier.fr");
                         }
                     }
                 });

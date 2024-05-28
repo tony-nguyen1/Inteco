@@ -17,6 +17,7 @@ import fr.umontpellier.etu.inteco.R;
  * Use the {@link OfferCardFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@Deprecated
 public class OfferCardFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match

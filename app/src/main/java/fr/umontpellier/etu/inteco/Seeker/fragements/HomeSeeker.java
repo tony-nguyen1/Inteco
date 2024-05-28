@@ -10,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.HomePageSeeker;
 import fr.umontpellier.etu.inteco.Seeker.SearchActivity;
+import fr.umontpellier.etu.inteco.Seeker.TestAddDocumentActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,8 +30,8 @@ public class HomeSeeker extends Fragment {
 
 
     private static final String email = "AYS";
-    private static final String firstName = "";
-    private static final String LastName = "";
+    private static final String firstName = "le prénom";
+    private static final String LastName = "le nom de famille";
     private String mEmail;
     private String mFirstName;
     private String mLastName;
@@ -40,7 +42,7 @@ public class HomeSeeker extends Fragment {
 
 
     public static HomeSeeker newInstance(String param1, String param2, String param3) {
-        Log.d(TAG, "newInstance: "+param1);
+        Log.d(TAG, "newInstance: "+param1+" "+param2+" "+param3);
         HomeSeeker fragment = new HomeSeeker();
         Bundle args = new Bundle();
         args.putString(email, param1);
@@ -62,6 +64,7 @@ public class HomeSeeker extends Fragment {
             mLastName = getArguments().getString(LastName);
             Log.d(TAG, "onCreate: mEmail="+mEmail + " mFirstName=" + mFirstName + " mLastName=" + mLastName);
         }
+
     }
 
     @Override
@@ -69,6 +72,16 @@ public class HomeSeeker extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home_seeker, container, false);
 //        Log.v("My email", mEmail);
+//
+//
+//
+//
+        TextView firstNameTV, lastNameTV;
+        firstNameTV = rootView.findViewById(R.id.firstnameTextView);
+        lastNameTV = rootView.findViewById(R.id.lastnameTextView);
+
+        firstNameTV.setText(mFirstName);
+        lastNameTV.setText(mLastName);
 
         btnSearch = rootView.findViewById(R.id.btnDevGoToSearch);
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +90,15 @@ public class HomeSeeker extends Fragment {
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
                 intent.putExtra("email",mEmail);
 //                Log.d(TAG, "onClick: ");
+                startActivity(intent);
+            }
+        });
+
+        btnTest = rootView.findViewById(R.id.btnTest);
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), TestAddDocumentActivity.class);
                 startActivity(intent);
             }
         });

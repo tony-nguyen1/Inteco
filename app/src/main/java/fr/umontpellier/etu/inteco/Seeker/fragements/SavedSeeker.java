@@ -17,10 +17,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.api.LogDescriptor;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -31,6 +33,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import fr.umontpellier.etu.inteco.R;
+import fr.umontpellier.etu.inteco.Seeker.JobDetailsActivity;
 import fr.umontpellier.etu.inteco.Seeker.MyItemRecyclerViewAdapter;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 
@@ -55,6 +58,10 @@ public class SavedSeeker extends Fragment {
 
     private final MutableLiveData<ArrayList<String>> listen = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<QueryDocumentSnapshot>> listen2 = new MutableLiveData<>();
+
+    String idDocumentUser;
+    DocumentReference myDocRef;
+
 
     public SavedSeeker() {
         // Required empty public constructor
@@ -189,7 +196,92 @@ public class SavedSeeker extends Fragment {
                 }, new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
                     @Override
                     public void onItemClickListener(Offer item, int position) {
-                        Toast.makeText(SavedSeeker.this.getContext(), "J'ai appuyé sur DELETE (id:"+item.id+")", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(SavedSeeker.this.getContext(), "J'ai appuyé sur DELETE (id:"+item.id+")", Toast.LENGTH_SHORT).show();
+
+
+                        Log.d(TAG, "onItemClickListener: looking up users");
+                        MutableLiveData<QueryDocumentSnapshot> waiter = new MutableLiveData<>();
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        db.collection("users")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                String mail = document.get("email", String.class);
+                                                if (mEmail.equals(mail)){
+                                                    Log.d(TAG, "onComplete: "+document.getData());
+                                                    waiter.postValue(document);
+                                                    idDocumentUser = document.getId();
+                                                    break;
+                                                }
+                                            }
+                                        } else {
+                                            Log.w(TAG, "Error getting documents.", task.getException());
+                                        }
+                                    }
+                                });
+
+                        waiter.observe(SavedSeeker.this, new Observer<QueryDocumentSnapshot>() {
+                            @Override
+                            public void onChanged(QueryDocumentSnapshot document) {
+//                                Log.d(TAG, "onItemClickListener: looking up users");
+//                        Log.d(TAG, "onChanged: "+document);
+                                // Récupération des ids des documents
+                                ArrayList<String> savedListId = new ArrayList<>();
+                                ArrayList<DocumentReference> savedListRef = new ArrayList<>();
+
+                                ((ArrayList<DocumentReference>) document.get("saved")).stream().forEach(e -> {
+                                    savedListId.add(e.getId());
+//                            savedListRef.add(e);
+//                            if (idOffer.equals(e.getId())) {
+//                                myDocRef = e;
+//                            }
+
+                                });
+                                Log.d(TAG, "onChanged: I have the saved jobs offers of " + mEmail + "=>"+savedListId);
+//                        Log.d(TAG, "onChanged: savedList="+savedListId);
+
+                                String idOffer = item.id;
+                                if (!savedListId.contains(idOffer)) {
+//                                    Log.d(TAG, "onChanged: current offer already saved");
+                                    Toast.makeText(SavedSeeker.this.getContext(),"The offer "+idOffer+" isn't saved",Toast.LENGTH_SHORT).show();
+                                } else {
+//                                    Log.d(TAG, "onChanged: current offer not already saved");
+//                                    Toast.makeText(SavedSeeker.this.getContext(),"The offer "+idOffer+" is saved, deleting now",Toast.LENGTH_SHORT).show();
+                                    DocumentReference userRef = db.collection("users").document(idDocumentUser);
+//
+                                    db.collection("offers")
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d(TAG, "onComplete: searching for the DocumentReference");
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            String id = document.getId();
+                                                            if (id.equals(idOffer)){
+                                                                myDocRef = document.getReference();
+                                                                break;
+                                                            }
+                                                        }
+//
+                                                        userRef.update("saved", FieldValue.arrayRemove(myDocRef))
+                                                                .addOnCompleteListener(task1 ->
+                                                                        Toast.makeText(SavedSeeker.this.getContext(),"Deleted "+myDocRef.getId(),Toast.LENGTH_SHORT).show()
+                                                                );
+//
+//                                                        Log.d(TAG, "onComplete: myDocRef="+myDocRef);
+                                                    } else {
+                                                        Log.w(TAG, "Error getting documents.", task.getException());
+                                                    }
+                                                }
+                                            });
+
+                                }
+                            }
+                        });
                     }
                 });
 
