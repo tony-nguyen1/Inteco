@@ -7,7 +7,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import fr.umontpellier.etu.inteco.R;
-
+/*
 public class OfferViewHolder extends RecyclerView.ViewHolder {
     public final TextView jobTitleView;
     public final TextView companyInfoView;
@@ -30,3 +30,4 @@ public class OfferViewHolder extends RecyclerView.ViewHolder {
         buttonSave = view.findViewById(R.id.button_save);
     }
 }
+*/

@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.HomePageSeeker;
-import fr.umontpellier.etu.inteco.Seeker.SearchActivity;
+import fr.umontpellier.etu.inteco.Seeker.Search.SearchActivity;
 import fr.umontpellier.etu.inteco.Seeker.TestAddDocumentActivity;
 
 /**

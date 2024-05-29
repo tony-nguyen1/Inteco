@@ -74,8 +74,8 @@ public class OfferCardFragment extends Fragment {
         String s = requireArguments().getString("theText");
         Log.d(TAG, "onCreateView: theText="+s);
 
-        TextView tv = inf.findViewById(R.id.textOfCard);
-        tv.setText(s);
+        //TextView tv = inf.findViewById(R.id.textOfCard);
+        //tv.setText(s);
 
         return inf;
     }

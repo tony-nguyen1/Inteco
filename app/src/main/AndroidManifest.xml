@@ -34,7 +34,7 @@
 
         </activity>
         <activity
-            android:name=".Seeker.SearchActivity"
+            android:name=".Seeker.Search.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".Seeker.TestAddDocumentActivity"

@@ -25,6 +25,7 @@ import fr.umontpellier.etu.inteco.Authentication.ResetPassword;
 import fr.umontpellier.etu.inteco.Enterprise.fragements.HomeEnterprise;
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.fragements.*;
+import fr.umontpellier.etu.inteco.Seeker.fragements.SavedSeeker;
 
 public class HomePageSeeker extends AppCompatActivity {
 
