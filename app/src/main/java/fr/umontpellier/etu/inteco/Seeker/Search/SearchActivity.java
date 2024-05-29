@@ -38,7 +38,6 @@ import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.PlaceholderContent;
 
 public class SearchActivity extends AppCompatActivity {
-
     private static final String TAG = "debug SearchActivity";
     private String email;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -50,28 +49,10 @@ public class SearchActivity extends AppCompatActivity {
         Intent intent = getIntent();
         this.email = intent.getStringExtra("email");
         Log.d(TAG, "onCreate: this.email="+email);
-//        if (savedInstanceState == null) {
-//            Bundle bundle1 = new Bundle();
-//            bundle1.putString("theText", "Hello");
-//
-//            Bundle bundle2 = new Bundle();
-//            bundle2.putString("theText", "World");
-//
-//            Bundle bundle3 = new Bundle();
-//            bundle3.putString("theText", "Goodbye");
-//
-//            getSupportFragmentManager().beginTransaction()
-//                    .setReorderingAllowed(true)
-//                    .add(R.id.fragment_container_view, OfferCardFragment.class, bundle1)
-//                    .add(R.id.fragment_container_view, OfferCardFragment.class, bundle2)
-//                    .add(R.id.fragment_container_view, OfferCardFragment.class, bundle3)
-//                    .commit();
-//        }
 
         MyItemRecyclerViewAdapter.AdapterItemClickListener myClickListernerReusable = new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
             @Override
             public void onItemClickListener(Offer item, int position) {
-                // TODO : lancer une nouvelle activité : description post
                 Log.d(TAG, "onItemClickListener: appuyé sur n°"+position+": "+item.toString());
                 Intent intent = new Intent(SearchActivity.this, JobDetailsActivity.class);
                 intent.putExtra("test","test");
@@ -86,10 +67,8 @@ public class SearchActivity extends AppCompatActivity {
             }
         };
 
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         MutableLiveData<Map<String,QuerySnapshot>> mutableContent = new MutableLiveData<>();
-
 
         db.collection("offers")
                 .get()
@@ -135,10 +114,6 @@ public class SearchActivity extends AppCompatActivity {
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setAdapter(customAdaptator);
 
-
-//                for (PlaceholderContent.PlaceholderItem item : PlaceholderContent.ITEMS) {
-//                    Log.d(TAG, "onCreate: "+item);
-//                }
             }
         });
 
@@ -154,13 +129,9 @@ public class SearchActivity extends AppCompatActivity {
                 String[] tab2 = editTextLocation.getText().toString().replace("\n","").toLowerCase().split(" ");
                 List<String> keywords1 = Arrays.asList(tab1);
                 List<String> keywords2 = Arrays.asList(tab2);
-//                List<String> keywords = new ArrayList<>();
-//                keywords.addAll(keywords1);
-//                keywords.addAll(keywords2);
 
                 MutableLiveData<ArrayList<QueryDocumentSnapshot>> answer = new MutableLiveData<>();
                 searchForJob(keywords1, keywords2, answer);
-
 
                 answer.observe(SearchActivity.this, new Observer<ArrayList<QueryDocumentSnapshot>>() {
                     @Override

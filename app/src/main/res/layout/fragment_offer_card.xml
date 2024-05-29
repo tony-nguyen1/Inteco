@@ -1,25 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Seeker.OfferCardFragment">
+    android:layout_height="wrap_content"
+    android:background="@drawable/white_curvy"
+    android:padding="16dp"
+    android:layout_margin="20dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
+    <ImageView
+        android:id="@+id/company_logo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/defautl_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/company_logo" />
+
+    <TextView
+        android:id="@+id/job_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="UI/UX Designer"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/company_logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:id="@+id/company_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Google inc · California, USA"
+        app:layout_constraintStart_toEndOf="@id/company_logo"
+        app:layout_constraintTop_toBottomOf="@id/job_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:id="@+id/post_date_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:text="@string/hello_blank_fragment" />-->
-        <TextView
-            android:id="@+id/textOfCard"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Est-ce que ça marche ce truc ?" />
+        android:text="25 minutes ago"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/company_info"
+        android:layout_marginTop="8dp" />
 
+    <TextView
+        android:id="@+id/salary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$15K/Mo"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/company_info"
+        android:layout_marginTop="8dp" />
+
+    <!-- New TextViews for contract_type and job_type -->
+    <TextView
+        android:id="@+id/contract_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contract Type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/post_date_start"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/job_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Job Type"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/salary"
+        android:layout_marginTop="8dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contract_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/button_moreInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="More Info"
+            android:background="@drawable/heavy_green_button"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Save"
+            android:background="@drawable/button_soft_green"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="8dp" />
     </LinearLayout>
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
