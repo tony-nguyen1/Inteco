@@ -43,7 +43,8 @@
         <activity
             android:name=".Seeker.HomePageSeeker"
             android:exported="false"
-            android:theme="@style/Theme.Inteco"></activity>
+            android:theme="@style/Theme.Inteco">
+        </activity>
         <activity
             android:name=".Authentication.Enterprise.SignUpEnterprise2"
             android:exported="false"

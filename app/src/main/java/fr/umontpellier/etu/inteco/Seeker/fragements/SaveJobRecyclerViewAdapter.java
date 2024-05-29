@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.MyItemRecyclerViewAdapter;
 import fr.umontpellier.etu.inteco.Seeker.fragements.placeholder.PlaceholderContent.PlaceholderItem;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 import fr.umontpellier.etu.inteco.databinding.FragmentOfferSavedCardBinding;
 
+import java.text.BreakIterator;
 import java.util.List;
 
 /**
@@ -34,22 +36,21 @@ public class SaveJobRecyclerViewAdapter extends RecyclerView.Adapter<SaveJobRecy
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        return new ViewHolder(FragmentOfferSavedCardBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_offer_saved_card, parent, false));
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
-        holder.mDetailsView.setText(mValues.get(position).details);
-        holder.mPlaceView.setText(mValues.get(position).place);
-        holder.mSalaryView.setText(mValues.get(position).salary);
 
-        // click functionality
         Offer item = mValues.get(position);
+        holder.jobTitleView.setText(item.content);
+        holder.companyInfoView.setText(item.details + " · " + item.place);
+        holder.postDateView.setText("Starting : "+item.startingTime);
+        holder.salaryView.setText(item.salary+"€/Month");
+        holder.jobTypeView.setText(item.jobType);
+        holder.contractTypeView.setText(item.contractType);
+
+
         holder.buttonApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,31 +71,28 @@ public class SaveJobRecyclerViewAdapter extends RecyclerView.Adapter<SaveJobRecy
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public final TextView mDetailsView;
-        public final TextView mPlaceView;
-        public final TextView mSalaryView;
-        public Offer mItem;
+        public final TextView jobTitleView;
+        public final TextView companyInfoView;
+        public final TextView postDateView;
+        public final TextView salaryView;
+        public final Button buttonApply;
+        public final Button buttonDelete;
+        public final TextView contractTypeView;
+        public final TextView jobTypeView;
 
-        public Button buttonApply;
-        public Button buttonDelete;
+        public ViewHolder(View view) {
+            super(view);
+            jobTitleView = view.findViewById(R.id.job_title);
+            companyInfoView = view.findViewById(R.id.company_info);
+            postDateView = view.findViewById(R.id.post_date_start);
+            salaryView = view.findViewById(R.id.salary);
+            jobTypeView = view.findViewById(R.id.job_type);
+            contractTypeView = view.findViewById(R.id.contract_type);
+            buttonApply = view.findViewById(R.id.button_apply);
+            buttonDelete = view.findViewById(R.id.button_decline);
 
-        public ViewHolder(FragmentOfferSavedCardBinding binding) {
-            super(binding.getRoot());
-            mIdView = binding.itemNumber;
-            mContentView = binding.content;
-            mDetailsView = binding.details;
-            mPlaceView = binding.place;
-            mSalaryView = binding.salary;
-            buttonApply = binding.buttonApply;
-            buttonDelete = binding.buttonDecline;
-            // à gauche l'objet qu'on peut manipuler, à droite l'id de la balise qui correspond à l'objet à manipuler
+
         }
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
-        }
     }
 }

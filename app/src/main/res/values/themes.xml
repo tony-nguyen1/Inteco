@@ -26,4 +26,9 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+    <!-- Button Theme Override -->
+    <style name="ButtonThemeOverride" parent="Widget.AppCompat.Button">
+        <item name="android:background">@null</item>
+    </style>
+
 </resources>
