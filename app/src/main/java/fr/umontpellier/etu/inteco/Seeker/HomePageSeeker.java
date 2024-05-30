@@ -30,7 +30,6 @@ import fr.umontpellier.etu.inteco.Seeker.fragements.Saved.SavedSeeker;
 public class HomePageSeeker extends AppCompatActivity {
 
     private String email, firstname, lastname;
-    ;
     private static final String TAG = "debug login HomePageSeeker";
 
     @Override
@@ -81,7 +80,7 @@ public class HomePageSeeker extends AppCompatActivity {
         if (savedInstanceState == null) {
             bottomNavigationView.setSelectedItemId(R.id.nav_home); // default screen
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new HomeSeeker())
+                    .replace(R.id.fragment_container, HomeSeeker.newInstance(email, firstname, lastname))
                     .commit();
         }
 
