@@ -20,6 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
@@ -335,7 +336,13 @@ public class Helper {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         if (references.contains(document.getReference())) {
-                            res.add(document.getData());
+                            Map<String,Object> oof = document.getData();
+
+                            long l = ((ArrayList<DocumentReference>) document.get("apply")).size();
+                            Log.d(TAG, "onComplete: nbAppli="+l);
+                            oof.put("nbAppli",l);
+
+                            res.add(oof);
                         }
                     }
                     answer.postValue(res);
@@ -345,4 +352,25 @@ public class Helper {
             }
         });
     }
+
+//    public static void getNbApplicantsFor(ArrayList<QueryDocumentSnapshot> offerList, MutableLiveData<ArrayList<Map<String,Object>>> answer) {
+//        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        final ArrayList<Map<String,Object>> res = new ArrayList<>();
+//
+//        db.collection("offers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        if (references.contains(document.getReference())) {
+//                            res.add(document.getData());
+//                        }
+//                    }
+//                    answer.postValue(res);
+//                } else {
+//                    Log.w(TAG, "Error getting documents.", task.getException());
+//                }
+//            }
+//        });
+//    }
 }

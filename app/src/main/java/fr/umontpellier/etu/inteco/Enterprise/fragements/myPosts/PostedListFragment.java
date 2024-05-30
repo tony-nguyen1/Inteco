@@ -157,23 +157,13 @@ public class PostedListFragment extends Fragment {
                 list.stream().forEach(map -> {
                     listItem.add(new PlaceholderContent.PlaceholderItem(
                             (String)map.get("post_title"),
-                            -1,
+                            ((Long) Objects.requireNonNull(map.get("nbAppli"))).intValue(),
                             (String)map.get("state"),
                             (Timestamp) Objects.requireNonNull(map.get("realDate")))
                     );
 
+//                    Log.d(TAG, "onChanged: nbAppli=" +map.get("nbAppli"));
 
-
-//                    Timestamp stamp = (Timestamp) map.get("realDate");
-//                    assert stamp != null;
-//                    Date date = stamp.toDate();
-//                    PrettyTime p = new PrettyTime(new Locale("en"));
-////                    System.out.println(p.format(new Date()));
-////                    System.out.println(date);
-//
-//
-//
-//                    Log.d(TAG, "onChanged: realDatePretty="+p.format(date));
                 });
 
                 Log.d(TAG, "onChanged: listItem="+listItem);

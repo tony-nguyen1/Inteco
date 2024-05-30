@@ -2,6 +2,7 @@ package fr.umontpellier.etu.inteco.Enterprise.fragements.myPosts;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
@@ -42,7 +44,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         holder.mDate.setText("date");
         holder.mStatus.setText("status");
         holder.mJobTitle.setText(mValues.get(position).jobTitle);
-        holder.mNbApplicants.setText(String.valueOf(mValues.get(position).numberApplicants));
+        holder.mNbApplicants.setText(String.valueOf(mValues.get(position).numberApplicants)+" applicants");
         holder.mDate.setText(mValues.get(position).dateDetails);
         holder.mStatus.setText(mValues.get(position).state);
     }
