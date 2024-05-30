@@ -1,8 +1,16 @@
 package fr.umontpellier.etu.inteco.Enterprise.fragements.myPosts.placeholder;
 
+import android.util.Log;
+
+import com.google.firebase.Timestamp;
+
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -38,7 +46,7 @@ public class PlaceholderContent {
     }
 
     private static PlaceholderItem createPlaceholderItem(int position) {
-        return new PlaceholderItem(String.valueOf(position),-1, "Item " + position, makeDetails(position));
+        return new PlaceholderItem(String.valueOf(position),-1, "Item " + position, /*makeDetails(position)*/new Timestamp(new Date()));
     }
 
     private static String makeDetails(int position) {
@@ -59,11 +67,11 @@ public class PlaceholderContent {
         public final String state;
         public final String dateDetails;
 
-        public PlaceholderItem(String jobTitle, int n, String state, String dateDetails) {
+        public PlaceholderItem(String jobTitle, int n, String state, Timestamp stamp) {
             this.jobTitle = jobTitle;
             this.numberApplicants = n;
             this.state = state;
-            this.dateDetails = dateDetails;
+            this.dateDetails = new PrettyTime(new Locale("en")).format(stamp.toDate());
         }
 
         @Override

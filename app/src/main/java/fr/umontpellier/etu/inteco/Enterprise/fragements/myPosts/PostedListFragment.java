@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +19,20 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Enterprise.fragements.myPosts.placeholder.PlaceholderContent;
@@ -152,8 +159,21 @@ public class PostedListFragment extends Fragment {
                             (String)map.get("post_title"),
                             -1,
                             (String)map.get("state"),
-                            (String)map.get("date"))
+                            (Timestamp) Objects.requireNonNull(map.get("realDate")))
                     );
+
+
+
+//                    Timestamp stamp = (Timestamp) map.get("realDate");
+//                    assert stamp != null;
+//                    Date date = stamp.toDate();
+//                    PrettyTime p = new PrettyTime(new Locale("en"));
+////                    System.out.println(p.format(new Date()));
+////                    System.out.println(date);
+//
+//
+//
+//                    Log.d(TAG, "onChanged: realDatePretty="+p.format(date));
                 });
 
                 Log.d(TAG, "onChanged: listItem="+listItem);
