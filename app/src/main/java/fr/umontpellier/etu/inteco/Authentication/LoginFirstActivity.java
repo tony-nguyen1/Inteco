@@ -28,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.Map;
 
 import fr.umontpellier.etu.inteco.Authentication.Seeker.SignUpSeeker;
+import fr.umontpellier.etu.inteco.Enterprise.HomePageEnterprise;
 import fr.umontpellier.etu.inteco.Seeker.HomePageSeeker;
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.helper.Helper;
@@ -109,9 +110,10 @@ public class LoginFirstActivity extends AppCompatActivity {
     private void handleSignIn(String email, String password) {
         Log.d(TAG, "handleSignIn: "+email+", "+password);
 
-        MutableLiveData<Map<String,Object>> listenInfo = new MutableLiveData<>();
+        MutableLiveData<Map<String,Object>> listenInfoAsUser = new MutableLiveData<>();
+        MutableLiveData<Map<String,Object>> listenInfoAsCompany = new MutableLiveData<>();
 
-        if (email == null || email.isEmpty() || password==null|| password.isEmpty()|| !verifyLoggingInInfo(email,password,listenInfo)) {
+        if (email == null || email.isEmpty() || password==null|| password.isEmpty()|| !verifyLoggingInInfo(email,password,listenInfoAsUser,listenInfoAsCompany)) {
             showRedundantEmailAlert();
         }
         else{
@@ -121,7 +123,7 @@ public class LoginFirstActivity extends AppCompatActivity {
               startActivity(intent);*/
         }
 
-        listenInfo.observe(this, new Observer<Map<String,Object>>()  {
+        listenInfoAsUser.observe(this, new Observer<Map<String,Object>>()  {
             @Override
             public void onChanged(Map<String, Object> theUserInfo) {
                 Log.d(TAG, "onChanged: "+theUserInfo.toString());
@@ -129,17 +131,27 @@ public class LoginFirstActivity extends AppCompatActivity {
                 intent.putExtra("email", theUserInfo.get("email").toString());
                 intent.putExtra("firstname", theUserInfo.get("firstname").toString());
                 intent.putExtra("lastname", theUserInfo.get("lastname").toString());
-              startActivity(intent);
+                startActivity(intent);
+            }
+        });
+        listenInfoAsCompany.observe(this, new Observer<Map<String,Object>>()  {
+            @Override
+            public void onChanged(Map<String, Object> theUserInfo) {
+                Log.d(TAG, "onChanged: "+theUserInfo.toString());
+                Intent intent = new Intent(LoginFirstActivity.this, HomePageEnterprise.class);
+//                intent.putExtra("email", theUserInfo.get("email").toString());
+//                intent.putExtra("firstname", theUserInfo.get("firstname").toString());
+//                intent.putExtra("lastname", theUserInfo.get("lastname").toString());
+                startActivity(intent);
             }
         });
     }
 
-    private boolean verifyLoggingInInfo(String email, String password, MutableLiveData<Map<String,Object>> responseInfo){
+    private boolean verifyLoggingInInfo(String email, String password, MutableLiveData<Map<String,Object>> responseInfoJobSeeker, MutableLiveData<Map<String,Object>> responseInfoJobGiver){
         Log.d(TAG, "verifyLoggingInInfo: ");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         MutableLiveData<FirebaseUser> listenAuth = new MutableLiveData<>();
-        //TODO complete ( true if info are correct and false if not)
 
         listenAuth.observe(LoginFirstActivity.this, new Observer<FirebaseUser>() {
             @Override
@@ -160,7 +172,7 @@ public class LoginFirstActivity extends AppCompatActivity {
                                 break;
                         }
 
-                        Helper.getUser(firebaseUser, type, responseInfo);
+                        Helper.getUser(firebaseUser, type, responseInfoJobSeeker, responseInfoJobGiver);
                     }
                 });
             }

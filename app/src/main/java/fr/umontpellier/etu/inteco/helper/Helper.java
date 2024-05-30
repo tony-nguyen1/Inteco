@@ -12,12 +12,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 
 public class Helper {
     private static final String TAG = "debug Helper";
@@ -119,8 +124,19 @@ public class Helper {
                 });
     }
 
-    public static void getUser(FirebaseUser firebaseUser, String collection, MutableLiveData<Map<String,Object>> answer) {
+    public interface after {
+        abstract void afterGetUser(Helper.userType type);
+    }
+
+    public static void getUser(FirebaseUser firebaseUser, String collection, MutableLiveData<Map<String,Object>> answerJobTaker, MutableLiveData<Map<String,Object>> answerJobGiver) {
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        final MutableLiveData<Map<String,Object>> answer;
+        if (collection.equals("company")) {
+            answer = answerJobGiver;
+        } else if (collection.equals("users")) {
+            answer = answerJobTaker;
+        } else { answer = null; }
 
         db.collection(collection)
                 .get()
@@ -139,6 +155,34 @@ public class Helper {
 //                                Log.d(TAG, document.getId() + " => " + document.getData());
                             }
                             answer.postValue(infoUser.getData());
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public static void getCompanyDocumentReference(FirebaseUser firebaseUser, MutableLiveData<QueryDocumentSnapshot> answerJobGiver) {
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        final MutableLiveData<Map<String,Object>> answer;
+        db.collection("company")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            boolean found = false;
+                            QueryDocumentSnapshot infoUser = null;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String s = document.get("email",String.class);
+                                if (firebaseUser.getEmail().equals(s)) {
+                                    found = true;
+                                    infoUser = document;
+                                    break;
+                                }
+                            }
+                            answerJobGiver.postValue(infoUser);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
@@ -197,5 +241,65 @@ public class Helper {
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
+    }
+
+    /***
+     *  Save to uneOffre to Firebase. First, add uneOffre to offers collection then to company collection. Finally "wake up" caller through answer.
+     * @param firebaseUser
+     * @param uneOffre
+     * @param answer
+     */
+    public static void addPost(FirebaseUser firebaseUser, Offer uneOffre, MutableLiveData<Boolean> answer)  {
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String email = firebaseUser.getEmail();
+        Log.d(TAG, "addPost: email="+email+" uneOffre="+uneOffre);
+
+
+        MutableLiveData<Map<String,Object>> listen = new MutableLiveData<>();
+
+    }
+
+    public static void addPostToOffers(Offer uneOffre, DocumentReference documentReferenceOfCompany, MutableLiveData<ArrayList<DocumentReference>> answer) {
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+//        Helper.getUser(firebaseUser, "company", null, listen);
+
+        Map<String, Object> anOffer = new HashMap<>();
+        anOffer.put("post_title", "titre du post");
+        anOffer.put("date", "la date");
+        anOffer.put("job_type", "type");
+        anOffer.put("description", "");
+        anOffer.put("job_title", "");
+        anOffer.put("qualification_wanted", "");
+        anOffer.put("experience_wanted", "");
+        anOffer.put("contract_type", "");
+        anOffer.put("start_time", "");
+        anOffer.put("duration", "6 mois");
+        anOffer.put("state", "open");
+        anOffer.put("country", "");
+        anOffer.put("city", "");
+        anOffer.put("adress", "");
+        anOffer.put("refCompany", documentReferenceOfCompany);
+
+        db.collection("offers")
+                .add(anOffer)
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        Log.d(TAG, "onComplete: added post to offers");
+                        answer.postValue(new ArrayList<>(Arrays.asList(documentReferenceOfCompany, task.getResult())));
+                    }
+                });
+    }
+
+    public static void addPostToCompany(DocumentReference documentReferenceOfCompany, DocumentReference documentReferenceOffer) {
+        documentReferenceOfCompany.update("posted", FieldValue.arrayUnion(documentReferenceOffer))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "onComplete: field posted of company updated");
+                    }
+                });
+
     }
 }

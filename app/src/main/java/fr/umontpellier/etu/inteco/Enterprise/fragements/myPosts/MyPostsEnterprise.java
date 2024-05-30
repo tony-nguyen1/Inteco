@@ -1,4 +1,4 @@
-package fr.umontpellier.etu.inteco.Enterprise.fragements;
+package fr.umontpellier.etu.inteco.Enterprise.fragements.myPosts;
 
 import android.os.Bundle;
 
@@ -47,6 +47,12 @@ public class MyPostsEnterprise extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        assert getActivity() != null;
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container_inside, PostedListFragment.newInstance(1))
+                .commit();
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_my_posts_enterprise, container, false);
     }

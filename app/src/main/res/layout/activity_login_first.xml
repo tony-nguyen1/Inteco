@@ -41,7 +41,7 @@
             android:textColor="@color/black"
 
             android:hint="Email"
-            android:text="test@gmail.com"
+            android:text="bogus@gmail.com"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout

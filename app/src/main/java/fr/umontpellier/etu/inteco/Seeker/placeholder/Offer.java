@@ -1,6 +1,8 @@
 package fr.umontpellier.etu.inteco.Seeker.placeholder;
 
-public class Offer {
+import java.io.Serializable;
+
+public class Offer implements Serializable {
     public final String id;
     public final String content; // jobTitle
     public final String details; // companyName

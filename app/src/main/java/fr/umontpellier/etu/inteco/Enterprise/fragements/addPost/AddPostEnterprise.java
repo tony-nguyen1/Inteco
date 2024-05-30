@@ -1,6 +1,9 @@
-package fr.umontpellier.etu.inteco.Enterprise.fragements;
+package fr.umontpellier.etu.inteco.Enterprise.fragements.addPost;
+
+import static fr.umontpellier.etu.inteco.helper.Helper.addPostToCompany;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +14,26 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.rpc.Help;
+
+import java.util.ArrayList;
 
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
+import fr.umontpellier.etu.inteco.helper.Helper;
 
 public class AddPostEnterprise extends Fragment {
     private static final String ARG_COMPANY_NAME = "companyName";
     private static final String ARG_EMAIL = "email";
+    private static final String TAG = "debug AddPostEntreprise";
 
     private String mCompanyName;
     private String mEmail;
@@ -132,8 +146,26 @@ public class AddPostEnterprise extends Fragment {
                 description, requirements, jobType, contractType, duration, experience,
                 qualification, location, category,startingTime);
 
-        //TODO Save to Firebase
-
+        //TODO Save to Firebase, add to offers then link to company
+        final MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
+        final MutableLiveData<ArrayList<DocumentReference>> listenDocRef = new MutableLiveData<>();
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        assert currentUser != null;
+        Helper.getCompanyDocumentReference(currentUser, listen);
+//        Helper.addPost(currentUser, offer, listen);
+        listen.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
+            @Override
+            public void onChanged(QueryDocumentSnapshot queryDocumentSnapshot) {
+                Helper.addPostToOffers(offer, queryDocumentSnapshot.getReference(), listenDocRef);
+            }
+        });
+        listenDocRef.observe(getViewLifecycleOwner(), new Observer<ArrayList<DocumentReference>>() {
+            @Override
+            public void onChanged(ArrayList<DocumentReference> documentReference) {
+                Log.d(TAG, "onChanged: added to offers, now adding ref to array field in company");
+                Helper.addPostToCompany(documentReference.get(0), documentReference.get(1));
+            }
+        });
 
     }
 }
