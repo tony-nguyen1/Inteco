@@ -1,5 +1,6 @@
-package fr.umontpellier.etu.inteco.Seeker.fragements;
+package fr.umontpellier.etu.inteco.Seeker.fragements.Saved;
 
+import fr.umontpellier.etu.inteco.Seeker.fragements.Saved.SaveJobRecyclerViewAdapter;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.JobDetailsActivity;
-import fr.umontpellier.etu.inteco.Seeker.MyItemRecyclerViewAdapter;
+import fr.umontpellier.etu.inteco.Seeker.fragements.Saved.MyItemRecyclerViewAdapter;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 
 /**

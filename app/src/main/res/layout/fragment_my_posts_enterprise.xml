@@ -5,11 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".Enterprise.fragements.myPosts.MyPostsEnterprise">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="MyPosts" />
+        android:layout_height="match_parent">
+
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/fragment_container_inside"

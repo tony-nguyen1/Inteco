@@ -1,4 +1,4 @@
-package fr.umontpellier.etu.inteco.Seeker;
+package fr.umontpellier.etu.inteco.Seeker.fragements.Saved;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,7 +13,6 @@ import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Offer}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
