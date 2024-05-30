@@ -27,6 +27,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.rpc.Help;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +38,7 @@ import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.JobDetailsActivity;
 import fr.umontpellier.etu.inteco.Seeker.fragements.Saved.MyItemRecyclerViewAdapter;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
+import fr.umontpellier.etu.inteco.helper.Helper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -171,9 +173,10 @@ public class SavedSeeker extends Fragment {
                         queryDocumentSnapshots) {
 
                     Timestamp t = document.get("postDate", Timestamp.class);
+                    assert t != null;
                     Date d = t.toDate();
 //                    Log.d(TAG, "onChanged: Timestamp="+t+" Date="+d);
-                    String theDateGoodFormat = ""+d.getDate()+"/"+d.getMonth()+"/"+d.getYear();
+                    String theDateGoodFormat = d.getDate()+"/"+d.getMonth()+"/"+d.getYear();
                     Log.d(TAG, "onChanged: good date ?="+theDateGoodFormat);
 
                     myList.add(new Offer(document.getId(),
@@ -182,17 +185,53 @@ public class SavedSeeker extends Fragment {
                             document.get("place", String.class),
                             theDateGoodFormat,//(new Date(document.get("postDate", String.class))).toString(),
                             document.get("salary", String.class)
-                    ));
+                    ).setDocumentReference(document.getReference()));
                 }
 
                 Log.d(TAG, "onChanged: the offers saved by this user:");
                 Log.d(TAG, "onChanged: "+myList);
 
-                // TODO : utiliser recycler view ici
                 SaveJobRecyclerViewAdapter customAdaptator = new SaveJobRecyclerViewAdapter(myList, new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
                     @Override
                     public void onItemClickListener(Offer item, int position) {
+                        // TODO enregistré cette offre dans users.applications et cette user dans offers.apply
                         Toast.makeText(SavedSeeker.this.getContext(), "J'ai appuyé sur APPLY (id:"+item.id+")", Toast.LENGTH_SHORT).show();
+
+                        DocumentReference refOffre = item.getDocumentReference();
+                        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+                        MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
+                        MutableLiveData<DocumentReference> listen22 = new MutableLiveData<>();
+                        MutableLiveData<DocumentReference> listen33 = new MutableLiveData<>();
+                        MutableLiveData<Boolean> listen4 = new MutableLiveData<>();
+                        Helper.getJobSeekerDocumentReference(currentUser, listen);
+                        listen.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
+                            @Override
+                            public void onChanged(QueryDocumentSnapshot snap) {
+                                listen22.postValue(snap.getReference());
+                            }
+                        });
+
+                        listen22.observe(getViewLifecycleOwner(), new Observer<DocumentReference>() {
+                            @Override
+                            public void onChanged(DocumentReference jobSeekerRef) {
+                                Helper.addOfferToUserApply(refOffre, jobSeekerRef, listen33);
+                            }
+                        });
+                        listen33.observe(getViewLifecycleOwner(), new Observer<DocumentReference>() {
+                            @Override
+                            public void onChanged(DocumentReference jobSeekerRef) {
+                                Helper.addUserToOfferApply(refOffre, jobSeekerRef, listen4);
+                            }
+                        });
+                        listen4.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                            @Override
+                            public void onChanged(Boolean aBoolean) {
+                                Toast.makeText(getContext(), "Applied to this offer", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        // TODO here register to notifications
                     }
                 }, new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
                     @Override

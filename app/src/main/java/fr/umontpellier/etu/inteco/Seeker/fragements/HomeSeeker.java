@@ -19,6 +19,7 @@ import java.util.Objects;
 
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.Search.SearchActivity;
+import fr.umontpellier.etu.inteco.Seeker.fragements.myApplications.MyApplications;
 
 
 public class HomeSeeker extends Fragment {
@@ -96,7 +97,7 @@ public class HomeSeeker extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MyApplications.class);
-                intent.putExtra("email", mEmail);
+                intent.putExtra("fullName", mFirstName +" "+ mLastName);
                 startActivity(intent);
             }
         });
@@ -104,7 +105,7 @@ public class HomeSeeker extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MyApplications.class);
-                intent.putExtra("email", mEmail);
+                intent.putExtra("fullName", mFirstName +" "+ mLastName);
                 startActivity(intent);
             }
         });

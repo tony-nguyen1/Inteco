@@ -191,6 +191,32 @@ public class Helper {
                 });
     }
 
+    public static void getJobSeekerDocumentReference(FirebaseUser firebaseUser, MutableLiveData<QueryDocumentSnapshot> answerJobSeeker) {
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        final MutableLiveData<Map<String,Object>> answer;
+        db.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QueryDocumentSnapshot infoUser = null;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String s = document.get("email",String.class);
+                                if (firebaseUser.getEmail().equals(s)) {
+                                    infoUser = document;
+                                    break;
+                                }
+                            }
+                            answerJobSeeker.postValue(infoUser);
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+
     /***
      * Add aCompany to company & allUsers collections
      *
@@ -353,24 +379,22 @@ public class Helper {
         });
     }
 
-//    public static void getNbApplicantsFor(ArrayList<QueryDocumentSnapshot> offerList, MutableLiveData<ArrayList<Map<String,Object>>> answer) {
-//        final FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        final ArrayList<Map<String,Object>> res = new ArrayList<>();
-//
-//        db.collection("offers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                        if (references.contains(document.getReference())) {
-//                            res.add(document.getData());
-//                        }
-//                    }
-//                    answer.postValue(res);
-//                } else {
-//                    Log.w(TAG, "Error getting documents.", task.getException());
-//                }
-//            }
-//        });
-//    }
+    public static void addOfferToUserApply(DocumentReference anOffer, DocumentReference aJobSeeker, MutableLiveData<DocumentReference> answer){
+        anOffer.update("apply", FieldValue.arrayUnion(aJobSeeker)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "onComplete: user registered in the offer");
+                        answer.postValue(aJobSeeker);
+                    }
+                });
+    }
+    public static void addUserToOfferApply(DocumentReference anOffer, DocumentReference aJobSeeker, MutableLiveData<Boolean> answer){
+        aJobSeeker.update("apply", FieldValue.arrayUnion(anOffer)).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.d(TAG, "onComplete: offer registered in the user");
+                answer.postValue(Boolean.TRUE);
+            }
+        });
+    }
 }
