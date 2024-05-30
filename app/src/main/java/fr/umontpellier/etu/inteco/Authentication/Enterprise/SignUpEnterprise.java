@@ -2,10 +2,13 @@ package fr.umontpellier.etu.inteco.Authentication.Enterprise;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,8 +17,12 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import fr.umontpellier.etu.inteco.Authentication.LoginFirstActivity;
 import fr.umontpellier.etu.inteco.R;
+import fr.umontpellier.etu.inteco.helper.Helper;
+
 //TODO problem with company name
 public class SignUpEnterprise extends AppCompatActivity {
+
+    private static final String TAG = "debug signUp";
     private TextInputEditText emailEditText;
     private TextInputEditText companyEditText;
 
@@ -39,12 +46,14 @@ public class SignUpEnterprise extends AppCompatActivity {
 
         // Set up the button click listener
         btnSignUp.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 // Get the input text values
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 String company = companyEditText.getText().toString();
+                Log.d(TAG, "onClick: SignUpEntreprise name="+company);
 
                 handleSignUp(email, password, company);
             }
@@ -60,26 +69,36 @@ public class SignUpEnterprise extends AppCompatActivity {
         });
     }
 
-        private boolean verifyEmailExists(String email) {
+        private void verifyEmailExists(String email, MutableLiveData<Boolean> listen) {
+            Helper.verifyEmailExists(email, "company", listen);
 
             //TODO complete ( true if it exists and false if not)
-            return false;
+//            return false;
         }
 
         private void handleSignUp(String email, String password,String companyName) {
+            Log.d(TAG, "handleSignUp: name="+companyName);
             if (email == null || email.isEmpty() || password == null || password.isEmpty() || companyName == null || companyName.isEmpty() ) {
                 showRedundantEmailAlert(false);
             }
 
-            else if(verifyEmailExists(email)){
-                showRedundantEmailAlert(true);
-            }
             else {
-                Intent intent = new Intent(SignUpEnterprise.this, SignUpEnterprise1.class);
-                intent.putExtra("email", email);
-                intent.putExtra("password", password);
-                intent.putExtra("companyName", companyName);
-                startActivity(intent);
+                MutableLiveData<Boolean> listen = new MutableLiveData<>();
+                verifyEmailExists(email, listen);
+                listen.observe(SignUpEnterprise.this, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean aBoolean) {
+                        if (aBoolean) {
+                            showRedundantEmailAlert(true);
+                        } else {
+                            Intent intent = new Intent(SignUpEnterprise.this, SignUpEnterprise1.class);
+                            intent.putExtra("email", email);
+                            intent.putExtra("password", password);
+                            intent.putExtra("companyName", companyName);
+                            startActivity(intent);
+                        }
+                    }
+                });
             }
         }
 

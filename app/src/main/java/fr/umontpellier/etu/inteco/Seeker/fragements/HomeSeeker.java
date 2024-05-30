@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.HomePageSeeker;
 import fr.umontpellier.etu.inteco.Seeker.Search.SearchActivity;
@@ -102,6 +105,15 @@ public class HomeSeeker extends Fragment {
                 startActivity(intent);
             }
         });
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            Log.d(TAG, "onCreateView: user is signed in");
+        } else {
+            Log.d(TAG, "onCreateView: user is anonymous");
+            // No user is signed in
+        }
 
 
         return rootView;

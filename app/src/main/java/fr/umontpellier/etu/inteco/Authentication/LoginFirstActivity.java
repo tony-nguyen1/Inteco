@@ -30,6 +30,7 @@ import java.util.Map;
 import fr.umontpellier.etu.inteco.Authentication.Seeker.SignUpSeeker;
 import fr.umontpellier.etu.inteco.Seeker.HomePageSeeker;
 import fr.umontpellier.etu.inteco.R;
+import fr.umontpellier.etu.inteco.helper.Helper;
 
 public class LoginFirstActivity extends AppCompatActivity {
     private static final String TAG = "debug login";
@@ -108,10 +109,9 @@ public class LoginFirstActivity extends AppCompatActivity {
     private void handleSignIn(String email, String password) {
         Log.d(TAG, "handleSignIn: "+email+", "+password);
 
-        MutableLiveData<FirebaseUser> listenAuth = new MutableLiveData<>();
         MutableLiveData<Map<String,Object>> listenInfo = new MutableLiveData<>();
 
-        if (email == null || email.isEmpty() || password==null|| password.isEmpty()|| !verifyLoggingInInfo(email,password,listenInfo,listenAuth)) {
+        if (email == null || email.isEmpty() || password==null|| password.isEmpty()|| !verifyLoggingInInfo(email,password,listenInfo)) {
             showRedundantEmailAlert();
         }
         else{
@@ -134,36 +134,35 @@ public class LoginFirstActivity extends AppCompatActivity {
         });
     }
 
-    private boolean verifyLoggingInInfo(String email, String password, MutableLiveData<Map<String,Object>> responseInfo, MutableLiveData<FirebaseUser> responseUser){
+    private boolean verifyLoggingInInfo(String email, String password, MutableLiveData<Map<String,Object>> responseInfo){
         Log.d(TAG, "verifyLoggingInInfo: ");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        MutableLiveData<FirebaseUser> listenAuth = new MutableLiveData<>();
         //TODO complete ( true if info are correct and false if not)
 
-        responseUser.observe(LoginFirstActivity.this, new Observer<FirebaseUser>() {
+        listenAuth.observe(LoginFirstActivity.this, new Observer<FirebaseUser>() {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {
-                db.collection("users")
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    boolean found = false;
-                                    QueryDocumentSnapshot infoUser = null;
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        String s = document.get("email",String.class);
-                                        if (firebaseUser.getEmail().equals(s)) {
-                                            found = true;
-                                            infoUser = document;
-                                        }
-//                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                    }
-                                    responseInfo.postValue(infoUser.getData());
-                                } else {
-                                    Log.w(TAG, "Error getting documents.", task.getException());
-                                }
-                            }
-                        });
+                MutableLiveData<Helper.userType> listen = new MutableLiveData<>();
+                Helper.checkTypeUser(firebaseUser.getEmail(),listen);
+                listen.observe(LoginFirstActivity.this, new Observer<Helper.userType>() {
+                    @Override
+                    public void onChanged(Helper.userType userType) {
+                        Log.d(TAG, "onChanged: userType="+userType);
+                        String type = null;
+                        switch (userType) {
+                            case ENTREPRISE:
+                                type = "company";
+                                break;
+                            case JOB_SEEKER:
+                                type = "users";
+                                break;
+                        }
+
+                        Helper.getUser(firebaseUser, type, responseInfo);
+                    }
+                });
             }
         });
 
@@ -177,7 +176,7 @@ public class LoginFirstActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 //                            updateUI(user);
-                            responseUser.postValue(user);
+                            listenAuth.postValue(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
