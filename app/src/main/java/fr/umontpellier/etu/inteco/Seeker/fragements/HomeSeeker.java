@@ -74,11 +74,6 @@ public class HomeSeeker extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home_seeker, container, false);
-//        Log.v("My email", mEmail);
-//
-//
-//
-//
         TextView firstNameTV, lastNameTV;
         firstNameTV = rootView.findViewById(R.id.firstnameTextView);
         lastNameTV = rootView.findViewById(R.id.lastnameTextView);

@@ -1,4 +1,4 @@
-package fr.umontpellier.etu.inteco.Seeker;
+package fr.umontpellier.etu.inteco.Seeker.fragements.Saved;
 
 import androidx.recyclerview.widget.RecyclerView;
 

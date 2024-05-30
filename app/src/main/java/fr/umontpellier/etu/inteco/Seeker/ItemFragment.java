@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import fr.umontpellier.etu.inteco.Seeker.MyItemRecyclerViewAdapter;
+import fr.umontpellier.etu.inteco.Seeker.fragements.Saved.MyItemRecyclerViewAdapter;
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.PlaceholderContent;
 

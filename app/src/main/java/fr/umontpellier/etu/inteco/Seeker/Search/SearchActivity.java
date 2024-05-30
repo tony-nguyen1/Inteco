@@ -35,7 +35,7 @@ import fr.umontpellier.etu.inteco.Authentication.Enterprise.SignUpEnterprise;
 import fr.umontpellier.etu.inteco.Authentication.Seeker.SignUpSeeker;
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.JobDetailsActivity;
-import fr.umontpellier.etu.inteco.Seeker.MyItemRecyclerViewAdapter;
+import fr.umontpellier.etu.inteco.Seeker.fragements.Saved.MyItemRecyclerViewAdapter;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.PlaceholderContent;
 

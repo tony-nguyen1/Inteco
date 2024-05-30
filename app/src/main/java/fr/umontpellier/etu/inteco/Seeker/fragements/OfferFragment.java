@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.fragements.placeholder.PlaceholderContent;
+import fr.umontpellier.etu.inteco.Seeker.fragements.Saved.SaveJobRecyclerViewAdapter;
 
 /**
  * A fragment representing a list of Items.
