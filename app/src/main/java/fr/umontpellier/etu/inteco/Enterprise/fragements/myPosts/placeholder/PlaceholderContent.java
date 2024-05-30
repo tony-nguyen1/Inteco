@@ -34,11 +34,11 @@ public class PlaceholderContent {
 
     private static void addItem(PlaceholderItem item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.id, item);
+        ITEM_MAP.put(item.jobTitle, item);
     }
 
     private static PlaceholderItem createPlaceholderItem(int position) {
-        return new PlaceholderItem(String.valueOf(position), "Item " + position, makeDetails(position));
+        return new PlaceholderItem(String.valueOf(position),-1, "Item " + position, makeDetails(position));
     }
 
     private static String makeDetails(int position) {
@@ -54,19 +54,26 @@ public class PlaceholderContent {
      * A placeholder item representing a piece of content.
      */
     public static class PlaceholderItem {
-        public final String id;
-        public final String content;
-        public final String details;
+        public final String jobTitle;
+        public final int numberApplicants;
+        public final String state;
+        public final String dateDetails;
 
-        public PlaceholderItem(String id, String content, String details) {
-            this.id = id;
-            this.content = content;
-            this.details = details;
+        public PlaceholderItem(String jobTitle, int n, String state, String dateDetails) {
+            this.jobTitle = jobTitle;
+            this.numberApplicants = n;
+            this.state = state;
+            this.dateDetails = dateDetails;
         }
 
         @Override
         public String toString() {
-            return content;
+            return "PlaceholderItem{" +
+                    "jobTitle='" + jobTitle + '\'' +
+                    ", numberApplicants=" + numberApplicants +
+                    ", state='" + state + '\'' +
+                    ", dateDetails='" + dateDetails + '\'' +
+                    '}';
         }
     }
 }

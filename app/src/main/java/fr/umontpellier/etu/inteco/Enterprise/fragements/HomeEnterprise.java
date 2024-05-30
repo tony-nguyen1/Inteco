@@ -55,7 +55,7 @@ public class HomeEnterprise extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home_enterprise, container, false);
         // Inflate the layout for this fragment
 
-        TextView nameTextView = rootView.findViewById(R.id.name_text_view);
+        TextView nameTextView = rootView.findViewById(R.id.nameTextView);
         Log.d(TAG, "onCreateView: just before showing name="+mCompanyName);
         nameTextView.setText(mCompanyName);
         return rootView;

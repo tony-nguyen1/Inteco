@@ -300,6 +300,49 @@ public class Helper {
                         Log.d(TAG, "onComplete: field posted of company updated");
                     }
                 });
+    }
 
+
+
+    public static void getCompanyPosted(DocumentReference aCompany, MutableLiveData<ArrayList<DocumentReference>> answer) {
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final ArrayList<DocumentReference> res = new ArrayList<>();
+
+        db.collection("company").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (aCompany.equals(document.getReference())) {
+
+//                            answer.postValue(aCompany.get().get);
+                            break;
+                        }
+                    }
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            }
+        });
+    }
+    public static void  getOffersOfCompany(ArrayList<DocumentReference> references, MutableLiveData<ArrayList<Map<String,Object>>> answer) {
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final ArrayList<Map<String,Object>> res = new ArrayList<>();
+
+        db.collection("offers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (references.contains(document.getReference())) {
+                            res.add(document.getData());
+                        }
+                    }
+                    answer.postValue(res);
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            }
+        });
     }
 }
