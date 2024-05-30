@@ -24,27 +24,25 @@
         android:theme="@style/Theme.Inteco"
         tools:targetApi="31">
         <activity
+            android:name=".Seeker.fragements.MyApplications"
+            android:exported="false" />
+        <activity
             android:name=".Seeker.JobDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".Enterprise.HomePageEnterprise"
             android:exported="true"
-            android:theme="@style/Theme.Inteco" >
-
-
-        </activity>
+            android:theme="@style/Theme.Inteco"></activity>
         <activity
             android:name=".Seeker.Search.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".Seeker.TestAddDocumentActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".Seeker.HomePageSeeker"
             android:exported="false"
-            android:theme="@style/Theme.Inteco">
-        </activity>
+            android:theme="@style/Theme.Inteco"></activity>
         <activity
             android:name=".Authentication.Enterprise.SignUpEnterprise2"
             android:exported="false"

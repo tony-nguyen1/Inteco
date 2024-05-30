@@ -1,5 +1,4 @@
 package fr.umontpellier.etu.inteco.Seeker.fragements;
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,39 +9,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import fr.umontpellier.etu.inteco.R;
-import fr.umontpellier.etu.inteco.Seeker.HomePageSeeker;
-import fr.umontpellier.etu.inteco.Seeker.Search.SearchActivity;
-import fr.umontpellier.etu.inteco.Seeker.TestAddDocumentActivity;
+import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeSeeker#newInstance} factory method to
- * create an instance of this fragment.
- */
+import fr.umontpellier.etu.inteco.R;
+import fr.umontpellier.etu.inteco.Seeker.Search.SearchActivity;
+
+
 public class HomeSeeker extends Fragment {
 
-
     private static final String TAG = "debug HomeSeeker";
-    private Button btnTest, btnSearch;
-
-
+    private Button btnSearch;
     private static final String email = "AYS";
     private static final String firstName = "le prénom";
     private static final String LastName = "le nom de famille";
     private String mEmail;
     private String mFirstName;
     private String mLastName;
+    private LinearLayout applicationsDetailsLayout;
+    private LinearLayout myCandidatesLayout;
+
+    private TextView nameTV, inWaitingTV, acceptedTV, refusedTV, applicationsDetailsTV;
 
     public HomeSeeker() {
         // Required empty public constructor
     }
-
 
     public static HomeSeeker newInstance(String param1, String param2, String param3) {
         Log.d(TAG, "newInstance: "+param1+" "+param2+" "+param3);
@@ -59,39 +55,81 @@ public class HomeSeeker extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Log.d(TAG, "onCreate: ");
         if (getArguments() != null) {
-//            Log.d(TAG, "onCreate: getArguments()="+getArguments().toString());
             mEmail = getArguments().getString(email);
             mFirstName = getArguments().getString(firstName);
             mLastName = getArguments().getString(LastName);
             Log.d(TAG, "onCreate: mEmail="+mEmail + " mFirstName=" + mFirstName + " mLastName=" + mLastName);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home_seeker, container, false);
-        TextView firstNameTV, lastNameTV;
-        firstNameTV = rootView.findViewById(R.id.firstnameTextView);
-        lastNameTV = rootView.findViewById(R.id.lastnameTextView);
+        nameTV = rootView.findViewById(R.id.nameTextView);
+        inWaitingTV = rootView.findViewById(R.id.inWaiting);
+        acceptedTV = rootView.findViewById(R.id.accepted);
+        refusedTV = rootView.findViewById(R.id.refused);
+        applicationsDetailsTV = rootView.findViewById(R.id.applicationsDetails);
+        applicationsDetailsLayout = rootView.findViewById(R.id.applicationsDetailsLayout);
+        myCandidatesLayout = rootView.findViewById(R.id.my_candidates_layout);
 
-        firstNameTV.setText(mFirstName);
-        lastNameTV.setText(mLastName);
-
-        btnSearch = rootView.findViewById(R.id.btnDevGoToSearch);
+        // Set the name
+        if(Objects.equals(mFirstName, "null")){
+            nameTV.setText("Anonymous");
+        }
+        nameTV.setText(mFirstName +" "+ mLastName);
+        // Search button
+        btnSearch = rootView.findViewById(R.id.button_search);
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
-                intent.putExtra("email",mEmail);
-//                Log.d(TAG, "onClick: ");
+                intent.putExtra("email", mEmail);
                 startActivity(intent);
             }
         });
 
+        // Click listener on the layouts
+        applicationsDetailsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyApplications.class);
+                intent.putExtra("email", mEmail);
+                startActivity(intent);
+            }
+        });
+        myCandidatesLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyApplications.class);
+                intent.putExtra("email", mEmail);
+                startActivity(intent);
+            }
+        });
+
+        // TODO Ici pour modifier les cases
+        /*
+        inWaitingTV.setText("5"+ "In waiting");
+        acceptedTV.setText("4" + "Accepted");
+        refusedTV.setText("3" + "Refused");
+
+        applicationsDetailsTV.setText("");
+         */
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Log.d(TAG, "onCreateView: user is signed in");
+        } else {
+            Log.d(TAG, "onCreateView: user is anonymous");
+        }
+
+        return rootView;
+    }
+}
+
+/*
         btnTest = rootView.findViewById(R.id.btnTest);
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,17 +138,4 @@ public class HomeSeeker extends Fragment {
                 startActivity(intent);
             }
         });
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // User is signed in
-            Log.d(TAG, "onCreateView: user is signed in");
-        } else {
-            Log.d(TAG, "onCreateView: user is anonymous");
-            // No user is signed in
-        }
-
-
-        return rootView;
-    }
-}
+ */
