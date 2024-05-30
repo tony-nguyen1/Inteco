@@ -81,6 +81,12 @@ public class SignUpSeeker extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     * @param email
+     * @param response
+     * @return true if email exists in database, else false
+     */
     private boolean verifyEmailExists(String email, MutableLiveData<Boolean> response){
         //TODO complete ( true if it exists and false if not)
         Log.d(TAG, "verifyEmailExists: "+email);

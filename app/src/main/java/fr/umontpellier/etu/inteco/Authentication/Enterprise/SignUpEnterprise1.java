@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -12,6 +13,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import fr.umontpellier.etu.inteco.R;
 
 public class SignUpEnterprise1 extends AppCompatActivity {
+    private static final String TAG = "debug signUp";
     private String email;
     private String password;
     private String companyName ;
@@ -30,7 +32,7 @@ public class SignUpEnterprise1 extends AppCompatActivity {
         Intent intent = getIntent();
         email = intent.getStringExtra("email");
         password = intent.getStringExtra("password");
-        companyName = intent.getStringExtra("CompanyName");
+        companyName = intent.getStringExtra("companyName");
 
 
 
@@ -51,6 +53,8 @@ public class SignUpEnterprise1 extends AppCompatActivity {
                 String phoneNumber = phoneNumberEditText.getText().toString();
                 String city = cityEditText.getText().toString();
                 String address = addressEditText.getText().toString();
+
+                Log.d(TAG, "onClick: name="+companyName);
 
                 // Add them to the next activity
                 intent.putExtra("email",email);

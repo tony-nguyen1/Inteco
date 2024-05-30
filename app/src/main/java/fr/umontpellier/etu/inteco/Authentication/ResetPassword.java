@@ -1,20 +1,30 @@
 package fr.umontpellier.etu.inteco.Authentication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 
+import fr.umontpellier.etu.inteco.Authentication.Seeker.SignUpSeeker;
+import fr.umontpellier.etu.inteco.Authentication.Seeker.SignUpSeeker1;
 import fr.umontpellier.etu.inteco.R;
+import fr.umontpellier.etu.inteco.helper.Helper;
 
 public class ResetPassword extends AppCompatActivity {
 
+    private static final String TAG = "debug ResetPassword";
     private TextInputEditText emailEditText;
     private Button btnResetPassword;
 
@@ -37,16 +47,28 @@ public class ResetPassword extends AppCompatActivity {
                 if(email == null || email.isEmpty() ){
                     showIncorrectEmailAlert(false);
                 }
-                else if(verifyEmailExists(email)){
-                    showIncorrectEmailAlert(true);
-                }
-                else{
-                    Intent intent = new Intent(ResetPassword.this, NewPassword.class);
-                    intent.putExtra("email", email);
-                    startActivity(intent);
-                }
+                else {
+                    MutableLiveData<Boolean> listen = new MutableLiveData<>();
+                    Helper.verifyEmailExists(email, "allUsers",listen);
 
-
+                    listen.observe(ResetPassword.this, new Observer<Boolean>() {
+                        @Override
+                        public void onChanged(Boolean aBoolean) {
+                            if (aBoolean) { // true
+                                Helper.resetPassword(email, new OnCompleteListener() {
+                                    @Override
+                                    public void onComplete(@NonNull Task task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d(TAG, "Email sent.");
+                                        }
+                                    }
+                                });
+                            } else { // false
+                                showIncorrectEmailAlert(true);
+                            }
+                        }
+                    });
+                }
             }
         });
     }
