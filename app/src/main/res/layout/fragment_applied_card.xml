@@ -9,36 +9,46 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp">
 
+    <ImageView
+        android:id="@+id/company_logo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/defautl_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/company_logo" />
+
     <TextView
         android:id="@+id/job_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
         android:text="UI/UX Designer"
-        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/company_logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
 
     <TextView
         android:id="@+id/company_info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="16 applicants"
+        android:text="Google inc · California, USA"
+        app:layout_constraintStart_toEndOf="@id/company_logo"
+        app:layout_constraintTop_toBottomOf="@id/job_title"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/job_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp" />
+
 
     <TextView
         android:id="@+id/post_date_applied"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Posted to 1 hour ago"
-        android:layout_marginStart="16dp"
+        android:text="1 hour ago"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="9dp"
         app:layout_constraintTop_toBottomOf="@+id/company_info"
@@ -50,7 +60,7 @@
         android:id="@+id/application_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open"
+        android:text="accepted"
         android:textColor="@android:color/holo_green_dark"
         android:layout_marginEnd="16dp"
         app:layout_constraintTop_toTopOf="@+id/post_date_applied"
@@ -58,4 +68,3 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-<!-- Todo change colors when status change-->

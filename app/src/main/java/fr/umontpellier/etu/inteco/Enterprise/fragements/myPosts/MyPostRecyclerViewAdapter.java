@@ -64,7 +64,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         Context context = holder.mStatus.getContext();
         if ("open".equalsIgnoreCase(mValues.get(position).state)) {
             holder.mStatus.setTextColor(ContextCompat.getColor(context, R.color.status_open));
-        } else if ("false".equalsIgnoreCase(mValues.get(position).state)) {
+        } else if ("closed".equalsIgnoreCase(mValues.get(position).state)) {
             holder.mStatus.setTextColor(ContextCompat.getColor(context, R.color.status_false));
         }
 
