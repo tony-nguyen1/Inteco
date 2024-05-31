@@ -24,7 +24,7 @@
         android:theme="@style/Theme.Inteco"
         tools:targetApi="31">
         <activity
-            android:name=".Seeker.fragements.MyApplications"
+            android:name=".Seeker.fragements.myApplications.MyApplications"
             android:exported="false" />
         <activity
             android:name=".Seeker.JobDetailsActivity"

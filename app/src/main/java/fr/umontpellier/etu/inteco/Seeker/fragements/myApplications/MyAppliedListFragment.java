@@ -1,9 +1,8 @@
-package fr.umontpellier.etu.inteco.Enterprise.fragements.myPosts;
+package fr.umontpellier.etu.inteco.Seeker.fragements.myApplications;
 
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -11,68 +10,55 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import org.ocpsoft.prettytime.PrettyTime;
-
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import fr.umontpellier.etu.inteco.Enterprise.fragements.myPosts.MyPostRecyclerViewAdapter;
 import fr.umontpellier.etu.inteco.R;
-import fr.umontpellier.etu.inteco.Enterprise.fragements.myPosts.placeholder.PlaceholderContent;
+import fr.umontpellier.etu.inteco.Seeker.fragements.myApplications.placeholder.PlaceholderContent;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 import fr.umontpellier.etu.inteco.helper.Helper;
 
 /**
  * A fragment representing a list of Items.
  */
-public class PostedListFragment extends Fragment {
+public class MyAppliedListFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    private static final String ARG_CUSTOM_LIST = "ma-list";
-    private static final String TAG = "debug PostedListFragment";
+    private static final String TAG = "debug MyAppliedListFragment";
     // TODO: Customize parameters
     private int mColumnCount = 1;
 
-    private ArrayList<PlaceholderContent.PlaceholderItem> customList;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final private ArrayList<DocumentReference> foo = new ArrayList<>();
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public PostedListFragment() {
-        this.customList = new ArrayList<>();
+    public MyAppliedListFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static PostedListFragment newInstance(int columnCount/*, ArrayList<PlaceholderContent.PlaceholderItem> cstmList*/) {
-        PostedListFragment fragment = new PostedListFragment();
+    public static MyAppliedListFragment newInstance(int columnCount) {
+        MyAppliedListFragment fragment = new MyAppliedListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelableArrayList("list",cstmList);
-//        args.putBundle(ARG_CUSTOM_LIST, );
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,7 +75,7 @@ public class PostedListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_posted_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_applied_list, container, false);
 
 
 
@@ -97,11 +83,12 @@ public class PostedListFragment extends Fragment {
         if(currentUser == null) {
             throw new RuntimeException("currentUser should be set but isn't");
         }
-        MutableLiveData<ArrayList<PlaceholderContent.PlaceholderItem>> listen = new MutableLiveData<>();
+        MutableLiveData<ArrayList<Offer>> listen = new MutableLiveData<>();
         this.getOffers(currentUser, listen);
-        listen.observe(getViewLifecycleOwner(), new Observer<ArrayList<PlaceholderContent.PlaceholderItem>>() {
+
+        listen.observe(getViewLifecycleOwner(), new Observer<ArrayList<Offer>>() {
             @Override
-            public void onChanged(ArrayList<PlaceholderContent.PlaceholderItem> placeholderItems) {
+            public void onChanged(ArrayList<Offer> placeholderItems) {
 
                 // Set the adapter
                 if (view instanceof RecyclerView) {
@@ -112,27 +99,26 @@ public class PostedListFragment extends Fragment {
                     } else {
                         recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
                     }
-                    recyclerView.setAdapter(new MyPostRecyclerViewAdapter(placeholderItems));
+                    recyclerView.setAdapter(new MyApplicationsRecyclerViewAdapter(placeholderItems));
                 }
 
             }
         });
-
         return view;
     }
 
-    private void getOffers(FirebaseUser user, MutableLiveData<ArrayList<PlaceholderContent.PlaceholderItem>> answer) {
+    private void getOffers(FirebaseUser user, MutableLiveData<ArrayList<Offer>> answer) {
         MutableLiveData<QueryDocumentSnapshot> listenCompany = new MutableLiveData<>();
         MutableLiveData<ArrayList<DocumentReference>> listenDocRefOffers = new MutableLiveData<>();
         MutableLiveData<ArrayList<Map<String,Object>>> listenDocRefOffersDetails = new MutableLiveData<>();
 
-        Helper.getCompanyDocumentReference(user, listenCompany);
+        Helper.getJobSeekerDocumentReference(user, listenCompany);
         listenCompany.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
             @Override
             public void onChanged(QueryDocumentSnapshot queryDocumentSnapshot) {
-                Log.d(TAG, "onChanged: retrieved the reference of the company succesfully");
+                Log.d(TAG, "onChanged: retrieved the reference of the jobSeeker succesfully");
 
-                foo.addAll(((ArrayList<DocumentReference>) queryDocumentSnapshot.get("posted")));
+                foo.addAll(((ArrayList<DocumentReference>) queryDocumentSnapshot.get("apply")));
                 listenDocRefOffers.postValue(foo);
             }
         });
@@ -152,18 +138,15 @@ public class PostedListFragment extends Fragment {
                 Log.d(TAG, "onChanged: i have the map with the key values");
                 Log.d(TAG, "onChanged: list="+list.toString());
 
-                ArrayList<PlaceholderContent.PlaceholderItem> listItem = new ArrayList<>();
+                ArrayList<Offer> listItem = new ArrayList<>();
 
                 list.stream().forEach(map -> {
-                    listItem.add(new PlaceholderContent.PlaceholderItem(
+                    listItem.add(new Offer(
                             (String)map.get("post_title"),
                             ((Long) Objects.requireNonNull(map.get("nbAppli"))).intValue(),
                             (String)map.get("state"),
                             (Timestamp) Objects.requireNonNull(map.get("realDate")))
                     );
-
-//                    Log.d(TAG, "onChanged: nbAppli=" +map.get("nbAppli"));
-
                 });
 
                 Log.d(TAG, "onChanged: listItem="+listItem);

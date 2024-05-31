@@ -21,7 +21,7 @@ import java.util.Objects;
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.Search.SearchActivity;
 import fr.umontpellier.etu.inteco.Seeker.fragements.HomeSeeker;
-import fr.umontpellier.etu.inteco.Seeker.fragements.MyApplications;
+import fr.umontpellier.etu.inteco.Seeker.fragements.*;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,10 +72,9 @@ public class HomeEnterprise extends Fragment {
         acceptedTV = rootView.findViewById(R.id.accepted);
         refusedTV = rootView.findViewById(R.id.refused);
         applicationsDetailsTV = rootView.findViewById(R.id.applicationsDetails);
-        TextView nameTextView = rootView.findViewById(R.id.nameTextView);
 
-        // Setting the name
-        nameTextView.setText(mCompanyName);
+        Log.d(TAG, "onCreateView: just before showing name="+mCompanyName);
+        nameTV.setText(mCompanyName);
 
         // TODO Ici pour modifier les cases
         /*
