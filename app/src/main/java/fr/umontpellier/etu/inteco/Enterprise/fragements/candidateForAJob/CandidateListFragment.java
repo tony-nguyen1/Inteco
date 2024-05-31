@@ -80,6 +80,12 @@ public class CandidateListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_candidate_list_, container, false);
 
 
+        assert getActivity() != null;
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_info_post, InfoPostFragment.newInstance(docRefOffer))
+                .commit();
+
+
         // TODO chercher la liste de tous les ceux qui ont postulé + nb applicants + state +
         final ArrayList<PlaceholderContent.PlaceholderItem> myList = new ArrayList<>();
         Log.d(TAG, "onCreateView: "+this.docRefOffer.getId()+" docRef="+this.docRefOffer);

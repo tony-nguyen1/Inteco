@@ -10,4 +10,5 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".Enterprise.fragements.candidateForAJob.CandidateListFragment"
-    tools:listitem="@layout/fragment_candidate_card" />
+    tools:listitem="@layout/fragment_candidate_card">
+</androidx.recyclerview.widget.RecyclerView>

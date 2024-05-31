@@ -451,12 +451,14 @@ public class Helper {
      */
     public static void getAnOffer(DocumentReference offerRef, MutableLiveData<QueryDocumentSnapshot> answer) {
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Log.d(TAG, "getAnOffer: id chercher ="+offerRef.getId());
 
         db.collection("offers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, "onComplete: idAComparer="+document.getId());
                         if (document.getReference().equals(offerRef)) {
                             answer.postValue(document);
                             break;
