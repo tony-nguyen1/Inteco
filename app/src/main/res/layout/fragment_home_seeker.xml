@@ -108,7 +108,7 @@
             android:background="@drawable/blue_curvy"
             android:gravity="center"
             android:padding="16dp"
-            android:text="10\nIn waiting"
+            android:text="10\nPending"
             android:textColor="@color/black"
             android:layout_margin="5dp"
             android:textSize="16sp"/>
