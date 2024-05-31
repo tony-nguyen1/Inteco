@@ -26,8 +26,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.Search.MyItemRecyclerViewAdapter;
@@ -166,20 +172,21 @@ public class SavedSeeker extends Fragment {
                 for (QueryDocumentSnapshot document :
                         queryDocumentSnapshots) {
 
-                    Timestamp t = document.get("postDate", Timestamp.class);
+                    Timestamp t = document.get("realDate", Timestamp.class);
                     assert t != null;
-                    Date d = t.toDate();
-//                    Log.d(TAG, "onChanged: Timestamp="+t+" Date="+d);
-                    String theDateGoodFormat = d.getDate()+"/"+d.getMonth()+"/"+d.getYear();
+                    String theDateGoodFormat = new PrettyTime(new Locale("en")).format(t.toDate());
                     Log.d(TAG, "onChanged: good date ?="+theDateGoodFormat);
 
-                    myList.add(new Offer(document.getId(),
-                            document.get("jobTitle", String.class),
-                            document.get("companyName", String.class),
-                            document.get("place", String.class),
-                            theDateGoodFormat,//(new Date(document.get("postDate", String.class))).toString(),
-                            document.get("salary", String.class)
-                    ).setDocumentReference(document.getReference()));
+                    //TODO clean creation of Offer
+                    Log.d(TAG, "onChanged: clean="+Offer.newInstance(document.getReference(), document.getData()));
+////                    myList.add(new Offer(document.getId(),
+////                            document.get("jobTitle", String.class),
+////                            document.get("companyName", String.class),
+////                            document.get("place", String.class),
+////                            theDateGoodFormat,//(new Date(document.get("postDate", String.class))).toString(),
+////                            document.get("salary", String.class)
+//                    ).setDocumentReference(document.getReference()));
+                    myList.add(Offer.newInstance(document.getReference(),document.getData()));
                 }
 
                 Log.d(TAG, "onChanged: the offers saved by this user:");
@@ -188,10 +195,10 @@ public class SavedSeeker extends Fragment {
                 SaveJobRecyclerViewAdapter customAdaptator = new SaveJobRecyclerViewAdapter(myList, new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
                     @Override
                     public void onItemClickListener(Offer item, int position) {
-                        // TODO enregistré cette offre dans users.applications et cette user dans offers.apply
+                        // TODO vérifier si il a pas déjà postulé
                         Toast.makeText(SavedSeeker.this.getContext(), "J'ai appuyé sur APPLY (id:"+item.id+")", Toast.LENGTH_SHORT).show();
 
-                        DocumentReference refOffre = item.getDocumentReference();
+                        DocumentReference refOffre = item.id;
                         FirebaseUser currentUser = mAuth.getCurrentUser();
 
                         MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
@@ -277,7 +284,7 @@ public class SavedSeeker extends Fragment {
                                 Log.d(TAG, "onChanged: I have the saved jobs offers of " + mEmail + "=>"+savedListId);
 //                        Log.d(TAG, "onChanged: savedList="+savedListId);
 
-                                String idOffer = item.id;
+                                String idOffer = item.id.getId();
                                 if (!savedListId.contains(idOffer)) {
 //                                    Log.d(TAG, "onChanged: current offer already saved");
                                     Toast.makeText(SavedSeeker.this.getContext(),"The offer "+idOffer+" isn't saved",Toast.LENGTH_SHORT).show();

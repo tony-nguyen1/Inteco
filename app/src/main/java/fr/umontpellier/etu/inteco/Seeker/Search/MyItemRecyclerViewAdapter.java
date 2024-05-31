@@ -6,9 +6,12 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Offer}.
@@ -38,11 +41,17 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         // on met les valeurs dans les vues
         holder.mItem = mValues.get(position);
         Offer item = mValues.get(position);
-        //holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(item.content);
-        holder.companyInfoView.setText(item.details + " · " + item.place);
-        holder.mPostDateView.setText(item.dateDetails); //TODO add bla bla minutes ago cuz its returning null
+        //holder.mIdView.setText(mValues.get(position).id.getId());
+        holder.mContentView.setText(item.jobTitle);
+        //holder.mDetailsView.setText("test");
+        holder.companyInfoView.setText(/*item.details*/ "name Company" +" . "+mValues.get(position).city+", "+mValues.get(position).country);
+        holder.mPostDateView.setText(new PrettyTime(new Locale("en")).format(mValues.get(position).realDate.toDate()));
+        holder.mSalaryView.setText(Long.toString(item.salary)+"€/Mo");
         holder.mSalaryView.setText(item.salary+"€/Mo");
+        // click functionality
+
+
+
 
 
         holder.itemView.setOnClickListener (v -> {

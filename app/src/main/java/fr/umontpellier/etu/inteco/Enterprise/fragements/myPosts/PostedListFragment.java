@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +35,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import fr.umontpellier.etu.inteco.Enterprise.fragements.candidateForAJob.CandidateListFragment;
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Enterprise.fragements.myPosts.placeholder.PlaceholderContent;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
@@ -112,7 +114,16 @@ public class PostedListFragment extends Fragment {
                     } else {
                         recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
                     }
-                    recyclerView.setAdapter(new MyPostRecyclerViewAdapter(placeholderItems));
+                    recyclerView.setAdapter(new MyPostRecyclerViewAdapter(placeholderItems, new MyPostRecyclerViewAdapter.AdapterItemClickListener() {
+                        @Override
+                        public void onItemClickListener(PlaceholderContent.PlaceholderItem item, int position) {
+                            Toast.makeText(context, "Click on offer n°"+position+" docRef="+item.docRef+" id="+item.docRef.getId(), Toast.LENGTH_SHORT).show();
+                            getActivity().getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.fragment_container_inside, CandidateListFragment.newInstance(1, item.docRef))
+                                    .commit();
+                        }
+                    }));
                 }
 
             }
@@ -156,6 +167,7 @@ public class PostedListFragment extends Fragment {
 
                 list.stream().forEach(map -> {
                     listItem.add(new PlaceholderContent.PlaceholderItem(
+                            (DocumentReference) map.get("docRef"),
                             (String)map.get("post_title"),
                             ((Long) Objects.requireNonNull(map.get("nbAppli"))).intValue(),
                             (String)map.get("state"),

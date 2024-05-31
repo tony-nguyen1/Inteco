@@ -50,11 +50,11 @@ public class SearchActivity extends AppCompatActivity {
                 Log.d(TAG, "onItemClickListener: appuyé sur n°"+position+": "+item.toString());
                 Intent intent = new Intent(SearchActivity.this, JobDetailsActivity.class);
                 intent.putExtra("test","test");
-                intent.putExtra("id",item.id);
-                intent.putExtra("jobTitle",item.content);
-                intent.putExtra("companyName",item.details);
-                intent.putExtra("place",item.place);
-                intent.putExtra("postDate",item.postDate);
+                intent.putExtra("id",item.id.getId());
+                intent.putExtra("jobTitle",item.jobTitle);
+                intent.putExtra("companyName","FIXME");//FIXME
+                intent.putExtra("place",item.city + " · " + item.country);
+                intent.putExtra("postDate",item.realDate.toString());
                 intent.putExtra("salary",item.salary);
 
                 startActivity(intent);
@@ -88,14 +88,15 @@ public class SearchActivity extends AppCompatActivity {
                 ArrayList<Offer> myList = new ArrayList<>();
                 for (QueryDocumentSnapshot document : stringObjectMap.get("result")) {
                     Log.d(TAG, document.getId() + " => " + document.getData());
-                    Offer p = new Offer(
-                            document.getId(),
-                            document.get("jobTitle", String.class),
-                            document.get("companyName", String.class),
-                            document.get("place", String.class),
-                            "theDate",//document.get("postDate", String.class),
-                            "1000"//document.get("salary", String.class)
-                    );
+//                    Offer p = new Offer(
+//                            document.getId(),
+//                            document.get("jobTitle", String.class),
+//                            document.get("companyName", String.class),
+//                            document.get("place", String.class),
+//                            "theDate",//document.get("postDate", String.class),
+//                            "1000"//document.get("salary", String.class)
+//                    );
+                    Offer p = Offer.newInstance(document.getReference(), document.getData());
                     Log.d(TAG, "onChanged: "+p);
                     myList.add(p);
                 }
@@ -134,14 +135,15 @@ public class SearchActivity extends AppCompatActivity {
                         ArrayList<Offer> myList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
 //                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            Offer p = new Offer(
-                                    document.getId(),
-                                    document.get("jobTitle", String.class),
-                                    document.get("companyName", String.class),
-                                    document.get("place", String.class),
-                                    "theDate",//document.get("postDate", String.class),
-                                    "1000"//document.get("salary", String.class)
-                            );
+//                            Offer p = new Offer(
+//                                    document.getId(),
+//                                    document.get("jobTitle", String.class),
+//                                    document.get("companyName", String.class),
+//                                    document.get("place", String.class),
+//                                    "theDate",//document.get("postDate", String.class),
+//                                    "1000"//document.get("salary", String.class)
+//                            );
+                            Offer p = Offer.newInstance(document.getReference(), document.getData());
 //                                Log.d(TAG, "onChanged: "+p);
                             myList.add(p);
 //                                myList = new ArrayList<>();

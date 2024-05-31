@@ -1,9 +1,6 @@
-package fr.umontpellier.etu.inteco.Enterprise.fragements.myPosts.placeholder;
-
-import android.util.Log;
+package fr.umontpellier.etu.inteco.Enterprise.fragements.candidateForAJob.placeholder;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -43,11 +40,11 @@ public class PlaceholderContent {
 
     private static void addItem(PlaceholderItem item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.jobTitle, item);
+        ITEM_MAP.put(item.name, item);
     }
 
     private static PlaceholderItem createPlaceholderItem(int position) {
-        return new PlaceholderItem(null, String.valueOf(position),-1, "Item " + position, /*makeDetails(position)*/new Timestamp(new Date()));
+        return new PlaceholderItem(String.valueOf(position), new Timestamp(new Date()), makeDetails(position));
     }
 
     private static String makeDetails(int position) {
@@ -63,28 +60,22 @@ public class PlaceholderContent {
      * A placeholder item representing a piece of content.
      */
     public static class PlaceholderItem {
-        public final DocumentReference docRef;
-        public final String jobTitle;
-        public final int numberApplicants;
-        public final String state;
-        public final String dateDetails;
+        public final String name;
+        public final String timestamp;
+        public final String status;
 
-        public PlaceholderItem(DocumentReference docRef, String jobTitle, int n, String state, Timestamp stamp) {
-            this.docRef = docRef;
-            this.jobTitle = jobTitle;
-            this.numberApplicants = n;
-            this.state = state;
-            this.dateDetails = new PrettyTime(new Locale("en")).format(stamp.toDate());
+        public PlaceholderItem(String name, Timestamp timestamp, String status) {
+            this.name = name;
+            this.timestamp = new PrettyTime(new Locale("en")).format(timestamp.toDate());
+            this.status = status;
         }
 
         @Override
         public String toString() {
             return "PlaceholderItem{" +
-                    "docRef=" + docRef +
-                    ", jobTitle='" + jobTitle + '\'' +
-                    ", numberApplicants=" + numberApplicants +
-                    ", state='" + state + '\'' +
-                    ", dateDetails='" + dateDetails + '\'' +
+                    "name='" + name + '\'' +
+                    ", timestamp=" + timestamp +
+                    ", status='" + status + '\'' +
                     '}';
         }
     }

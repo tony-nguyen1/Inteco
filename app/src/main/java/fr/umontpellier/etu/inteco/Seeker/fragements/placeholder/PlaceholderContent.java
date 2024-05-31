@@ -36,7 +36,7 @@ public class PlaceholderContent {
 
     private static void addItem(Offer item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.id, item);
+//        ITEM_MAP.put(item.id, item);//FIXME
     }
 
     private static Offer createPlaceholderItem(int position) {

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import fr.umontpellier.etu.inteco.Enterprise.fragements.candidateForAJob.InfoPostFragment;
 import fr.umontpellier.etu.inteco.R;
 
 /**

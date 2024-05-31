@@ -2,11 +2,15 @@ package fr.umontpellier.etu.inteco.Seeker.fragements.Saved;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import org.ocpsoft.prettytime.PrettyTime;
 
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.Search.MyItemRecyclerViewAdapter;
@@ -14,6 +18,7 @@ import fr.umontpellier.etu.inteco.Seeker.fragements.placeholder.PlaceholderConte
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link PlaceholderItem}.
@@ -21,6 +26,7 @@ import java.util.List;
  */
 public class SaveJobRecyclerViewAdapter extends RecyclerView.Adapter<SaveJobRecyclerViewAdapter.ViewHolder> {
 
+    private static final String TAG = "debug SaveJobRecycler";
     private final List<Offer> mValues;
 
     MyItemRecyclerViewAdapter.AdapterItemClickListener itemClickListener;
@@ -37,13 +43,15 @@ public class SaveJobRecyclerViewAdapter extends RecyclerView.Adapter<SaveJobRecy
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_offer_saved_card, parent, false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         Offer item = mValues.get(position);
-        holder.jobTitleView.setText(item.content);
-        holder.companyInfoView.setText(item.details + " · " + item.place);
-        holder.postDateView.setText("Starting : "+item.startingTime);
+        Log.d(TAG, "onBindViewHolder: "+item);
+        holder.jobTitleView.setText(item.jobTitle);
+        holder.companyInfoView.setText(item.city + " · " + item.country);
+        holder.postDateView.setText("Starting : "+item.getPrettyTime());
         holder.salaryView.setText(item.salary+"€/Month");
         holder.jobTypeView.setText(item.jobType);
         holder.contractTypeView.setText(item.contractType);
