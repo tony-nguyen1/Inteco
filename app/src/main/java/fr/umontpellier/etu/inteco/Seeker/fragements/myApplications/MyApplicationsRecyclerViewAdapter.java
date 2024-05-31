@@ -40,7 +40,7 @@ public class MyApplicationsRecyclerViewAdapter extends RecyclerView.Adapter<MyAp
 
         holder.mJobTitle.setText(mValues.get(position).jobTitle);
         holder.companyInfo.setText(mValues.get(position).city+", "+mValues.get(position).country);
-        holder.mDate.setText("Applied "+mValues.get(position).getPrettyTime());
+        holder.mDate.setText("Posted "+mValues.get(position).getPrettyTime());
         holder.mStatus.setText(mValues.get(position).state);
     }
 

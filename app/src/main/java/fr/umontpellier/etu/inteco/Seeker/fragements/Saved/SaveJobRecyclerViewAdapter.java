@@ -53,7 +53,7 @@ public class SaveJobRecyclerViewAdapter extends RecyclerView.Adapter<SaveJobRecy
         Log.d(TAG, "onBindViewHolder: "+item);
         holder.jobTitleView.setText(item.jobTitle);
         holder.companyInfoView.setText(item.city + " · " + item.country);
-        holder.postDateView.setText("Starting : "+item.getPrettyTime());
+        holder.postDateView.setText("Posted : "+item.getPrettyTime());
         holder.salaryView.setText(item.salary+"€/Month");
         holder.jobTypeView.setText(item.jobType);
         holder.contractTypeView.setText(item.contractType);
