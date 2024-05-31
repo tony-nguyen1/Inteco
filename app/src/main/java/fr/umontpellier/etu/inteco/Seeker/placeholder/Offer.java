@@ -76,6 +76,13 @@ public class Offer implements Serializable {
         this.dateDetails = new PrettyTime(new Locale("en")).format(stamp.toDate());
     }
 
+    public Offer(String jobTitle, String place, String state, Timestamp stamp) {
+        this.jobTitle = jobTitle;
+        this.place = place;
+        this.state = state;
+        this.dateDetails = new PrettyTime(new Locale("en")).format(stamp.toDate());
+    }
+
     public Offer setDocumentReference(DocumentReference documentReference) {
         this.documentReference = documentReference;
         return this;
@@ -95,20 +102,25 @@ public class Offer implements Serializable {
                 "id='" + id + '\'' +
                 ", content='" + content + '\'' +
                 ", details='" + details + '\'' +
-                ", mail='" + mail +  '\'' +
                 ", place='" + place + '\'' +
                 ", postDate='" + postDate + '\'' +
                 ", salary='" + salary + '\'' +
+                ", mail='" + mail + '\'' +
                 ", description='" + description + '\'' +
                 ", requirements='" + requirements + '\'' +
                 ", jobType='" + jobType + '\'' +
                 ", contractType='" + contractType + '\'' +
+                ", startingTime='" + startingTime + '\'' +
                 ", duration='" + duration + '\'' +
                 ", experience='" + experience + '\'' +
                 ", qualification='" + qualification + '\'' +
                 ", location='" + location + '\'' +
                 ", category='" + category + '\'' +
-                ", startingTime='" + startingTime+'\''+
+                ", documentReference=" + documentReference +
+                ", jobTitle='" + jobTitle + '\'' +
+                ", numberApplicants=" + numberApplicants +
+                ", state='" + state + '\'' +
+                ", dateDetails='" + dateDetails + '\'' +
                 '}';
     }
 }
