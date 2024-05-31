@@ -10,4 +10,6 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".Seeker.fragements.OfferFragment"
-    tools:listitem="@layout/fragment_offer_saved_card" />
+    tools:listitem="@layout/fragment_offer_saved_card"
+    android:layout_marginBottom="10dp"
+    />

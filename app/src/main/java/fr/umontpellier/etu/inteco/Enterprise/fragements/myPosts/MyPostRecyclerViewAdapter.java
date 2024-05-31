@@ -1,8 +1,10 @@
 package fr.umontpellier.etu.inteco.Enterprise.fragements.myPosts;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 
 import fr.umontpellier.etu.inteco.Enterprise.fragements.candidateForAJob.MyCandidateRecyclerViewAdapter;
 import fr.umontpellier.etu.inteco.Enterprise.fragements.myPosts.placeholder.PlaceholderContent.PlaceholderItem;
+
+import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 import fr.umontpellier.etu.inteco.databinding.FragmentPostedCardBinding;
 
@@ -55,6 +59,14 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         holder.mNbApplicants.setText(String.valueOf(mValues.get(position).numberApplicants)+" applicants");
         holder.mDate.setText(mValues.get(position).dateDetails);
         holder.mStatus.setText(mValues.get(position).state);
+
+        // Set the text color based on the state value
+        Context context = holder.mStatus.getContext();
+        if ("open".equalsIgnoreCase(mValues.get(position).state)) {
+            holder.mStatus.setTextColor(ContextCompat.getColor(context, R.color.status_open));
+        } else if ("false".equalsIgnoreCase(mValues.get(position).state)) {
+            holder.mStatus.setTextColor(ContextCompat.getColor(context, R.color.status_false));
+        }
 
         holder.itemView.setOnClickListener( v -> {
             Log.d(TAG, "onBindViewHolder: click");

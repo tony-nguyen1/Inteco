@@ -10,5 +10,5 @@
         </shape>
     </item>
     <!-- Plus Icon in the Foreground -->
-    <item android:drawable="@drawable/icon_plus" />
+    <item android:drawable="@drawable/add_icon" />
 </layer-list>

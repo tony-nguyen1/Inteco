@@ -1,6 +1,5 @@
 package fr.umontpellier.etu.inteco.Seeker.fragements.Saved;
 
-import fr.umontpellier.etu.inteco.Seeker.fragements.Saved.SaveJobRecyclerViewAdapter;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.api.LogDescriptor;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +25,6 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.rpc.Help;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -37,9 +34,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
 import fr.umontpellier.etu.inteco.R;
-import fr.umontpellier.etu.inteco.Seeker.JobDetailsActivity;
-import fr.umontpellier.etu.inteco.Seeker.fragements.Saved.MyItemRecyclerViewAdapter;
+import fr.umontpellier.etu.inteco.Seeker.Search.MyItemRecyclerViewAdapter;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 import fr.umontpellier.etu.inteco.helper.Helper;
 

@@ -9,5 +9,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".Seeker.ItemFragment"
-    tools:listitem="@layout/fragment_item" />
+    tools:context=".Seeker.Search.ItemFragment"
+    tools:listitem="@layout/fragment_item"
+    android:layout_marginBottom="10dp"
+    />

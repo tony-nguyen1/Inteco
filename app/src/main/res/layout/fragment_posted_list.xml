@@ -10,4 +10,6 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".Enterprise.fragements.myPosts.PostedListFragment"
-    tools:listitem="@layout/fragment_posted_card" />
+    tools:listitem="@layout/fragment_posted_card"
+    android:layout_marginBottom="10dp"
+    />

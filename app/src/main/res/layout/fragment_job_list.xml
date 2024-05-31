@@ -10,4 +10,6 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".Enterprise.fragements.addPost.JobFragment"
-    tools:listitem="@layout/fragment_job_card" />
+    tools:listitem="@layout/fragment_job_card"
+    android:layout_marginBottom="10dp"
+    />

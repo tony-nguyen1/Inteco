@@ -13,12 +13,10 @@ import android.widget.TextView;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import fr.umontpellier.etu.inteco.R;
-import fr.umontpellier.etu.inteco.Seeker.fragements.Saved.MyItemRecyclerViewAdapter;
+import fr.umontpellier.etu.inteco.Seeker.Search.MyItemRecyclerViewAdapter;
 import fr.umontpellier.etu.inteco.Seeker.fragements.placeholder.PlaceholderContent.PlaceholderItem;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
-import fr.umontpellier.etu.inteco.databinding.FragmentOfferSavedCardBinding;
 
-import java.text.BreakIterator;
 import java.util.List;
 import java.util.Locale;
 
