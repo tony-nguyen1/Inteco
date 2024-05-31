@@ -2,6 +2,7 @@ package fr.umontpellier.etu.inteco.Seeker.fragements.myApplications;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class MyApplicationsRecyclerViewAdapter extends RecyclerView.Adapter<MyAp
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
@@ -37,8 +39,8 @@ public class MyApplicationsRecyclerViewAdapter extends RecyclerView.Adapter<MyAp
 
 
         holder.mJobTitle.setText(mValues.get(position).jobTitle);
-        holder.companyInfo.setText(mValues.get(position).place);
-        holder.mDate.setText("Applied "+mValues.get(position).dateDetails);
+        holder.companyInfo.setText(mValues.get(position).city+", "+mValues.get(position).country);
+        holder.mDate.setText("Applied "+mValues.get(position).getPrettyTime());
         holder.mStatus.setText(mValues.get(position).state);
     }
 

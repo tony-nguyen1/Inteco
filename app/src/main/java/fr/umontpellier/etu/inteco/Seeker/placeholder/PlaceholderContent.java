@@ -36,7 +36,7 @@ public class PlaceholderContent {
 
     private static void addItem(Offer item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.id, item);
+        ITEM_MAP.put(item.id.getId(), item);
     }
 
     private static Offer createPlaceholderItem(int position) {
@@ -47,7 +47,7 @@ public class PlaceholderContent {
          * - add xml tag in layout in preparation ...
          * - give the tag its value
          */
-        return new Offer(String.valueOf(position), "Item " + position, makeDetails(position),"","","");
+        return new Offer();
     }
 
     private static String makeDetails(int position) {

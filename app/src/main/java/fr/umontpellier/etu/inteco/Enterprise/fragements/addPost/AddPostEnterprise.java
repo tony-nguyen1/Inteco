@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -142,30 +143,34 @@ public class AddPostEnterprise extends Fragment {
 
         // Create an Offer object
 
-        Offer offer = new Offer(offerId, title, mEmail, mCompanyName, location, postDate, salary,
-                description, requirements, jobType, contractType, duration, experience,
-                qualification, location, category,startingTime);
+//        Offer offer = new Offer(offerId, title, mEmail, mCompanyName, location, postDate, salary,
+//                description, requirements, jobType, contractType, duration, experience,
+//                qualification, location, category,startingTime);
+
+        Toast.makeText(getContext(), "Functionality disabled for now", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "savePostToFirebase: disabled");
+        throw new RuntimeException("disabled");
 
         //TODO Save to Firebase, add to offers then link to company
-        final MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
-        final MutableLiveData<ArrayList<DocumentReference>> listenDocRef = new MutableLiveData<>();
-        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        assert currentUser != null;
-        Helper.getCompanyDocumentReference(currentUser, listen);
-//        Helper.addPost(currentUser, offer, listen);
-        listen.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
-            @Override
-            public void onChanged(QueryDocumentSnapshot queryDocumentSnapshot) {
-                Helper.addPostToOffers(offer, queryDocumentSnapshot.getReference(), listenDocRef);
-            }
-        });
-        listenDocRef.observe(getViewLifecycleOwner(), new Observer<ArrayList<DocumentReference>>() {
-            @Override
-            public void onChanged(ArrayList<DocumentReference> documentReference) {
-                Log.d(TAG, "onChanged: added to offers, now adding ref to array field in company");
-                Helper.addPostToCompany(documentReference.get(0), documentReference.get(1));
-            }
-        });
+//        final MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
+//        final MutableLiveData<ArrayList<DocumentReference>> listenDocRef = new MutableLiveData<>();
+//        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+//        assert currentUser != null;
+//        Helper.getCompanyDocumentReference(currentUser, listen);
+////        Helper.addPost(currentUser, offer, listen);
+//        listen.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
+//            @Override
+//            public void onChanged(QueryDocumentSnapshot queryDocumentSnapshot) {
+//                Helper.addPostToOffers(offer, queryDocumentSnapshot.getReference(), listenDocRef);//FIXME
+//            }
+//        });
+//        listenDocRef.observe(getViewLifecycleOwner(), new Observer<ArrayList<DocumentReference>>() {
+//            @Override
+//            public void onChanged(ArrayList<DocumentReference> documentReference) {
+//                Log.d(TAG, "onChanged: added to offers, now adding ref to array field in company");
+//                Helper.addPostToCompany(documentReference.get(0), documentReference.get(1));
+//            }
+//        });
 
     }
 }

@@ -308,6 +308,7 @@ public class Helper {
         anOffer.put("city", "");
         anOffer.put("adress", "");
         anOffer.put("refCompany", documentReferenceOfCompany);
+        anOffer.put("realDate", new Timestamp(new Date()));
 
         db.collection("offers")
                 .add(anOffer)
@@ -381,9 +382,9 @@ public class Helper {
         });
     }
 
-    public static void  getOffersOfCompanyWithDate(ArrayList<Map<String,Object>> list, MutableLiveData<ArrayList<Map<String,Object>>> answer) {
+    public static void  getOffersOfCompanyWithDate(ArrayList<Map<String,Object>> list, MutableLiveData<ArrayList<QueryDocumentSnapshot>> answer) {
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final ArrayList<Map<String,Object>> res = new ArrayList<>();
+        final ArrayList<QueryDocumentSnapshot> res = new ArrayList<>();
 
         Log.d(TAG, "getOffersOfCompanyWithDate: list="+list);
 
@@ -399,7 +400,7 @@ public class Helper {
                                 oof.put("appliedDate", map.get("date"));
                                 oof.put("status", map.get("status"));
 
-                                res.add(oof);
+                                res.add(document);
                                 Log.d(TAG, "onComplete: map of my item: "+res);
                             }
                         }

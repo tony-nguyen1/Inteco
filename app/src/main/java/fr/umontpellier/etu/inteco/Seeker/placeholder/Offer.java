@@ -1,127 +1,103 @@
 package fr.umontpellier.etu.inteco.Seeker.placeholder;
 
+import android.util.Log;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Map;
 
 public class Offer implements Serializable {
-    public String id;
-    public String content; // jobTitle
-    public String details; // companyName
-    public String place;
-    public String postDate;
-    public String salary;
-
-    public String mail;
-    public String description;
-    public String requirements;
-    public String jobType;
-    public String contractType;
-    public String startingTime;
-    public String duration;
-    public String experience;
-    public String qualification;
-    public String location;
-    public String category;
-
-    private DocumentReference documentReference;
+    private static final String TAG = "debug Offer";
 
 
-
-
-
-    public String jobTitle;
     public int numberApplicants;
+    public DocumentReference id;
+
+
+    // clean from here
+    public String adress;
+    public ArrayList<DocumentReference> apply;
+    public String city;
+    public String contractType;
+    public String country;
+    public String description;
+    public String duration;
+    public String experienceWanted;
+    public String jobTitle;
+    public String jobType;
+    public String postTitle;
+    public String qualificationWanted;
+    public Timestamp realDate;
+    public DocumentReference refCompany;
+    public long salary;
+    public Timestamp startTime;
     public String state;
-    public String dateDetails;
 
-    public Offer(String id, String content, String mail,String details, String place, String postDate, String salary,
-                 String description, String requirements, String jobType, String contractType,
-                 String duration, String experience, String qualification, String location, String category, String startingTime) {
-        this.id = id;
-        this.content = content;
-        this.details = details;
-        this.place = place;
-        this.postDate = postDate;
-        this.salary = salary;
-        this.description = description;
-        this.requirements = requirements;
-        this.jobType = jobType;
-        this.contractType = contractType;
-        this.duration = duration;
-        this.experience = experience;
-        this.qualification = qualification;
-        this.location = location;
-        this.category = category;
-        this.startingTime=startingTime;
-        this.mail=mail;
-    }
-    public Offer(String id, String content, String details, String place, String postDate, String salary) {
-        this.id = id;
-        this.content = content;
-        this.details = details;
-        this.place = place;
-        this.postDate = postDate;
-        this.salary = salary;
-    }
+    public static Offer newInstance(DocumentReference id, Map<String,Object> arg) {
+        Log.d(TAG, "newInstance: arg="+arg);
+        Offer o = new Offer();
 
-    public Offer(String jobTitle, int n, String state, Timestamp stamp) {
-        this.jobTitle = jobTitle;
-        this.numberApplicants = n;
-        this.state = state;
-        this.dateDetails = new PrettyTime(new Locale("en")).format(stamp.toDate());
-    }
+        o.id = id;
 
-    public Offer(String jobTitle, String place, String state, Timestamp stamp) {
-        this.jobTitle = jobTitle;
-        this.place = place;
-        this.state = state;
-        this.dateDetails = new PrettyTime(new Locale("en")).format(stamp.toDate());
-    }
+        o.adress = (String) arg.get("adress");
+        o.apply = (ArrayList<DocumentReference>) arg.get("apply");
+        o.city = (String) arg.get("city");
+        o.contractType = (String) arg.get("contractType");
+        o.country = (String) arg.get("country");
+        o.description = (String) arg.get("description");
+        o.duration = (String) arg.get("duration");
+        o.experienceWanted = (String) arg.get("experienceWanted");
+        o.jobTitle = (String) arg.get("job_title");
+        o.jobType = (String) arg.get("job_type");
+        o.postTitle = (String) arg.get("post_title");
+        o.qualificationWanted = (String) arg.get("qualificationWanted");
+        o.realDate = (Timestamp) arg.get("realDate");
+        o.refCompany = (DocumentReference) arg.get("refCompany");
+        o.salary = ((Long) arg.get("salary")).longValue();
+        o.startTime = (Timestamp) arg.get("startTime");
+        o.state = (String) arg.get("state");
 
-    public Offer setDocumentReference(DocumentReference documentReference) {
-        this.documentReference = documentReference;
-        return this;
-    }
-
-    public DocumentReference getDocumentReference() {
-        return documentReference;
+        return o;
     }
 
     public Offer() {
-        this("","","","","","");
+
     }
 
     @Override
     public String toString() {
         return "Offer{" +
-                "id='" + id + '\'' +
-                ", content='" + content + '\'' +
-                ", details='" + details + '\'' +
-                ", place='" + place + '\'' +
-                ", postDate='" + postDate + '\'' +
-                ", salary='" + salary + '\'' +
-                ", mail='" + mail + '\'' +
-                ", description='" + description + '\'' +
-                ", requirements='" + requirements + '\'' +
-                ", jobType='" + jobType + '\'' +
+                "numberApplicants=" + numberApplicants +
+                ", id=" + id +
+                ", adress='" + adress + '\'' +
+                ", apply=" + apply +
+                ", city='" + city + '\'' +
                 ", contractType='" + contractType + '\'' +
-                ", startingTime='" + startingTime + '\'' +
+                ", country='" + country + '\'' +
+                ", description='" + description + '\'' +
                 ", duration='" + duration + '\'' +
-                ", experience='" + experience + '\'' +
-                ", qualification='" + qualification + '\'' +
-                ", location='" + location + '\'' +
-                ", category='" + category + '\'' +
-                ", documentReference=" + documentReference +
+                ", experienceWanted='" + experienceWanted + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
-                ", numberApplicants=" + numberApplicants +
+                ", jobType='" + jobType + '\'' +
+                ", postTitle='" + postTitle + '\'' +
+                ", qualificationWanted='" + qualificationWanted + '\'' +
+                ", realDate=" + realDate +
+                ", refCompany=" + refCompany +
+                ", salary=" + salary +
+                ", startTime=" + startTime +
                 ", state='" + state + '\'' +
-                ", dateDetails='" + dateDetails + '\'' +
                 '}';
+    }
+
+    public String getPrettyTime() {
+        return new PrettyTime(new Locale("en")).format(realDate.toDate());
     }
 }
 
+//

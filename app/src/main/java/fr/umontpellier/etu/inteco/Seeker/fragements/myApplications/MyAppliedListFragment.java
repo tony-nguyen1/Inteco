@@ -110,7 +110,7 @@ public class MyAppliedListFragment extends Fragment {
     private void getOffers(FirebaseUser user, MutableLiveData<ArrayList<Offer>> answer) {
         MutableLiveData<QueryDocumentSnapshot> listenCompany = new MutableLiveData<>();
         MutableLiveData<ArrayList<Map<String, Object>>> listenDocRefOffers = new MutableLiveData<>();
-        MutableLiveData<ArrayList<Map<String,Object>>> listenDocRefOffersDetails = new MutableLiveData<>();
+        MutableLiveData<ArrayList<QueryDocumentSnapshot>> listenDocRefOffersDetails = new MutableLiveData<>();
 
         Helper.getJobSeekerDocumentReference(user, listenCompany);
         listenCompany.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
@@ -134,20 +134,16 @@ public class MyAppliedListFragment extends Fragment {
             }
         });
 
-        listenDocRefOffersDetails.observe(getViewLifecycleOwner(), new Observer<ArrayList<Map<String, Object>>>() {
+        listenDocRefOffersDetails.observe(getViewLifecycleOwner(), new Observer<ArrayList<QueryDocumentSnapshot>>() {
             @Override
-            public void onChanged(ArrayList<Map<String, Object>> list) {
+            public void onChanged(ArrayList<QueryDocumentSnapshot> list) {
                 Log.d(TAG, "onChanged: i have the map with the key values");
                 Log.d(TAG, "onChanged: list="+list.toString());
 
                 ArrayList<Offer> listItem = new ArrayList<>();
 
-                list.stream().forEach(map -> {
-                    listItem.add(new Offer(
-                            (String)map.get("post_title"),
-                            map.get("city")+", "+map.get("country"),
-                            (String)map.get("status"),
-                            (Timestamp) Objects.requireNonNull(map.get("appliedDate")))
+                list.stream().forEach(snap -> {
+                    listItem.add(Offer.newInstance(snap.getReference(), snap.getData())
                     );
                 });
 

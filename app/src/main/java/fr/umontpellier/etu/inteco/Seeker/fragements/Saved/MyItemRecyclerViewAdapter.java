@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 import fr.umontpellier.etu.inteco.databinding.FragmentItemBinding;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Offer}.
@@ -38,12 +41,12 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     public void onBindViewHolder(final ViewHolder holder, int position) {
         // on met les valeurs dans les vues
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
-        holder.mDetailsView.setText(mValues.get(position).details);
-        holder.mPlaceView.setText(mValues.get(position).place);
-        holder.mPostDateView.setText(mValues.get(position).postDate);
-        holder.mSalaryView.setText(mValues.get(position).salary);
+        holder.mIdView.setText(mValues.get(position).id.getId());
+        holder.mContentView.setText("test");
+        holder.mDetailsView.setText("test");
+        holder.mPlaceView.setText(mValues.get(position).city+", "+mValues.get(position).country);
+        holder.mPostDateView.setText(new PrettyTime(new Locale("en")).format(mValues.get(position).realDate.toDate()));
+        holder.mSalaryView.setText(Long.toString(mValues.get(position).salary));
 
         // click functionality
         Offer item = mValues.get(position);
