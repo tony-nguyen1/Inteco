@@ -147,7 +147,7 @@ public class MyAppliedListFragment extends Fragment {
                             (String)map.get("post_title"),
                             map.get("city")+", "+map.get("country"),
                             (String)map.get("status"),
-                            (Timestamp) Objects.requireNonNull(map.get("realDate")))
+                            (Timestamp) Objects.requireNonNull(map.get("appliedDate")))
                     );
                 });
 

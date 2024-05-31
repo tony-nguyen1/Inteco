@@ -194,7 +194,7 @@ public class SavedSeeker extends Fragment {
                 SaveJobRecyclerViewAdapter customAdaptator = new SaveJobRecyclerViewAdapter(myList, new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
                     @Override
                     public void onItemClickListener(Offer item, int position) {
-                        // TODO enregistré cette offre dans users.applications et cette user dans offers.apply
+                        // TODO vérifier si il a pas déjà postulé
                         Toast.makeText(SavedSeeker.this.getContext(), "J'ai appuyé sur APPLY (id:"+item.id+")", Toast.LENGTH_SHORT).show();
 
                         DocumentReference refOffre = item.getDocumentReference();

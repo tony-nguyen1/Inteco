@@ -43,7 +43,7 @@ public class MyApplicationsRecyclerViewAdapter extends RecyclerView.Adapter<MyAp
 
         holder.mJobTitle.setText(mValues.get(position).jobTitle);
         holder.companyInfo.setText(mValues.get(position).place);
-        holder.mDate.setText(mValues.get(position).dateDetails);
+        holder.mDate.setText("Applied "+mValues.get(position).dateDetails);
         holder.mStatus.setText(mValues.get(position).state);
     }
 
