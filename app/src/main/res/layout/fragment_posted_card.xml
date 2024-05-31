@@ -7,6 +7,8 @@
     android:background="@drawable/white_curvy"
     android:padding="16dp"
     android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
 >
 
     <TextView
@@ -17,6 +19,8 @@
         android:text="UI/UX Designer"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/top_right_image"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
