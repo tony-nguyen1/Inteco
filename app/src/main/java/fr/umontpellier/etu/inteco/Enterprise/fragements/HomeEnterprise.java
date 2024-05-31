@@ -1,5 +1,6 @@
 package fr.umontpellier.etu.inteco.Enterprise.fragements;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,9 +9,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
+
 import fr.umontpellier.etu.inteco.R;
+import fr.umontpellier.etu.inteco.Seeker.Search.SearchActivity;
+import fr.umontpellier.etu.inteco.Seeker.fragements.HomeSeeker;
+import fr.umontpellier.etu.inteco.Seeker.fragements.MyApplications;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,9 +34,12 @@ public class HomeEnterprise extends Fragment {
     private static final String ARG_EMAIL = "email";
     private static final String TAG = "debug HomeEntreprise";
 
-
+    private TextView nameTV, inWaitingTV, acceptedTV, refusedTV, applicationsDetailsTV;
     private String mCompanyName;
     private String mEmail;
+
+
+
     public HomeEnterprise() {
         // Required empty public constructor
     }
@@ -53,11 +67,31 @@ public class HomeEnterprise extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home_enterprise, container, false);
-        // Inflate the layout for this fragment
+        nameTV = rootView.findViewById(R.id.nameTextView);
+        inWaitingTV = rootView.findViewById(R.id.inWaiting);
+        acceptedTV = rootView.findViewById(R.id.accepted);
+        refusedTV = rootView.findViewById(R.id.refused);
+        applicationsDetailsTV = rootView.findViewById(R.id.applicationsDetails);
+        TextView nameTextView = rootView.findViewById(R.id.nameTextView);
 
-        TextView nameTextView = rootView.findViewById(R.id.name_text_view);
-        Log.d(TAG, "onCreateView: just before showing name="+mCompanyName);
+        // Setting the name
         nameTextView.setText(mCompanyName);
+
+        // TODO Ici pour modifier les cases
+        /*
+        inWaitingTV.setText("5"+ "In waiting");
+        acceptedTV.setText("4" + "Accepted");
+        refusedTV.setText("3" + "Refused");
+
+        applicationsDetailsTV.setText("");
+         */
+
+
+
         return rootView;
     }
 }
+
+
+
+
