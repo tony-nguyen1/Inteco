@@ -43,7 +43,7 @@ public class MyAppliedListFragment extends Fragment {
     private int mColumnCount = 1;
 
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final private ArrayList<DocumentReference> foo = new ArrayList<>();
+    final private ArrayList<Map<String,Object>> foo = new ArrayList<>();
 
 
     /**
@@ -109,7 +109,7 @@ public class MyAppliedListFragment extends Fragment {
 
     private void getOffers(FirebaseUser user, MutableLiveData<ArrayList<Offer>> answer) {
         MutableLiveData<QueryDocumentSnapshot> listenCompany = new MutableLiveData<>();
-        MutableLiveData<ArrayList<DocumentReference>> listenDocRefOffers = new MutableLiveData<>();
+        MutableLiveData<ArrayList<Map<String, Object>>> listenDocRefOffers = new MutableLiveData<>();
         MutableLiveData<ArrayList<Map<String,Object>>> listenDocRefOffersDetails = new MutableLiveData<>();
 
         Helper.getJobSeekerDocumentReference(user, listenCompany);
@@ -118,17 +118,19 @@ public class MyAppliedListFragment extends Fragment {
             public void onChanged(QueryDocumentSnapshot queryDocumentSnapshot) {
                 Log.d(TAG, "onChanged: retrieved the reference of the jobSeeker succesfully");
 
-                foo.addAll(((ArrayList<DocumentReference>) queryDocumentSnapshot.get("apply")));
+//                foo.addAll(((ArrayList<DocumentReference>) queryDocumentSnapshot.get("apply")));
+
+                foo.addAll(((ArrayList<Map<String, Object>>) queryDocumentSnapshot.get("apply")));
                 listenDocRefOffers.postValue(foo);
             }
         });
 
-        listenDocRefOffers.observe(getViewLifecycleOwner(), new Observer<ArrayList<DocumentReference>>() {
+        listenDocRefOffers.observe(getViewLifecycleOwner(), new Observer<ArrayList<Map<String, Object>>>() {
             @Override
-            public void onChanged(ArrayList<DocumentReference> documentReferences) {
+            public void onChanged(ArrayList<Map<String, Object>> documentReferences) {
                 Log.d(TAG, "onChanged: received this :"+documentReferences);
 
-                Helper.getOffersOfCompany(documentReferences, listenDocRefOffersDetails);
+                Helper.getOffersOfCompanyWithDate(documentReferences, listenDocRefOffersDetails);
             }
         });
 
@@ -143,8 +145,8 @@ public class MyAppliedListFragment extends Fragment {
                 list.stream().forEach(map -> {
                     listItem.add(new Offer(
                             (String)map.get("post_title"),
-                            ((Long) Objects.requireNonNull(map.get("nbAppli"))).intValue(),
-                            (String)map.get("state"),
+                            map.get("city")+", "+map.get("country"),
+                            (String)map.get("status"),
                             (Timestamp) Objects.requireNonNull(map.get("realDate")))
                     );
                 });

@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -19,8 +20,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
@@ -379,8 +380,54 @@ public class Helper {
         });
     }
 
+    public static void  getOffersOfCompanyWithDate(ArrayList<Map<String,Object>> list, MutableLiveData<ArrayList<Map<String,Object>>> answer) {
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final ArrayList<Map<String,Object>> res = new ArrayList<>();
+
+        Log.d(TAG, "getOffersOfCompanyWithDate: list="+list);
+
+        db.collection("offers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        for (Map<String,Object> map: list) {
+                            if (map.get("ref").equals(document.getReference())) {
+
+                                Map<String,Object> oof = document.getData();
+                                oof.put("appliedDate", map.get("date"));
+                                oof.put("status", map.get("status"));
+
+                                res.add(oof);
+                                Log.d(TAG, "onComplete: map of my item: "+res);
+                            }
+                        }
+
+//                        if (references.contains(document.getReference())) {
+//                            Map<String,Object> oof = document.getData();
+//
+//                            long l = ((ArrayList<DocumentReference>) document.get("apply")).size();
+//                            Log.d(TAG, "onComplete: nbAppli="+l);
+//                            oof.put("nbAppli",l);
+//
+//                            res.add(oof);
+//                        }
+                    }
+                    answer.postValue(res);
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            }
+        });
+    }
+
     public static void addOfferToUserApply(DocumentReference anOffer, DocumentReference aJobSeeker, MutableLiveData<DocumentReference> answer){
-        anOffer.update("apply", FieldValue.arrayUnion(aJobSeeker)).addOnCompleteListener(new OnCompleteListener<Void>() {
+        HashMap<String, Object> map = new HashMap<>(3);
+        map.put("date", new Timestamp(new Date()));
+        map.put("ref", aJobSeeker);
+        map.put("status", "pending");
+
+        anOffer.update("apply", FieldValue.arrayUnion(map)).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d(TAG, "onComplete: user registered in the offer");

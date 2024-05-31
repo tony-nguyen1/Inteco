@@ -39,10 +39,12 @@ public class MyApplicationsRecyclerViewAdapter extends RecyclerView.Adapter<MyAp
         holder.companyInfo.setText("Haïti");
         holder.mDate.setText("date");
         holder.mStatus.setText("status");
-//        holder.mJobTitle.setText(mValues.get(position).jobTitle);
-//        holder.mPLace.setText(String.valueOf(mValues.get(position).place));
-//        holder.mDate.setText(mValues.get(position).dateDetails);
-//        holder.mStatus.setText(mValues.get(position).state);
+
+
+        holder.mJobTitle.setText(mValues.get(position).jobTitle);
+        holder.companyInfo.setText(mValues.get(position).place);
+        holder.mDate.setText(mValues.get(position).dateDetails);
+        holder.mStatus.setText(mValues.get(position).state);
     }
 
     @Override
