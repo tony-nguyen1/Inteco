@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,16 +94,17 @@ public class SignUpSeeker3 extends AppCompatActivity {
 
         // Create a new user with a first and last name
         Map<String, Object> user = new HashMap<>();
-        user.put("email", email);
-        user.put("password", password);
-        user.put("firstname", firstName);
-        user.put("lastname", lastName);
+        user.put("address",address);
+        user.put("apply", new ArrayList<>());
         user.put("birthday",birthday);
+        user.put("city",city);
+        user.put("email", email);
+        user.put("firstname", firstName);
+        user.put("gender",sex);
+        user.put("lastname", lastName);
         user.put("nationality",nationality);
         user.put("phoneNumber",phoneNumber);
-        user.put("city",city);
-        user.put("address",address);
-        user.put("sex",sex);
+        user.put("saved",new ArrayList<>());
 
         db.collection("users")
                 .add(user)
@@ -109,6 +112,12 @@ public class SignUpSeeker3 extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+
+                        Map<String, Object> oof = new HashMap<>();
+                        oof.put("collection", "users");
+                        oof.put("email", email);
+                        oof.put("ref", documentReference);
+                        db.collection("allUsers").add(oof);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

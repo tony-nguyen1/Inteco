@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -60,6 +61,7 @@ public class ResetPassword extends AppCompatActivity {
                                     public void onComplete(@NonNull Task task) {
                                         if (task.isSuccessful()) {
                                             Log.d(TAG, "Email sent.");
+                                            Toast.makeText(ResetPassword.this, "Email sent", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
