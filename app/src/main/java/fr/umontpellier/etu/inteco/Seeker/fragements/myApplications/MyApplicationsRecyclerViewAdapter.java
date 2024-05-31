@@ -35,11 +35,6 @@ public class MyApplicationsRecyclerViewAdapter extends RecyclerView.Adapter<MyAp
         holder.mItem = mValues.get(position);
 
 
-        holder.mJobTitle.setText("title");
-        holder.companyInfo.setText("Haïti");
-        holder.mDate.setText("date");
-        holder.mStatus.setText("status");
-
 
         holder.mJobTitle.setText(mValues.get(position).jobTitle);
         holder.companyInfo.setText(mValues.get(position).place);
