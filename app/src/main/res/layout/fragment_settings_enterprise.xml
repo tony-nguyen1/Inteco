@@ -31,6 +31,7 @@
 
                 <!-- Profile Picture -->
                 <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/circleImageView"
                     android:id="@+id/profilePicture"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
@@ -39,7 +40,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:shapeAppearanceOverlay="@style/CircleImageView"/>
+                    />
 
                 <!-- Change Image Button -->
                 <Button
