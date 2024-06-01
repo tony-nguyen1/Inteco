@@ -199,8 +199,8 @@ public class SearchActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     boolean thisDocumentIsSelected = false;
-                    String jobTitle = document.getString("jobTitle");
-                    String location = document.getString("place");
+                    String jobTitle = document.getString("job_title");
+                    String location = document.getString("city")+" "+document.getString("country");
 
 
                     if (jobTitle != null) {
