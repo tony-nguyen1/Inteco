@@ -5,6 +5,9 @@ plugins {
 }
 
 android {
+
+
+
     namespace = "fr.umontpellier.etu.inteco"
     compileSdk = 34
 
@@ -34,7 +37,7 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
-
+        buildConfig = true;
     }
 }
 

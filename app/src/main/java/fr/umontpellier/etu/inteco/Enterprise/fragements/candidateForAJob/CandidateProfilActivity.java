@@ -9,6 +9,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
@@ -47,6 +48,8 @@ import java.util.Objects;
 import android.Manifest;
 import android.widget.Toast;
 
+
+import fr.umontpellier.etu.inteco.BuildConfig;
 import fr.umontpellier.etu.inteco.R;
 
 public class CandidateProfilActivity extends AppCompatActivity {
@@ -145,6 +148,17 @@ public class CandidateProfilActivity extends AppCompatActivity {
                                 Log.d(TAG, "onSuccess: "+ finalLocalFile.getAbsolutePath());
                                 // Local temp file has been created
                                 Toast.makeText(CandidateProfilActivity.this, "Downloaded to "+finalLocalFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+                                // Open the downloaded file
+                                // Open the downloaded file using FileProvider
+                                Uri fileUri = FileProvider.getUriForFile(CandidateProfilActivity.this, BuildConfig.APPLICATION_ID + ".provider", finalLocalFile);
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setDataAndType(fileUri, "application/pdf");
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+
+                                // start activity
+                                startActivity(intent);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
