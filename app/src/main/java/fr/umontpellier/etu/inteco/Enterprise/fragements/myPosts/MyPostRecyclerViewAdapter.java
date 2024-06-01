@@ -55,6 +55,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         holder.mNbApplicants.setText("16 applicants");
         holder.mDate.setText("date");
         holder.mStatus.setText("status");
+
         holder.mJobTitle.setText(mValues.get(position).jobTitle);
         holder.mNbApplicants.setText(String.valueOf(mValues.get(position).numberApplicants)+" applicants");
         holder.mDate.setText(mValues.get(position).dateDetails);

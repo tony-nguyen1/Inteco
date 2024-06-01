@@ -189,8 +189,7 @@ public class AddPostEnterprise extends Fragment {
                 data.put("salary", Long.valueOf(salary.replace(" ","")));
                 data.put("start_time", new Timestamp(new Date()));
                 data.put("state", "open");
-/*
-//                                */
+
                 db.collection("offers").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference offerReference) {
