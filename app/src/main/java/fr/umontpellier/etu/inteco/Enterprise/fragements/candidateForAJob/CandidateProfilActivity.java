@@ -9,6 +9,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +39,7 @@ public class CandidateProfilActivity extends AppCompatActivity {
     private final MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
 
     private TextView nomView, phoneNumberView, emailView, nationalityView, birthdayView, dateView, statusView;
+    private Button acceptButton, rejectButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,89 @@ public class CandidateProfilActivity extends AppCompatActivity {
         dateView = findViewById(R.id.dateAppliedTo);
         statusView = findViewById(R.id.status);
 
+        acceptButton = findViewById(R.id.accept_button);
+        rejectButton = findViewById(R.id.reject_button);
+
         this.getUser();
+
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**
+                 * TODO :
+                 * Hyptothèse : cette utilisateur a postulé à cette offre, cette offre a enregistré cette personne
+                 *
+                 * dans collection offers, mettre à jour l'état de cette personne à accepted et des autres à rejected
+                 * dans offers, state <- closed
+                 *
+                 * dans la collection users mettre à jour l'état de cette offre à accepted
+                 *
+                 * envoyer des notifications ?
+                 */
+
+                // DONE
+                CandidateProfilActivity.this.updateOffers();
+
+                // DONE
+                CandidateProfilActivity.this.updateUsers();
+            }
+        });
+
+        // TODO
+        rejectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void updateUsers() {
+        db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (document.getReference().getId().equals(idCandidate)) {
+                            auxUpdateUsers("accepted", document);
+                        }
+                        else {
+                            auxUpdateUsers("rejected", document);
+                        }
+                    }
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            }
+        });
+    }
+
+    private void auxUpdateUsers(String newStatus, QueryDocumentSnapshot document) {
+        // we have the current user
+        DocumentReference currentUser = document.getReference();
+        Map<String,Object> data = document.getData();
+
+//                            data.replace("state","closed");
+//                            assert data.get("state").equals("closed");
+
+        for (Map<String,Object> aMap: (ArrayList<Map<String, Object>>) data.get("apply")) {
+            if (((DocumentReference) aMap.get("ref")).getId().equals(idJob)) {
+                aMap.replace("status",newStatus);
+            }
+        }
+
+        currentUser.update(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "updateUsers succeful");
+//                                        Log.d(TAG, "updateUsers: onComplete: collection users updated with data="+data);
+                }else {
+                    Log.d(TAG, "onComplete: not successful");
+                }
+            }
+        });
+
     }
 
     private void getUser() {
@@ -91,17 +176,17 @@ public class CandidateProfilActivity extends AppCompatActivity {
                 email = queryDocumentSnapshot.getString("email");
                 nationality = queryDocumentSnapshot.getString("nationality");
                 birthday = queryDocumentSnapshot.getString("birthday");
-                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getData());
-                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getString("firstname"));
-                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getString("lastname"));
-                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getString("phoneNumber"));
-                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getString("nationality"));
-                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getString("birthday"));
+//                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getData());
+//                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getString("firstname"));
+//                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getString("lastname"));
+//                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getString("phoneNumber"));
+//                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getString("nationality"));
+//                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getString("birthday"));
 
                 for (Map<String,Object> unMap:
                         (ArrayList<Map<String,Object>>) queryDocumentSnapshot.getData().get("apply")) {
                     if (((DocumentReference)unMap.get("ref")).getId().equals(idJob)) {
-                        Log.d(TAG, "onChanged: "+unMap.get("status"));
+//                        Log.d(TAG, "onChanged: "+unMap.get("status"));
                         status = (String) unMap.get("status");
                         t = (Timestamp) unMap.get("date");
                         break;
@@ -117,6 +202,58 @@ public class CandidateProfilActivity extends AppCompatActivity {
                 birthdayView.setText(birthday);
                 dateView.setText("Applied "+new PrettyTime(new Locale("en")).format(t.toDate()));
                 statusView.setText(status);
+            }
+        });
+    }
+
+    /**
+     * Update offers collection. Close the offer, rejecte all job seeker except for this.idCandidate who is accepted.
+     */
+    private void updateOffers() {
+//        Log.d(TAG, "updateOffers: ");
+        db.collection("offers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+//                    Log.d(TAG, "onComplete: ");
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (document.getReference().getId().equals(idJob)) {
+                            // we have the current offer
+                            DocumentReference currentOffer = document.getReference();
+                            Map<String,Object> data = document.getData();
+//                            Log.d(TAG, "onComplete: before data="+data);
+
+
+                            data.replace("state","closed");
+                            assert data.get("state").equals("closed");
+
+                            for (Map<String,Object> aMap: (ArrayList<Map<String, Object>>) data.get("apply")) {
+                                if (((DocumentReference) aMap.get("ref")).getId().equals(idCandidate)) {
+                                    aMap.replace("status","accepted");
+                                } else {
+                                    aMap.replace("status","rejected");
+                                }
+                            }
+
+
+//                            Log.d(TAG, "onComplete: after data="+data);
+                            currentOffer.update(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d(TAG, "updateOffers successful");
+//                                        Log.d(TAG, "updateOffers: onComplete: collection offers updated with data="+data);
+                                    }else {
+                                        Log.d(TAG, "onComplete: not successful");
+                                    }
+                                }
+                            });
+                            break;
+                        }
+                    }
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
             }
         });
     }

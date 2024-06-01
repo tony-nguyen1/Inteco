@@ -51,6 +51,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Applied"/>
+        <Button
+            android:id="@+id/accept_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accept"/>
+        <Button
+            android:id="@+id/reject_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reject"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
