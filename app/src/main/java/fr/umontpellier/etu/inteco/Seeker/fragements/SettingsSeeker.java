@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,11 +20,17 @@ import androidx.lifecycle.Observer;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Map;
+
 import fr.umontpellier.etu.inteco.R;
+import fr.umontpellier.etu.inteco.helper.Helper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +63,7 @@ public class SettingsSeeker extends Fragment {
     private String mLastName;
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public SettingsSeeker() {
         // Required empty public constructor
@@ -205,6 +213,8 @@ public class SettingsSeeker extends Fragment {
     }
 
     private void retrieveAndLogInputs() {
+        Log.d(TAG, "retrieveAndLogInputs: ");
+        
         String email = mEmailEditText.getText().toString();
         String firstName = mFirstNameEditText.getText().toString();
         String lastName = mLastNameEditText.getText().toString();
@@ -223,17 +233,45 @@ public class SettingsSeeker extends Fragment {
             gender = "Other";
         }
 
-        Log.v("SettingsSeeker", "Email: " + email);
-        Log.v("SettingsSeeker", "First Name: " + firstName);
-        Log.v("SettingsSeeker", "Last Name: " + lastName);
-        Log.v("SettingsSeeker", "Date of Birth: " + dob);
-        Log.v("SettingsSeeker", "Phone Number: " + phoneNumber);
-        Log.v("SettingsSeeker", "Location: " + location);
-        Log.v("SettingsSeeker", "City: " + city);
-        Log.v("SettingsSeeker", "Nationality: " + nationality);
-        Log.v("SettingsSeeker", "Gender: " + gender);
+        Log.v(TAG, "Email: " + email);
+        Log.v(TAG, "First Name: " + firstName);
+        Log.v(TAG, "Last Name: " + lastName);
+        Log.v(TAG, "Date of Birth: " + dob);
+        Log.v(TAG, "Phone Number: " + phoneNumber);
+        Log.v(TAG, "Location: " + location);
+        Log.v(TAG, "City: " + city);
+        Log.v(TAG, "Nationality: " + nationality);
+        Log.v(TAG, "Gender: " + gender);
 
         //TODO db request here to save
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
+        Helper.getJobSeekerDocumentReference(currentUser, listen);
+        listen.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
+            @Override
+            public void onChanged(QueryDocumentSnapshot aUser) {
+                Map<String,Object> userData = aUser.getData();
+//                userData.replace("adress", );//FIXME
+                userData.replace("birthday", dob);
+                userData.replace("city", city);
+                userData.replace("firstname", firstName);
+                userData.replace("gender", gender);
+                userData.replace("lastname", lastName);
+                userData.replace("nationality", nationality);
+                userData.replace("phoneNumber", phoneNumber);
+
+
+
+                Log.d(TAG, "onChanged: userData="+userData);
+                aUser.getReference().update(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(SettingsSeeker.this.getContext(), "Success update", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
     private void setGender(String gender) {
