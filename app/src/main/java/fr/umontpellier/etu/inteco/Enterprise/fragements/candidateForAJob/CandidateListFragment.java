@@ -113,28 +113,37 @@ public class CandidateListFragment extends Fragment {
             public void onChanged(ArrayList<QueryDocumentSnapshot> usersCandidates) {
                 Log.d(TAG, "onChanged: I have my users, i can continue");
                 Log.d(TAG, "onChanged: usersCandidates="+usersCandidates);
+
+                Log.d(TAG, "onChanged: "+usersCandidates.size()+" candidates for this post");
                 // Convertion en object
                 usersCandidates.forEach(snap -> {
                     Map<String, Object> data = snap.getData();
                     Log.d(TAG, "onChanged: userData="+data);
                     PlaceholderContent.PlaceholderItem item;
 
+
+
                     ArrayList<Map<String,Object>> foo = (ArrayList<Map<String,java.lang.Object>>) snap.get("apply");
-                    Log.d(TAG, "onChanged: foo="+foo);
+//                    Log.d(TAG, "onChanged: foo="+foo);
                     assert foo != null;
                     for (Map<String,Object> aUserData : foo) {
-                        item = new PlaceholderContent.PlaceholderItem(
-                                snap.getReference(),
-                                snap.getString("firstname")+" "+snap.getString("lastname"),
-                                (Timestamp) aUserData.get("date"),
-                                (String) aUserData.get("status")
-                        );
-                        myList.add(item);
+                        Log.d(TAG, "inside foreach: applyCurrentUserData="+aUserData);
+                        Log.d(TAG, "inside foreach: snap="+snap.getData());
+                        if (docRefOffer.equals(aUserData.get("ref"))) {
+                            item = new PlaceholderContent.PlaceholderItem(
+                                    snap.getReference(),
+                                    snap.getString("firstname")+" "+snap.getString("lastname"),
+                                    (Timestamp) aUserData.get("date"),
+                                    (String) aUserData.get("status")
+                            );
+                            myList.add(item);
+                        }
                     }
                 });
 
                 //post
                 Log.d(TAG, "onChanged: myList="+myList.toString());
+                Log.d(TAG, "onChanged: I have "+myList.size()+" elements in myList");
                 listenForUserItem.postValue(myList);
             }
         });
