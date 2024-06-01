@@ -6,8 +6,10 @@
     android:name="fr.umontpellier.etu.inteco.Enterprise.fragements.jobHaver.JobHaverFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".Enterprise.fragements.jobHaver.JobHaverFragment"
-    tools:listitem="@layout/fragment_job_haver_card" />
+    tools:listitem="@layout/fragment_job_haver_card"
+    android:layout_marginBottom="10dp"
+    />
