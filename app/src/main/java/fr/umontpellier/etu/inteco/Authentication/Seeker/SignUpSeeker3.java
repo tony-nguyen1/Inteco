@@ -1,4 +1,8 @@
 package fr.umontpellier.etu.inteco.Authentication.Seeker;
+import android.annotation.SuppressLint;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -18,12 +22,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.umontpellier.etu.inteco.Authentication.LoginFirstActivity;
 import fr.umontpellier.etu.inteco.Seeker.HomePageSeeker;
 import fr.umontpellier.etu.inteco.R;
 
@@ -42,6 +50,16 @@ public class SignUpSeeker3 extends AppCompatActivity {
     private Button btnUploadCV ;
     private Button btnNext;
     private FirebaseAuth mAuth;
+
+    private static final int PICK_FILE_REQUEST = 1;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+
+    // Create a storage reference from our app
+    private StorageReference storageRef = storage.getReference();
+
+    private UploadTask uploadTask;
+    private String nameOfFile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +83,7 @@ public class SignUpSeeker3 extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
 
         btnUploadCV.setOnClickListener(v -> {
-            performFileSearch();
+            this.openFileChooser();
         });
 
         btnNext.setOnClickListener(v -> {
@@ -106,27 +124,54 @@ public class SignUpSeeker3 extends AppCompatActivity {
         user.put("phoneNumber",phoneNumber);
         user.put("saved",new ArrayList<>());
 
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        if (this.uploadTask != null) {
+            uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-
-                        Map<String, Object> oof = new HashMap<>();
-                        oof.put("collection", "users");
-                        oof.put("email", email);
-                        oof.put("ref", documentReference);
-                        db.collection("allUsers").add(oof);
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        Log.d(TAG, "onFailure: fail");
+                        user.put("cv",null);
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                        // ...
+                        Log.d(TAG, "onSuccess: upload");
+                        Toast.makeText(SignUpSeeker3.this, "Upload of "+nameOfFile+" successful", Toast.LENGTH_SHORT).show();
+                        user.put("cv",nameOfFile);
+
+                        db.collection("users")
+                                .add(user)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+
+                                        Map<String, Object> oof = new HashMap<>();
+                                        oof.put("collection", "users");
+                                        oof.put("email", email);
+                                        oof.put("ref", documentReference);
+                                        db.collection("allUsers").add(oof).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+                                                Log.d(TAG, "onSuccess: done");
+                                            }
+                                        });
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error adding document", e);
+                                    }
+                                });
                     }
                 });
 
+        } else {
+            user.put("cv",null);
+        }
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -150,7 +195,75 @@ public class SignUpSeeker3 extends AppCompatActivity {
     private void performFileSearch() {
         //TODO implement filesearch + permissions
     }
+
+    private void openFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*"); // Pour permettre la sélection de tous types de fichiers
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            startActivityForResult(Intent.createChooser(intent, "Select a File"), PICK_FILE_REQUEST);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
+        }
+    }
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_FILE_REQUEST && resultCode == RESULT_OK) {
+            if (data != null) {
+                Uri selectedFileUri = data.getData();
+                this.nameOfFile = this.getFileName(selectedFileUri);
+                Log.d(TAG, "onActivityResult: name="+this.getFileName(selectedFileUri));
+
+
+                StorageReference riversRef = storageRef.child("images/"+nameOfFile);
+                this.uploadTask = riversRef.putFile(selectedFileUri);
+
+//                uploadTask.addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception exception) {
+//                        // Handle unsuccessful uploads
+//                        Log.d(TAG, "onFailure: fail");
+//                    }
+//                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+//                        // ...
+//                        Log.d(TAG, "onSuccess: upload");
+//                        Toast.makeText(SignUpSeeker3.this, "Upload of "+nameOfFile+" successful", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+            }
+        }
+    }
+    @SuppressLint("Range")
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 }
