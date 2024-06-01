@@ -148,7 +148,7 @@ public class CandidateProfilActivity extends AppCompatActivity {
                                 Log.d(TAG, "onSuccess: "+ finalLocalFile.getAbsolutePath());
                                 // Local temp file has been created
                                 Toast.makeText(CandidateProfilActivity.this, "Downloaded to "+finalLocalFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-                                // Open the downloaded file
+
                                 // Open the downloaded file using FileProvider
                                 Uri fileUri = FileProvider.getUriForFile(CandidateProfilActivity.this, BuildConfig.APPLICATION_ID + ".provider", finalLocalFile);
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
