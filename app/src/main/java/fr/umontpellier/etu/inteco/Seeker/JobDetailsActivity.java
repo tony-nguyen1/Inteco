@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.umontpellier.etu.inteco.R;
+import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 
 public class JobDetailsActivity extends AppCompatActivity {
 
@@ -37,6 +39,7 @@ public class JobDetailsActivity extends AppCompatActivity {
 
     String idDocumentUser;
     DocumentReference myDocRef;
+    final private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,16 +76,20 @@ public class JobDetailsActivity extends AppCompatActivity {
         String place = intent.getStringExtra("place");
         String postDate = intent.getStringExtra("postDate");
         String salary = intent.getStringExtra("salary");
-        //TODO Récupèrer le reste des infos
+
+        // DONE
         String description = "Wear a strawberry fruit costume under the sun for publicity...";
-        String requirements = "• You like fruits";
         String location = "Overlook Avenue, Belleville, NJ, USA";
-        String position = "Senior Wearer";
         String qualification = "Phd";
         String experience = "None required";
         String contractType = "Permanent contract";
         String jobType = "Full-Time";
         String country = "Greenland";
+
+
+        //TODO Récupèrer le reste des infos
+        String requirements = "• You like fruits"; //FIXME
+        String position = "Senior Wearer"; //FIXME
 
         // Set texts
         companyNameTV.setText(companyName);
@@ -106,6 +113,38 @@ public class JobDetailsActivity extends AppCompatActivity {
                }
         });
 
+        db.collection("offers")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "onComplete: searching for "+idOffer);
+                            for (QueryDocumentSnapshot offerSnapshot :
+                                    task.getResult()) {
+                                Log.d(TAG, "onComplete: "+offerSnapshot.getId());
+                                if (offerSnapshot.getId().equals(JobDetailsActivity.this.idOffer)) {
+                                    Log.d(TAG, "onComplete: "+offerSnapshot.getData());
+
+
+                                    Offer offer = Offer.newInstance(offerSnapshot.getReference(),offerSnapshot.getData());
+
+                                    postDateTV.setText("Posted "+offer.getPrettyTime());
+                                    countryTV.setText(offer.country);
+                                    descriptionTV.setText(offer.description);
+                                    locationTV.setText(offer.adress+", "+offer.city+", "+offer.country);
+                                    qualificationTV.setText(offer.qualificationWanted);
+                                    experienceTV.setText(offer.experienceWanted);
+                                    contractTypeTV.setText(offer.contractType);
+
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
+                });
+
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +164,6 @@ public class JobDetailsActivity extends AppCompatActivity {
 
 
                 MutableLiveData<QueryDocumentSnapshot> waiter = new MutableLiveData<>();
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
                 db.collection("users")
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

@@ -47,12 +47,12 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         holder.companyInfoView.setText(/*item.details*/ "name Company" +" . "+mValues.get(position).city+", "+mValues.get(position).country);
         holder.mPostDateView.setText(new PrettyTime(new Locale("en")).format(mValues.get(position).realDate.toDate()));
         holder.mSalaryView.setText(Long.toString(item.salary)+"€/Mo");
+
+        holder.mContractView.setText(item.contractType);
+        holder.mJobTypeView.setText(item.jobType);
+
+
         // click functionality
-
-
-
-
-
         holder.itemView.setOnClickListener (v -> {
             itemClickListener.onItemClickListener(item, position);
         });
@@ -71,6 +71,8 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 //        public final TextView mPlaceView;
         public final TextView mPostDateView;
         public final TextView mSalaryView;
+        public final TextView mContractView;
+        public final TextView mJobTypeView;
         public Offer mItem;
 
         public ViewHolder(fr.umontpellier.etu.inteco.databinding.FragmentItemBinding binding) {
@@ -83,6 +85,9 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 //            mPlaceView = binding.place;
             mPostDateView = binding.postDate;
             mSalaryView = binding.salary;
+
+            mContractView = binding.contractType;
+            mJobTypeView = binding.jobType;
         }
 
         @Override

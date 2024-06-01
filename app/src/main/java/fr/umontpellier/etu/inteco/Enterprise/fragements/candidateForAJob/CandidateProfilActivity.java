@@ -1,6 +1,9 @@
 package fr.umontpellier.etu.inteco.Enterprise.fragements.candidateForAJob;
 
 import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +18,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,14 +31,22 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import android.Manifest;
+import android.widget.Toast;
+
 import fr.umontpellier.etu.inteco.R;
 
 public class CandidateProfilActivity extends AppCompatActivity {
@@ -47,7 +59,18 @@ public class CandidateProfilActivity extends AppCompatActivity {
     private final MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
 
     private TextView locationView, nomView, phoneNumberView, emailView, nationalityView, birthdayView, dateView, statusView;
-    private Button acceptButton, rejectButton, contactButton;
+    private Button acceptButton, rejectButton, contactButton, cvButton;
+
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+
+
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    // Create a storage reference from our app
+    private StorageReference storageRef = storage.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +94,69 @@ public class CandidateProfilActivity extends AppCompatActivity {
         acceptButton = findViewById(R.id.accept_button);
         rejectButton = findViewById(R.id.reject_button);
         contactButton = findViewById(R.id.contact_button);
+        cvButton = findViewById(R.id.download_button);
 
 
         this.getUser();
 
+        cvButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MutableLiveData<QueryDocumentSnapshot> mutable = new MutableLiveData<>();
+                db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.getReference().getId().equals(idCandidate)) {
+                                    mutable.postValue(document);
+                                    break;
+                                }
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+                mutable.observe(CandidateProfilActivity.this, new Observer<QueryDocumentSnapshot>() {
+                    @Override
+                    public void onChanged(QueryDocumentSnapshot queryDocumentSnapshot) {
+
+
+                        File downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+
+                        File localFile = null;
+                        try {
+//                            localFile = File.createTempFile("doc", ".pdf",downloadsDirectory);
+                            localFile = new File(downloadsDirectory, Objects.requireNonNull(queryDocumentSnapshot.getString("cv")));
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        File finalLocalFile = localFile;
+
+                        StorageReference islandRef = storageRef.child("pdf/"+queryDocumentSnapshot.getString("cv")); // le nom de ce qu'on dl
+
+                        islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Log.d(TAG, "onSuccess: Local temp file has been created");
+                                Log.d(TAG, "onSuccess: "+ finalLocalFile.getAbsolutePath());
+                                // Local temp file has been created
+                                Toast.makeText(CandidateProfilActivity.this, "Downloaded to "+finalLocalFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle any errors
+                                Log.d(TAG, "onFailure: no download");
+                            }
+                        });
+                    }
+                });
+            }
+        });
         contactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

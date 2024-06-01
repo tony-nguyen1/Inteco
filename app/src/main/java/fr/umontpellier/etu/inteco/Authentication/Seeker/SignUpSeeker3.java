@@ -221,24 +221,8 @@ public class SignUpSeeker3 extends AppCompatActivity {
                 Log.d(TAG, "onActivityResult: name="+this.getFileName(selectedFileUri));
 
 
-                StorageReference riversRef = storageRef.child("images/"+nameOfFile);
+                StorageReference riversRef = storageRef.child("pdf/"+nameOfFile);
                 this.uploadTask = riversRef.putFile(selectedFileUri);
-
-//                uploadTask.addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception exception) {
-//                        // Handle unsuccessful uploads
-//                        Log.d(TAG, "onFailure: fail");
-//                    }
-//                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-//                        // ...
-//                        Log.d(TAG, "onSuccess: upload");
-//                        Toast.makeText(SignUpSeeker3.this, "Upload of "+nameOfFile+" successful", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
             }
         }
     }
