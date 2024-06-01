@@ -1,12 +1,18 @@
 package fr.umontpellier.etu.inteco.Enterprise.fragements.candidateForAJob;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 
+import android.Manifest;
 import fr.umontpellier.etu.inteco.R;
 
 public class CandidateProfilActivity extends AppCompatActivity {
@@ -38,8 +45,8 @@ public class CandidateProfilActivity extends AppCompatActivity {
     private String idJob;
     private final MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
 
-    private TextView nomView, phoneNumberView, emailView, nationalityView, birthdayView, dateView, statusView;
-    private Button acceptButton, rejectButton;
+    private TextView locationView, nomView, phoneNumberView, emailView, nationalityView, birthdayView, dateView, statusView;
+    private Button acceptButton, rejectButton, contactButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +58,7 @@ public class CandidateProfilActivity extends AppCompatActivity {
         this.idJob = intent.getStringExtra("idStringJob");
 
         Log.d(TAG, "onCreate: idCandidate="+idCandidate+" idJob="+idJob);
-
+        locationView = findViewById(R.id.location);
         nomView = findViewById(R.id.nom);
         phoneNumberView = findViewById(R.id.tel);
         emailView = findViewById(R.id.email);
@@ -62,8 +69,17 @@ public class CandidateProfilActivity extends AppCompatActivity {
 
         acceptButton = findViewById(R.id.accept_button);
         rejectButton = findViewById(R.id.reject_button);
+        contactButton = findViewById(R.id.contact_button);
+
 
         this.getUser();
+
+        contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showContactOptions();
+            }
+        });
 
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,7 +183,7 @@ public class CandidateProfilActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(QueryDocumentSnapshot queryDocumentSnapshot) {
-                String firstName, lastName, phoneNumber, email, nationality, birthday, status = null;
+                String firstName, city, lastName, phoneNumber, email, nationality, birthday, status = null;
                 Timestamp t = null;
 
                 firstName = queryDocumentSnapshot.getString("firstname");
@@ -176,6 +192,7 @@ public class CandidateProfilActivity extends AppCompatActivity {
                 email = queryDocumentSnapshot.getString("email");
                 nationality = queryDocumentSnapshot.getString("nationality");
                 birthday = queryDocumentSnapshot.getString("birthday");
+                city = queryDocumentSnapshot.getString("city");
 //                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getData());
 //                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getString("firstname"));
 //                Log.d(TAG, "onChanged: doc="+queryDocumentSnapshot.getString("lastname"));
@@ -202,6 +219,16 @@ public class CandidateProfilActivity extends AppCompatActivity {
                 birthdayView.setText(birthday);
                 dateView.setText("Applied "+new PrettyTime(new Locale("en")).format(t.toDate()));
                 statusView.setText(status);
+                locationView.setText(city);
+                Context context = statusView.getContext();
+                if ("accepted".equalsIgnoreCase(status)) {
+                    statusView.setTextColor(ContextCompat.getColor(context, R.color.status_open));
+                } else if ("rejected".equalsIgnoreCase(status)) {
+                    statusView.setTextColor(ContextCompat.getColor(context, R.color.status_false));
+                }
+                else{
+                    statusView.setTextColor(ContextCompat.getColor(context, R.color.status_pending));
+                }
             }
         });
     }
@@ -256,5 +283,38 @@ public class CandidateProfilActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    private void showContactOptions() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Contact")
+                .setItems(new String[]{"Call", "Send Email"}, (dialog, which) -> {
+                    if (which == 0) {
+                        makePhoneCall();
+                    } else if (which == 1) {
+                        sendEmail();
+                    }
+                })
+                .show();
+    }
+
+
+    private void makePhoneCall() {
+        String phoneNumber = phoneNumberView.getText().toString();
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:" + phoneNumber));
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+            return;
+        }
+        startActivity(callIntent);
+    }
+
+    private void sendEmail() {
+        String email = emailView.getText().toString();
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Job Application");
+
+        startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 }
