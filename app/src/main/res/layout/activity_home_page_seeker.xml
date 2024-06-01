@@ -18,5 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="160px"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav_menu_seeker" />
+        app:menu="@menu/bottom_nav_menu_seeker"
+        app:itemIconTint="@animator/nav_item_color"
+        app:itemTextColor="@animator/nav_item_color"
+        />
 </RelativeLayout>
