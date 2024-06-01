@@ -120,11 +120,6 @@ public class SettingsSeeker extends Fragment {
         mFirstNameEditText.setText(mFirstName);
         mLastNameEditText.setText(mLastName);
 
-        //TODO set the rest of the inputs to their values in the database
-        /**
-         * TODO :
-         * db request
-         */
 
         MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
         db.collection("users")
@@ -243,7 +238,7 @@ public class SettingsSeeker extends Fragment {
         Log.v(TAG, "Nationality: " + nationality);
         Log.v(TAG, "Gender: " + gender);
 
-        //TODO db request here to save
+        // db request here to save
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
