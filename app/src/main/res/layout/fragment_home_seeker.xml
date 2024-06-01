@@ -140,12 +140,12 @@
             android:textSize="16sp"/>
     </LinearLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_search"
         android:text="Search"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/my_candidates_layout"
-
+        android:background="@drawable/button_soft_green"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"

@@ -1,10 +1,17 @@
 package fr.umontpellier.etu.inteco.Enterprise.fragements.jobHaver;
 
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import fr.umontpellier.etu.inteco.Enterprise.fragements.jobHaver.placeholder.PlaceholderContent.PlaceholderItem;
@@ -42,8 +49,28 @@ public class JobHaverRecyclerViewAdapter extends RecyclerView.Adapter<JobHaverRe
         holder.mPhoneNumberView.setText(mValues.get(position).phoneNumer);
         holder.mMailView.setText(mValues.get(position).email);
 
-//        holder.mIdView.setText(mValues.get(position).id);
-//        holder.mContentView.setText(mValues.get(position).content);
+        holder.mButtonMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", holder.mMailView.getText().toString(), null));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Job Application");
+                v.getContext().startActivity(Intent.createChooser(emailIntent, "Send email..."));
+            }
+        });
+
+        holder.mButtonCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:" + holder.mPhoneNumberView.getText().toString()));
+
+                if (ActivityCompat.checkSelfPermission(v.getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions((Activity) v.getContext(), new String[]{Manifest.permission.CALL_PHONE}, 1);
+                    return;
+                }
+                v.getContext().startActivity(callIntent);
+            }
+        });
     }
 
     @Override
@@ -57,6 +84,8 @@ public class JobHaverRecyclerViewAdapter extends RecyclerView.Adapter<JobHaverRe
         public final TextView mStatusView;
         public final TextView mPhoneNumberView;
         public final TextView mMailView;
+        public final Button mButtonMail;
+        public final Button mButtonCall;
         public PlaceholderItem mItem;
 
         public ViewHolder(FragmentJobHaverCardBinding binding) {
@@ -66,12 +95,9 @@ public class JobHaverRecyclerViewAdapter extends RecyclerView.Adapter<JobHaverRe
             mStatusView = binding.status;
             mPhoneNumberView = binding.phoneNumber;
             mMailView = binding.mail;
+            mButtonMail = binding.buttonMail;
+            mButtonCall = binding.buttonCall;
         }
-
-//        @Override
-//        public String toString() {
-//            return super.toString() + " '" + mContentView.getText() + "'";
-//        }
 
         @Override
         public String toString() {

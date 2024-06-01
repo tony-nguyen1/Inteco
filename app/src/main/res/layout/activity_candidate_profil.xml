@@ -4,63 +4,165 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Enterprise.fragements.candidateForAJob.CandidateProfilActivity">
+    tools:context=".Enterprise.fragements.candidateForAJob.CandidateProfilActivity"
+    android:background="#FAFAFA"
+    >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/white_curvy"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="14dp"
+        android:padding="15dp"
+        >
+    <ImageView
+        android:id="@+id/profile_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
 
-        <TextView
-            android:id="@+id/nom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nom complet"/>
+
+        android:src="@drawable/defautl_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+         />
+
+    <TextView
+        android:id="@+id/nom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Steve Jobs"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/profile_image"
+        app:layout_constraintTop_toTopOf="@id/profile_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp" />
+
         <TextView
             android:id="@+id/tel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+331234567890"/>
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <TextView
-            android:id="@+id/email"
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="steve@icloud.com"
+        app:layout_constraintStart_toStartOf="@id/nom"
+        app:layout_constraintTop_toBottomOf="@id/location"
+        android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="steve@icloud.com"/>
-        <TextView
-            android:id="@+id/birthday"
+            android:text=""
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@+id/nom"
+            app:layout_constraintTop_toBottomOf="@+id/birthday_nationality_layout" />
+
+        <LinearLayout
+            android:id="@+id/birthday_nationality_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="11/11/2011"/>
-        <TextView
-            android:id="@+id/nationality"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chinese"/>
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@id/nom"
+            app:layout_constraintTop_toBottomOf="@+id/nom">
+            <TextView
+                android:id="@+id/birthday"
+                android:textSize="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+            <TextView
+                android:id="@+id/space"
+                android:textSize="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" - " />
+
+            <TextView
+                android:textSize="15dp"
+                android:id="@+id/nationality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="" />
+
+        </LinearLayout>
+
+
         <TextView
             android:id="@+id/dateAppliedTo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Applied the 10/10/2010"/>
+            android:layout_marginTop="8dp"
+            android:text="One monthe ago"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/status" />
+
         <TextView
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Applied"/>
-        <Button
-            android:id="@+id/accept_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Accept"/>
-        <Button
-            android:id="@+id/reject_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Reject"/>
-    </LinearLayout>
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="accepted"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/profile_image"
+      />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/contact_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Contact"
+        android:background="@drawable/button_soft_green"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/reject_button"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/accept_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Accept"
+        android:background="@drawable/heavy_green_button"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/reject_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="20dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/reject_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Reject"
+        android:background="@drawable/button_red"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toEndOf="@id/accept_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

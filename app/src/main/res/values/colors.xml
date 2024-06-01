@@ -8,6 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="status_open">#8BC34A</color>
-    <color name="status_false">#F44336</color>
+    <color name="status_false">#ED676A</color>
     <color name="status_pending">#252525</color>
+    <color name="green_soft">#D7E96A</color>
+    <color name="red_soft">#ED676A</color>
+    <color name="green_heavy">#4CAF50</color>
 </resources>

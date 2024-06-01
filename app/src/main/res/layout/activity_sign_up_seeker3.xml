@@ -49,14 +49,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/info1"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnCV"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginLeft="120px"
         android:layout_marginTop="44dp"
         android:layout_marginRight="120px"
-        android:background="@drawable/heavy_green_button"
+        android:background="@drawable/button_soft_green"
         android:text="Upload CV"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +64,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/info2" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnNext"
         android:layout_width="0dp"
         android:layout_height="55dp"
