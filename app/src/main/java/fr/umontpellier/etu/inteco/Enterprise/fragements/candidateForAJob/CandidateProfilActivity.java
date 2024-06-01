@@ -1,7 +1,8 @@
 package fr.umontpellier.etu.inteco.Enterprise.fragements.candidateForAJob;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -284,8 +285,9 @@ public class CandidateProfilActivity extends AppCompatActivity {
             }
         });
     }
+
     private void showContactOptions() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle("Contact")
                 .setItems(new String[]{"Call", "Send Email"}, (dialog, which) -> {
                     if (which == 0) {
