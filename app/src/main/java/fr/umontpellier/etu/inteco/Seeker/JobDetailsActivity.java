@@ -44,21 +44,67 @@ public class JobDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_job_details);
 
 
-        TextView jobTitleTV = findViewById(R.id.jobTitle);
+
+
+
+        // Find views by IDs
         TextView companyNameTV = findViewById(R.id.companyName);
-        TextView placeTV = findViewById(R.id.place);
+        TextView jobTitleTV = findViewById(R.id.jobTitle);
+        TextView jobTypeTV = findViewById(R.id.job_type);
+        TextView countryTV = findViewById(R.id.country);
         TextView postDateTV = findViewById(R.id.postDate);
         TextView salaryTV = findViewById(R.id.salary);
+        TextView descriptionTV = findViewById(R.id.description);
+        TextView requirementsTV = findViewById(R.id.requirements);
+        TextView locationTV = findViewById(R.id.location);
+        TextView positionTV = findViewById(R.id.position);
+        TextView qualificationTV = findViewById(R.id.qualification);
+        TextView experienceTV = findViewById(R.id.experience);
+        TextView contractTypeTV = findViewById(R.id.contract_type);
+        //Buttons
+        Button saveButton = findViewById(R.id.button_save);
+        Button applyButton = findViewById(R.id.button_apply);
 
+        // Get data from Intent
         Intent intent = getIntent();
         idOffer = intent.getStringExtra("id");
-        jobTitleTV.setText(intent.getStringExtra("jobTitle"));
-        companyNameTV.setText(intent.getStringExtra("companyName"));
-        placeTV.setText(intent.getStringExtra("place"));
-        postDateTV.setText(intent.getStringExtra("postDate"));
-        salaryTV.setText(intent.getStringExtra("salary"));
+        String jobTitle = intent.getStringExtra("jobTitle");
+        String companyName = intent.getStringExtra("companyName");
+        String place = intent.getStringExtra("place");
+        String postDate = intent.getStringExtra("postDate");
+        String salary = intent.getStringExtra("salary");
+        //TODO Récupèrer le reste des infos
+        String description = "Wear a strawberry fruit costume under the sun for publicity...";
+        String requirements = "• You like fruits";
+        String location = "Overlook Avenue, Belleville, NJ, USA";
+        String position = "Senior Wearer";
+        String qualification = "Phd";
+        String experience = "None required";
+        String contractType = "Permanent contract";
+        String jobType = "Full-Time";
+        String country = "Greenland";
 
-        Button saveButton = findViewById(R.id.button_save);
+        // Set texts
+        companyNameTV.setText(companyName);
+        jobTitleTV.setText(jobTitle);
+        jobTypeTV.setText(jobType);
+        countryTV.setText(country);
+        postDateTV.setText(postDate);
+        salaryTV.setText(salary);
+        descriptionTV.setText(description);
+        requirementsTV.setText(requirements);
+        locationTV.setText(location);
+        positionTV.setText(position);
+        qualificationTV.setText(qualification);
+        experienceTV.setText(experience);
+        contractTypeTV.setText(contractType);
+
+        applyButton.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                           //TODO  apply button
+               }
+        });
 
 
         saveButton.setOnClickListener(new View.OnClickListener() {

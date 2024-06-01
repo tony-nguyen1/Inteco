@@ -47,7 +47,6 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         holder.companyInfoView.setText(/*item.details*/ "name Company" +" . "+mValues.get(position).city+", "+mValues.get(position).country);
         holder.mPostDateView.setText(new PrettyTime(new Locale("en")).format(mValues.get(position).realDate.toDate()));
         holder.mSalaryView.setText(Long.toString(item.salary)+"€/Mo");
-        holder.mSalaryView.setText(item.salary+"€/Mo");
         // click functionality
 
 
