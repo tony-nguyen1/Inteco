@@ -34,8 +34,16 @@ public class JobHaverRecyclerViewAdapter extends RecyclerView.Adapter<JobHaverRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+
+
+        holder.mNameView.setText(mValues.get(position).name);
+        holder.mPostTitleView.setText(mValues.get(position).jobTitle);
+        holder.mStatusView.setText(mValues.get(position).status);
+        holder.mPhoneNumberView.setText(mValues.get(position).phoneNumer);
+        holder.mMailView.setText(mValues.get(position).email);
+
+//        holder.mIdView.setText(mValues.get(position).id);
+//        holder.mContentView.setText(mValues.get(position).content);
     }
 
     @Override
@@ -44,19 +52,37 @@ public class JobHaverRecyclerViewAdapter extends RecyclerView.Adapter<JobHaverRe
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView mNameView;
+        public final TextView mPostTitleView;
+        public final TextView mStatusView;
+        public final TextView mPhoneNumberView;
+        public final TextView mMailView;
         public PlaceholderItem mItem;
 
         public ViewHolder(FragmentJobHaverCardBinding binding) {
             super(binding.getRoot());
-            mIdView = binding.itemNumber;
-            mContentView = binding.content;
+            mNameView = binding.name;
+            mPostTitleView = binding.postTitle;
+            mStatusView = binding.status;
+            mPhoneNumberView = binding.phoneNumber;
+            mMailView = binding.mail;
         }
+
+//        @Override
+//        public String toString() {
+//            return super.toString() + " '" + mContentView.getText() + "'";
+//        }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return "ViewHolder{" +
+                    "mNameView=" + mNameView +
+                    ", mPostTitleView=" + mPostTitleView +
+                    ", mStatusView=" + mStatusView +
+                    ", mPhoneNumberView=" + mPhoneNumberView +
+                    ", mMailView=" + mMailView +
+                    ", mItem=" + mItem +
+                    '}';
         }
     }
 }

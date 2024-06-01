@@ -24,6 +24,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import fr.umontpellier.etu.inteco.R;
@@ -76,29 +77,35 @@ public class JobHaverFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_job_haver_list, container, false);
 
         this.grosseFonction();
-//        listen.observe(getViewLifecycleOwner(), new Observer<ArrayList<Map<String, Object>>>() {
-//            @Override
-//            public void onChanged(ArrayList<QueryDocumentSnapshot> queryDocumentSnapshots) {
-//                for (QueryDocumentSnapshot snap :
-//                        queryDocumentSnapshots) {
-//                    Log.d(TAG, "onChanged: "+snap.getData());
-//                }
-//
-//            }
-//        });
+        listen.observe(getViewLifecycleOwner(), new Observer<ArrayList<Map<String, Object>>>() {
+            @Override
+            public void onChanged(ArrayList<Map<String, Object>> list) {
+                ArrayList<PlaceholderContent.PlaceholderItem> listItem = new ArrayList<>();
+
+                for (Map<String, Object> aMap :
+                        list) {
+                    PlaceholderContent.PlaceholderItem anItem = PlaceholderContent.PlaceholderItem.newInstance(aMap);
+                    listItem.add(anItem);
+                    Log.d(TAG, "onChanged: toString="+PlaceholderContent.PlaceholderItem.newInstance(aMap));
+                }
 
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                // Set the adapter
+                if (view instanceof RecyclerView) {
+                    Context context = view.getContext();
+                    RecyclerView recyclerView = (RecyclerView) view;
+                    if (mColumnCount <= 1) {
+                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    } else {
+                        recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                    }
+                    recyclerView.setAdapter(new JobHaverRecyclerViewAdapter(listItem));
+                }
             }
-            recyclerView.setAdapter(new JobHaverRecyclerViewAdapter(PlaceholderContent.ITEMS));
-        }
+        });
+
+
+
         return view;
     }
 
@@ -118,7 +125,6 @@ public class JobHaverFragment extends Fragment {
 
     private void auxGetAllOffersOfThisCompany(ArrayList<DocumentReference> jobPostedDocRefList) {
         Log.d(TAG, "auxGetAllOffersOfThisCompany: "+jobPostedDocRefList);
-        Log.d(TAG, "auxGetAllOffersOfThisCompany: "+jobPostedDocRefList.get(0).getId());
 
         ArrayList<QueryDocumentSnapshot> postedOffersDocRefList = new ArrayList<>();
         db.collection("offers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -140,7 +146,6 @@ public class JobHaverFragment extends Fragment {
     }
     private void auxGetAllAcceptedCandidateOfTheseOffers(ArrayList<QueryDocumentSnapshot> postedOffersDocRefList) {
         Log.d(TAG, "auxGetAllAcceptedCandidateOfTheseOffers: "+postedOffersDocRefList);
-        Log.d(TAG, "auxGetAllAcceptedCandidateOfTheseOffers: "+postedOffersDocRefList.get(0).getId());
 
         ArrayList<DocumentReference> acceptedCandidatesDocRefList = new ArrayList<>();
         db.collection("offers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -161,7 +166,7 @@ public class JobHaverFragment extends Fragment {
 //                            acceptedCandidatesDocRefList.add(document.getReference());
 //                        }
                     }
-                    Log.d(TAG, "auxGetAllAcceptedCandidateOfTheseOffers: out="+acceptedCandidatesDocRefList.get(0).getId());
+//                    Log.d(TAG, "auxGetAllAcceptedCandidateOfTheseOffers: out="+acceptedCandidatesDocRefList.get(0).getId());
 //                    JobHaverFragment.this.auxGetAllAcceptedCandidateOfTheseOffers(postedOffersDocRefList);
                     auxGetInfoUsers(acceptedCandidatesDocRefList, postedOffersDocRefList);
                 } else {
@@ -172,31 +177,64 @@ public class JobHaverFragment extends Fragment {
     }
     private void auxGetInfoUsers(ArrayList<DocumentReference> acceptedCandidatesDocRefList, ArrayList<QueryDocumentSnapshot> postedOffersDocRefList) {
         ArrayList<Map<String,Object>> listDataUserAcceptedWithJobData = new ArrayList<>();
+
+//        acceptedCandidatesDocRefList.stream().forEach(elem -> Log.d(TAG, "id user that have been accepted: "+elem.getId()));
+//        postedOffersDocRefList.stream().forEach(elem -> Log.d(TAG, "id offer that have accepted someone: "+elem.getId()));
         db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Map<String, Object> userMap = document.getData();
+                    Log.d(TAG, "inside for loop");
+                    for (QueryDocumentSnapshot currentUserSnap : task.getResult()) {
+                        Map<String, Object> currentUserMap = currentUserSnap.getData();
+//                        Log.d(TAG, "onComplete: currentUserMap="+currentUserMap);
+//                        Log.d(TAG, "current id user="+currentUserSnap.getId());
+                        if (acceptedCandidatesDocRefList.contains(currentUserSnap.getReference())) {
+//                            Log.d(TAG, "he is accepted for idOffer");
+                            for (QueryDocumentSnapshot offerSnap :
+                                    postedOffersDocRefList) {
+    //                            Log.d(TAG, "considering the offer "+offerSnap.getId());
 
+//                                Log.d(TAG, "he is accepted for idOffer="+offerSnap.getId());
 
-                        for (QueryDocumentSnapshot offerSnap :
-                                postedOffersDocRefList) {
-                            for (Map<String,Object> applyMap : (ArrayList<Map<String,Object>>) document.getData().get("apply")) {
-                                if (applyMap.get("ref").equals(offerSnap.getReference())) {
-                                    userMap.put("jobData", offerSnap.getData());
-                                    listDataUserAcceptedWithJobData.add(userMap);
+                                if (JobHaverFragment.this.arrayContainsMapWithFieldRefEquals((ArrayList<Map<String, Object>>) currentUserMap.get("apply"),offerSnap.getReference())) {
+
+//                                    Log.d(TAG, "he is accepted for idOffer="+offerSnap.getId());
+//                                    Log.d(TAG, "onComplete: adding that in field jobData : "+offerSnap.getData());
+//                                    currentUserMap.put("jobData",offerSnap.getData());
+                                    Map<String,Object> map = new HashMap<>(currentUserMap);
+                                    map.put("jobData",offerSnap.getData());
+                                    listDataUserAcceptedWithJobData.add(map);
                                 }
                             }
                         }
-                        Log.d(TAG, "onComplete: userMap="+userMap);
+
+
+//                        for (QueryDocumentSnapshot offerSnap :
+//                                postedOffersDocRefList) {
+//                            for (Map<String,Object> applyMap : (ArrayList<Map<String,Object>>) currentUserSnap.getData().get("apply")) {
+//                                if (applyMap.get("status").equals("accepted")) {
+//                                    Log.d(TAG, "onComplete: \n"+ currentUserMap.get("email")+"\napplyMap="+applyMap+"\nofferSnap="+offerSnap.getReference());
+//                                    if (applyMap.get("ref").equals(offerSnap.getReference())) {
+//                                        currentUserMap.put("jobData", offerSnap.getData());
+//                                        listDataUserAcceptedWithJobData.add(currentUserMap);
+//                                    }
+//                                }
+//
+//                            }
+//                        }
+//                        Log.d(TAG, "onComplete: userMap="+userMap);
+//                        Log.d(TAG, "onComplete: "+currentUserMap.get("email")+" accepted for "+((Map<String,Object>) currentUserMap.get("jobData")).get("post_title"));
 
 
 
-                        if (acceptedCandidatesDocRefList.contains(document.getReference())) {
-//                            listDataUserAcceptedWithJobData.add(document);
-                        }
+//                        if (acceptedCandidatesDocRefList.contains(currentUserSnap.getReference())) {
+////                            listDataUserAcceptedWithJobData.add(document);
+//                        }
                     }
+                    Log.d(TAG, "onComplete: "+listDataUserAcceptedWithJobData.size()+" result="+listDataUserAcceptedWithJobData);
+
+//                    Log.d(TAG, "onComplete: result="+listDataUserAcceptedWithJobData.size());
 //                    JobHaverFragment.this.auxGetAllAcceptedCandidateOfTheseOffers(postedOffersDocRefList);
                     //post here
                     listen.postValue(listDataUserAcceptedWithJobData);
@@ -205,5 +243,16 @@ public class JobHaverFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private boolean arrayContainsMapWithFieldRefEquals(ArrayList<Map<String,Object>> array, DocumentReference theReference) {
+        for (Map<String,Object> uneMap:
+             array) {
+            if (uneMap.get("ref").equals(theReference)) {
+                Log.d(TAG, "arrayContainsMapWithFieldRefEquals: match");
+                return true;
+            }
+        }
+        return false;
     }
 }

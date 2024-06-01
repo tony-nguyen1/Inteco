@@ -34,11 +34,11 @@ public class PlaceholderContent {
 
     private static void addItem(PlaceholderItem item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.id, item);
+//        ITEM_MAP.put(item.id, item);
     }
 
     private static PlaceholderItem createPlaceholderItem(int position) {
-        return new PlaceholderItem(String.valueOf(position), "Item " + position, makeDetails(position));
+        return null;//new PlaceholderItem(String.valueOf(position), "Item " + position, makeDetails(position));
     }
 
     private static String makeDetails(int position) {
@@ -54,19 +54,37 @@ public class PlaceholderContent {
      * A placeholder item representing a piece of content.
      */
     public static class PlaceholderItem {
-        public final String id;
-        public final String content;
-        public final String details;
+        public String name;
+        public String jobTitle;
+        public String status;
+        public String phoneNumer;
+        public String email;
 
-        public PlaceholderItem(String id, String content, String details) {
-            this.id = id;
-            this.content = content;
-            this.details = details;
+        public PlaceholderItem() {
+        }
+
+        public static PlaceholderItem newInstance(Map<String, Object> aMap) {
+            PlaceholderItem item = new PlaceholderItem();
+
+            item.name = aMap.get("firstname")+" "+aMap.get("lastname");
+
+            item.jobTitle = (String) ((Map<String, Object>) aMap.get("jobData")).get("job_title");
+            item.status = "Accepted";
+            item.phoneNumer = (String) aMap.get("phoneNumber");
+            item.email = (String) aMap.get("email");
+
+            return item;
         }
 
         @Override
         public String toString() {
-            return content;
+            return "PlaceholderItem{" +
+                    "name='" + name + '\'' +
+                    ", jobTitle='" + jobTitle + '\'' +
+                    ", status='" + status + '\'' +
+                    ", phoneNumer='" + phoneNumer + '\'' +
+                    ", email='" + email + '\'' +
+                    '}';
         }
     }
 }
