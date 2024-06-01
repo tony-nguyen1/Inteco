@@ -19,13 +19,21 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.rpc.Help;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
@@ -43,6 +51,10 @@ public class AddPostEnterprise extends Fragment {
             startingTimeInput, durationInput, experienceInput, qualificationInput, locationInput;
     private Spinner jobTypeSpinner, contractTypeSpinner, categorySpinner;
     private Button confirmButton;
+
+
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public AddPostEnterprise() {
         // Required empty public constructor
@@ -120,16 +132,16 @@ public class AddPostEnterprise extends Fragment {
         // Get input values
         String title = titleInput.getText().toString().trim();
         String description = descriptionInput.getText().toString().trim();
-        String requirements = requirementsInput.getText().toString().trim();
+        String requirements = requirementsInput.getText().toString().trim();//FIXME
         String salary = salaryInput.getText().toString().trim();
-        String startingTime = startingTimeInput.getText().toString().trim();
+        String startingTime = startingTimeInput.getText().toString().trim();//FIXME
         String jobType = jobTypeSpinner.getSelectedItem().toString();
         String contractType = contractTypeSpinner.getSelectedItem().toString();
         String duration = durationInput.getText().toString().trim();
         String experience = experienceInput.getText().toString().trim();
         String qualification = qualificationInput.getText().toString().trim();
-        String location = locationInput.getText().toString().trim();
-        String category = categorySpinner.getSelectedItem().toString();
+        String location = locationInput.getText().toString().trim();//FIXME
+        String category = categorySpinner.getSelectedItem().toString();//FIXME
 
         //TODO Generate a unique ID for the offer
         String offerId= "d";
@@ -147,17 +159,61 @@ public class AddPostEnterprise extends Fragment {
 //                description, requirements, jobType, contractType, duration, experience,
 //                qualification, location, category,startingTime);
 
-        Toast.makeText(getContext(), "Functionality disabled for now", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "savePostToFirebase: disabled");
-        throw new RuntimeException("disabled");
+//        Toast.makeText(getContext(), "Functionality disabled for now", Toast.LENGTH_SHORT).show();
+//        Log.d(TAG, "savePostToFirebase: disabled");
+//        throw new RuntimeException("disabled");
 
-        //TODO Save to Firebase, add to offers then link to company
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        final MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
+        Helper.getCompanyDocumentReference(currentUser, listen);
+        listen.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
+            @Override
+            public void onChanged(QueryDocumentSnapshot companySnapshot) {
+//                TODO Save to Firebase, add to offers then link to company
+                HashMap<String,Object> data = new HashMap<>();
+
+                data.put("apply", new ArrayList<>());//FIXME
+                data.put("adress", "std addr");//FIXME
+                data.put("city", "std city");//FIXME
+                data.put("contract_type", contractType);
+                data.put("country", "std addr");//FIXME
+                data.put("description", description);
+                data.put("duration", duration);
+                data.put("experience_wanted", experience);
+                data.put("job_title", "std job title");//FIXME
+                data.put("job_type", jobType);
+                data.put("post_title", title);
+                data.put("qualification_wanted", qualification);
+                data.put("realDate", new Timestamp(new Date()));//FIXME
+                data.put("refCompany", companySnapshot.getReference());
+                data.put("salary", Long.valueOf(salary.replace(" ","")));
+                data.put("start_time", new Timestamp(new Date()));
+                data.put("state", "open");
+/*
+//                                */
+                db.collection("offers").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference offerReference) {
+                        Helper.addPostToCompany(companySnapshot.getReference(), offerReference);
+                        Toast.makeText(getContext(), "New offer posted", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+
+
+
+
+
+
+
 //        final MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
-//        final MutableLiveData<ArrayList<DocumentReference>> listenDocRef = new MutableLiveData<>();
-//        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 //        assert currentUser != null;
 //        Helper.getCompanyDocumentReference(currentUser, listen);
-////        Helper.addPost(currentUser, offer, listen);
+//        Helper.addPost(currentUser, offer, listen);
+//        final MutableLiveData<ArrayList<DocumentReference>> listenDocRef = new MutableLiveData<>();
+//        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 //        listen.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
 //            @Override
 //            public void onChanged(QueryDocumentSnapshot queryDocumentSnapshot) {

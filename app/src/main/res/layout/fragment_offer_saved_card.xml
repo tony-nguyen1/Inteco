@@ -9,7 +9,8 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
+        app:shapeAppearanceOverlay="@style/circleImageView"
         android:id="@+id/company_logo"
         android:layout_width="40dp"
         android:layout_height="40dp"

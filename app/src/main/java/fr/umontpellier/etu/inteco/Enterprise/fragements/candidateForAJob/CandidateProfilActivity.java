@@ -125,26 +125,30 @@ public class CandidateProfilActivity extends AppCompatActivity {
                 mutable.observe(CandidateProfilActivity.this, new Observer<QueryDocumentSnapshot>() {
                     @Override
                     public void onChanged(QueryDocumentSnapshot queryDocumentSnapshot) {
-
-
                         File downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 
                         File localFile = null;
                         try {
-//                            localFile = File.createTempFile("doc", ".pdf",downloadsDirectory);
-                            localFile = new File(downloadsDirectory, Objects.requireNonNull(queryDocumentSnapshot.getString("cv")));
+                            localFile = File.createTempFile("CV_", ".pdf",downloadsDirectory);
+//                            localFile = new File(downloadsDirectory, Objects.requireNonNull(queryDocumentSnapshot.getString("cv")));
+//                            String fileName = Objects.requireNonNull(queryDocumentSnapshot.getString("cv"));
+//                            Log.d(TAG, "onChanged: fileName"+fileName);
+//                            localFile = new File(downloadsDirectory, "CV.pdf");
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
 
                         File finalLocalFile = localFile;
 
-                        StorageReference islandRef = storageRef.child("pdf/"+queryDocumentSnapshot.getString("cv")); // le nom de ce qu'on dl
+//                        StorageReference islandRef = storageRef.child("images/"+queryDocumentSnapshot.getString("cv")); // le nom de ce qu'on dl
+                        StorageReference islandRef = storageRef.child("images/doc2749037069907555399.pdf"); // le nom de ce qu'on dl
+                        Log.d(TAG, "onChanged: "+islandRef);
 
-                        islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+
+
+                        islandRef.getFile(finalLocalFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                Log.d(TAG, "onSuccess: Local temp file has been created");
                                 Log.d(TAG, "onSuccess: "+ finalLocalFile.getAbsolutePath());
                                 // Local temp file has been created
                                 Toast.makeText(CandidateProfilActivity.this, "Downloaded to "+finalLocalFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
@@ -165,6 +169,7 @@ public class CandidateProfilActivity extends AppCompatActivity {
                             public void onFailure(@NonNull Exception exception) {
                                 // Handle any errors
                                 Log.d(TAG, "onFailure: no download");
+                                Log.d(TAG, "onFailure: "+exception.toString());
                             }
                         });
                     }

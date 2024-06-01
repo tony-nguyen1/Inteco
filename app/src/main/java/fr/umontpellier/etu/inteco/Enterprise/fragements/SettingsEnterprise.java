@@ -9,17 +9,33 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.Map;
 
 import fr.umontpellier.etu.inteco.R;
+import fr.umontpellier.etu.inteco.helper.Helper;
 
 public class SettingsEnterprise extends Fragment {
 
     private static final String ARG_COMPANY_NAME = "companyName";
     private static final String ARG_EMAIL = "email";
+    private static final String TAG = "debug Settings";
 
     private EditText mCompanyNameEditText;
     private EditText mEmailEditText;
@@ -41,6 +57,9 @@ public class SettingsEnterprise extends Fragment {
     private String mFacebook;
     private String mLinkedin;
     private String mInstagram;
+
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public SettingsEnterprise() {
         // Required empty public constructor
@@ -115,6 +134,35 @@ public class SettingsEnterprise extends Fragment {
                 retrieveAndLogInputs();
             }
         });
+
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
+        Helper.getCompanyDocumentReference(currentUser, listen);
+        listen.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
+            @Override
+            public void onChanged(QueryDocumentSnapshot aCompany) {
+//                Map<String,Object> dataCompany = aCompany.getData();
+
+//                ((DocumentReference) aCompany.get("ref")).get().addOnCompleteListener(getActivity(), new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//
+//                        mCompanyNameEditText.setText(task.getResult().getString("name"));
+//                    }
+//                });
+
+                mCompanyNameEditText.setText(aCompany.getString("name"));
+                mEmailEditText.setText(aCompany.getString("email"));
+                mPhoneNumberEditText.setText(aCompany.getString("phone"));
+                mCityEditText.setText(aCompany.getString("city"));
+                mAddressEditText.setText(aCompany.getString("adress"));
+                mWebsiteEditText.setText(aCompany.getString("website"));
+                mFacebookEditText.setText(aCompany.getString("facebook"));
+                mInstagramEditText.setText(aCompany.getString("instagram"));
+                mLinkedinEditText.setText(aCompany.getString("linked_in"));
+            }
+        });
     }
 
     private void retrieveAndLogInputs() {
@@ -128,14 +176,34 @@ public class SettingsEnterprise extends Fragment {
         String linkedin = mLinkedinEditText.getText().toString();
         String instagram = mInstagramEditText.getText().toString();
 
-        Log.v("CompanySettings", "Company Name: " + companyName);
-        Log.v("CompanySettings", "Email: " + email);
-        Log.v("CompanySettings", "Phone Number: " + phoneNumber);
-        Log.v("CompanySettings", "City: " + city);
-        Log.v("CompanySettings", "Address: " + address);
-        Log.v("CompanySettings", "Website: " + website);
-        Log.v("CompanySettings", "Facebook: " + facebook);
-        Log.v("CompanySettings", "LinkedIn: " + linkedin);
-        Log.v("CompanySettings", "Instagram: " + instagram);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
+        Helper.getCompanyDocumentReference(currentUser, listen);
+
+        listen.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
+            @Override
+            public void onChanged(QueryDocumentSnapshot aCompany) {
+                Map<String,Object> updatedDataCompany = aCompany.getData();
+
+                updatedDataCompany.replace("name",companyName);
+                updatedDataCompany.replace("email",email);
+                updatedDataCompany.replace("phone",phoneNumber);
+                updatedDataCompany.replace("city",city);
+                updatedDataCompany.replace("adress",address);
+                updatedDataCompany.replace("website",website);
+                updatedDataCompany.replace("facebook",facebook);
+                updatedDataCompany.replace("instagram",instagram);
+                updatedDataCompany.replace("linked_in",linkedin);
+
+                Log.d(TAG, "onChanged: "+updatedDataCompany);
+
+                aCompany.getReference().update(updatedDataCompany).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getContext(), "Update successful", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 }
