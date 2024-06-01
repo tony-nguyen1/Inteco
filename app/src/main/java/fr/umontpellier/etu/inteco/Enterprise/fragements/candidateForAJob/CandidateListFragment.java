@@ -1,6 +1,7 @@
 package fr.umontpellier.etu.inteco.Enterprise.fragements.candidateForAJob;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Map;
 
+import fr.umontpellier.etu.inteco.Authentication.Enterprise.SignUpEnterprise1;
+import fr.umontpellier.etu.inteco.Authentication.Enterprise.SignUpEnterprise2;
 import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Enterprise.fragements.candidateForAJob.placeholder.PlaceholderContent;
 import fr.umontpellier.etu.inteco.helper.Helper;
@@ -100,7 +103,8 @@ public class CandidateListFragment extends Fragment {
                 Log.d(TAG, "onChanged: snap of currunt offer : "+queryDocumentSnapshot.getData().toString());
 
                 Log.d(TAG, "onChanged: looking for applicants inside apply field");
-                ArrayList<DocumentReference> a = new ArrayList<>((ArrayList<DocumentReference>) queryDocumentSnapshot.getData().get("apply"));
+                ArrayList<Map<String,Object>> a = new ArrayList<>((ArrayList<Map<String,Object>>) queryDocumentSnapshot.getData().get("apply"));
+                Log.d(TAG, "onChanged: a="+a);
                 Helper.getUsers(a, listenForUserData);
             }
         });
@@ -120,6 +124,7 @@ public class CandidateListFragment extends Fragment {
                     assert foo != null;
                     for (Map<String,Object> aUserData : foo) {
                         item = new PlaceholderContent.PlaceholderItem(
+                                snap.getReference(),
                                 snap.getString("firstname")+" "+snap.getString("lastname"),
                                 (Timestamp) aUserData.get("date"),
                                 (String) aUserData.get("status")
@@ -145,7 +150,17 @@ public class CandidateListFragment extends Fragment {
                     } else {
                         recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
                     }
-                    recyclerView.setAdapter(new MyCandidateRecyclerViewAdapter(placeholderItems, null));
+                    recyclerView.setAdapter(new MyCandidateRecyclerViewAdapter(placeholderItems, new MyCandidateRecyclerViewAdapter.AdapterItemClickListener() {
+                        @Override
+                        public void onItemClickListener(PlaceholderContent.PlaceholderItem item, int position) {
+                            Intent intent = new Intent(CandidateListFragment.this.getActivity(), CandidateProfilActivity.class);
+
+                            intent.putExtra("idString",item.docRef.getId());
+                            intent.putExtra("idStringJob",docRefOffer.getId());
+
+                            startActivity(intent);
+                        }
+                    }));
                 }
             }
         });

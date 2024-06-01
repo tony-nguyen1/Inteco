@@ -308,9 +308,9 @@ public class SavedSeeker extends Fragment {
                                                         }
 //
                                                         userRef.update("saved", FieldValue.arrayRemove(myDocRef))
-                                                                .addOnCompleteListener(task1 ->
-                                                                        Toast.makeText(SavedSeeker.this.getContext(),"Deleted "+myDocRef.getId(),Toast.LENGTH_SHORT).show()
-                                                                );
+                                                                .addOnCompleteListener(task1 -> {
+                                                                    Toast.makeText(SavedSeeker.this.getContext(),"Deleted "+myDocRef.getId(),Toast.LENGTH_SHORT).show();
+                                                                });
 //
 //                                                        Log.d(TAG, "onComplete: myDocRef="+myDocRef);
                                                     } else {

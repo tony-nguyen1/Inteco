@@ -424,8 +424,12 @@ public class Helper {
     }
 
     public static void addOfferToUserApply(DocumentReference anOffer, DocumentReference aJobSeeker, MutableLiveData<DocumentReference> answer){
+        HashMap<String, Object> map = new HashMap<>(3);
+        map.put("date", new Timestamp(new Date()));
+        map.put("ref", aJobSeeker);
+        map.put("status", "pending");
 
-        anOffer.update("apply", FieldValue.arrayUnion(aJobSeeker)).addOnCompleteListener(new OnCompleteListener<Void>() {
+        anOffer.update("apply", FieldValue.arrayUnion(map)).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d(TAG, "onComplete: user registered in the offer");
@@ -472,7 +476,7 @@ public class Helper {
         });
     }
 
-    public static void getUsers(ArrayList<DocumentReference> listUsersRef, MutableLiveData<ArrayList<QueryDocumentSnapshot>> answer) {
+    public static void getUsers(ArrayList<Map<String,Object>> listUsersRef, MutableLiveData<ArrayList<QueryDocumentSnapshot>> answer) {
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final ArrayList<QueryDocumentSnapshot> listUsersSnap = new ArrayList<>();
         Log.d(TAG, "getUsers: ");
@@ -482,8 +486,14 @@ public class Helper {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     task.getResult().forEach(document -> {
-                        if (listUsersRef.contains(document.getReference())) {
+//                        if (listUsersRef.contains(document.getReference())) {
+//                            listUsersSnap.add(document);
+//                        }
+                        for (Map<String,Object> map: listUsersRef) {
+                            if (document.getReference().equals(map.get("ref"))) {
+
                             listUsersSnap.add(document);
+                            }
                         }
                     } );
                     answer.postValue(listUsersSnap);
