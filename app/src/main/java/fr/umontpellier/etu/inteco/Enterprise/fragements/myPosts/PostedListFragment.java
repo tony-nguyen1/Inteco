@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -118,10 +120,15 @@ public class PostedListFragment extends Fragment {
                         @Override
                         public void onItemClickListener(PlaceholderContent.PlaceholderItem item, int position) {
                             Toast.makeText(context, "Click on offer n°"+position+" docRef="+item.docRef+" id="+item.docRef.getId(), Toast.LENGTH_SHORT).show();
+                            // Find the FrameLayout and set its visibility to VISIBLE
+
                             getActivity().getSupportFragmentManager()
                                     .beginTransaction()
                                     .replace(R.id.fragment_container_inside, CandidateListFragment.newInstance(1, item.docRef))
                                     .commit();
+                            FrameLayout infoPostContainer = getActivity().findViewById(R.id.fragment_info_post);
+                            infoPostContainer.setVisibility(View.VISIBLE);
+
                         }
                     }));
                 }

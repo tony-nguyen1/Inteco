@@ -1,7 +1,9 @@
 package fr.umontpellier.etu.inteco.Enterprise.fragements.candidateForAJob;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -73,6 +75,12 @@ public class InfoPostFragment extends Fragment {
                 jobTitleTextView.setText(queryDocumentSnapshot.getString("post_title"));
                 postDateTextView.setText(new PrettyTime(new Locale("en")).format(queryDocumentSnapshot.get("realDate", Timestamp.class).toDate()));
                 currentStateTextView.setText(queryDocumentSnapshot.getString("state"));
+                Context context = currentStateTextView.getContext();
+                if ("open".equalsIgnoreCase(queryDocumentSnapshot.getString("state"))) {
+                    currentStateTextView.setTextColor(ContextCompat.getColor(context, R.color.status_open));
+                } else if ("closed".equalsIgnoreCase(queryDocumentSnapshot.getString("state"))) {
+                    currentStateTextView.setTextColor(ContextCompat.getColor(context, R.color.status_false));
+                }
             }
         });
 

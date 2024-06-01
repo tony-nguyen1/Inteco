@@ -2,29 +2,42 @@ package fr.umontpellier.etu.inteco.Seeker.Search;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import fr.umontpellier.etu.inteco.R;
@@ -35,7 +48,8 @@ public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "debug SearchActivity";
     private String email;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    private FusedLocationProviderClient locationClient;
+    private SharedPreferences prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +57,12 @@ public class SearchActivity extends AppCompatActivity {
         Intent intent = getIntent();
         this.email = intent.getStringExtra("email");
         Log.d(TAG, "onCreate: this.email="+email);
+
+        /** Location **/
+        locationClient = LocationServices.getFusedLocationProviderClient(this);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        checkLocationPermission();
+
 
         MyItemRecyclerViewAdapter.AdapterItemClickListener myClickListernerReusable = new MyItemRecyclerViewAdapter.AdapterItemClickListener() {
             @Override
@@ -173,48 +193,115 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void searchForJob(List<String> keywordsTitle, List<String> keywordsLocation, MutableLiveData<ArrayList<QueryDocumentSnapshot>> response) {
-        Log.d(TAG, "searchForJob: keywordsTitle="+keywordsTitle+"    keywordsLocation="+keywordsLocation);
-        db.collection("offers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                ArrayList<QueryDocumentSnapshot> matchingDocumentsArrayList = new ArrayList<>();
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        boolean thisDocumentIsSelected = false;
-                        String jobTitle = document.get("jobTitle", String.class);
-                        String location = document.getString("place");
+        Log.d(TAG, "searchForJob: keywordsTitle=" + keywordsTitle + " keywordsLocation=" + keywordsLocation);
+        db.collection("offers").get().addOnCompleteListener(task -> {
+            ArrayList<QueryDocumentSnapshot> matchingDocumentsArrayList = new ArrayList<>();
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    boolean thisDocumentIsSelected = false;
+                    String jobTitle = document.getString("jobTitle");
+                    String location = document.getString("place");
 
+
+                    if (jobTitle != null) {
+                        Log.d("Document??", jobTitle);
                         String[] tab = jobTitle.toLowerCase().split(" ");
-                        List l = Arrays.asList(tab);
+                        List<String> l = Arrays.asList(tab);
+                        Log.d("Keywords BD",jobTitle);
+                        Log.d("Keywords PARAM", keywordsTitle.toString());
                         for (String keyword : keywordsTitle) {
                             if (l.contains(keyword)) {
-//                                Log.d(TAG, "onComplete: keyword="+keyword);
                                 thisDocumentIsSelected = true;
+                                Log.d(TAG, "onComplete: keyword="+keyword);
+                                break;
                             }
-                        }
-
-                        tab = location.toLowerCase().split(" ");
-                        l = Arrays.asList(tab);
-                        Log.d(TAG, "onComplete: searching in"+l);
-                        Log.d(TAG, "onComplete: keywordsLocation="+keywordsLocation);
-                        for (String keyword : keywordsLocation) {
-                            if (l.contains(keyword)) {
-//                                Log.d(TAG, "onComplete: keyword="+keyword);
-                                thisDocumentIsSelected = true;
-                            }
-                        }
-
-                        if (thisDocumentIsSelected) {
-                            matchingDocumentsArrayList.add(document);
-                            Log.d(TAG, "onComplete: match");
                         }
                     }
-                    Log.d(TAG, "onComplete: matched :"+matchingDocumentsArrayList);
-                    response.postValue(matchingDocumentsArrayList);
-                } else {
-                    Log.w(TAG, "Error getting documents.", task.getException());
+
+                    if (location != null) {
+                        Log.d("Document??", location);
+                        String[] tab = location.toLowerCase().split(" ");
+                        List<String> l = Arrays.asList(tab);
+                        Log.d(TAG, "onComplete: searching in" + l);
+                        Log.d(TAG, "onComplete: keywordsLocation=" + keywordsLocation);
+                        for (String keyword : keywordsLocation) {
+                            if (l.contains(keyword)) {
+                                thisDocumentIsSelected = true;
+                                Log.d(TAG, "onComplete: keyword="+keyword);
+                                break;
+                            }
+                        }
+                    }
+
+                    if (thisDocumentIsSelected) {
+                        matchingDocumentsArrayList.add(document);
+                        Log.d(TAG, "onComplete: match");
+                    }
                 }
+                Log.d(TAG, "onComplete: matched :" + matchingDocumentsArrayList);
+                response.postValue(matchingDocumentsArrayList);
+            } else {
+                Log.w(TAG, "Error getting documents.", task.getException());
             }
         });
+    }
+    private void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        } else {
+            storeLastLocation();
+            performDefaultSearch();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            storeLastLocation();
+            performDefaultSearch();
+        }
+    }
+
+    private void storeLastLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Task<Location> task = locationClient.getLastLocation();
+            task.addOnSuccessListener(location -> {
+                if (location != null) {
+                    // Store the location in SharedPreferences
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putFloat("LastKnownLatitude", (float) location.getLatitude());
+                    editor.putFloat("LastKnownLongitude", (float) location.getLongitude());
+                    editor.apply();
+                }
+            });
+        }
+    }
+    private void performDefaultSearch() {
+        float lastKnownLatitude = prefs.getFloat("LastKnownLatitude", 0);
+        float lastKnownLongitude = prefs.getFloat("LastKnownLongitude", 0);
+
+        if (lastKnownLatitude != 0 && lastKnownLongitude != 0) {
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            try {
+                List<Address> addresses = geocoder.getFromLocation(lastKnownLatitude, lastKnownLongitude, 1);
+                if (!addresses.isEmpty()) {
+                    Address address = addresses.get(0);
+                    String city = address.getLocality();
+                    String country = address.getCountryName();
+                    String location = city +" "+ country;
+
+                    Log.d(TAG, "performDefaultSearch: Default location = " + city);
+
+                    EditText editTextLocation = findViewById(R.id.locationEditText);
+                    editTextLocation.setText(location);
+
+                    //performSearch(findViewById(R.id.jobTitleEditText), editTextLocation, myClickListernerReusable);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

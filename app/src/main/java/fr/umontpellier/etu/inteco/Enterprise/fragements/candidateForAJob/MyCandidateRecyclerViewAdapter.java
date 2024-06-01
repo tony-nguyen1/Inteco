@@ -1,13 +1,16 @@
 package fr.umontpellier.etu.inteco.Enterprise.fragements.candidateForAJob;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fr.umontpellier.etu.inteco.Enterprise.fragements.candidateForAJob.placeholder.PlaceholderContent.PlaceholderItem;
+import fr.umontpellier.etu.inteco.R;
 import fr.umontpellier.etu.inteco.Seeker.placeholder.Offer;
 import fr.umontpellier.etu.inteco.databinding.FragmentCandidateCardBinding;
 
@@ -44,6 +47,16 @@ public class MyCandidateRecyclerViewAdapter extends RecyclerView.Adapter<MyCandi
         holder.mNameView.setText(mValues.get(position).name);
         holder.mAppliedDateView.setText(mValues.get(position).timestamp);
         holder.mStatusView.setText(mValues.get(position).status);
+        // Set the text color based on the state value
+        Context context = holder.mStatusView.getContext();
+        if ("accepted".equalsIgnoreCase(mValues.get(position).status)) {
+            holder.mStatusView.setTextColor(ContextCompat.getColor(context, R.color.status_open));
+        } else if ("rejected".equalsIgnoreCase(mValues.get(position).status)) {
+            holder.mStatusView.setTextColor(ContextCompat.getColor(context, R.color.status_false));
+        }
+        else{
+            holder.mStatusView.setTextColor(ContextCompat.getColor(context, R.color.status_pending));
+        }
     }
 
     @Override

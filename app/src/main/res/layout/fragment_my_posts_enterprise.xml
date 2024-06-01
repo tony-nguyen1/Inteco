@@ -13,18 +13,18 @@
         android:orientation="vertical"
         >
         <FrameLayout
-        android:id="@+id/fragment_container_inside"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-        <FrameLayout
             android:id="@+id/fragment_info_post"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:visibility="gone"
+            />
+        <FrameLayout
+        android:id="@+id/fragment_container_inside"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"/>
 
-
-        <!-- Use layout_weight to distribute 0space evenly -->
     </LinearLayout>
 
 </FrameLayout>
