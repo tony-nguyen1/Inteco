@@ -9,6 +9,7 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/info_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/white_curvy"
@@ -122,12 +123,22 @@
       />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/download_button"
-        android:layout_width="wrap_content"
+
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints"
-        android:text="Download"/>
+        android:layout_margin="50dp"
+        android:background="@drawable/button_soft_green"
+        android:text="Download CV"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/contact_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.696"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_container"
+        app:layout_constraintVertical_bias="0.402"
+        tools:ignore="MissingConstraints" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/contact_button"
