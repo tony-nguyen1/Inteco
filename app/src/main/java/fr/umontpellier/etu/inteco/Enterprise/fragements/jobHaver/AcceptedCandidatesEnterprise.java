@@ -1,14 +1,21 @@
-package fr.umontpellier.etu.inteco.Enterprise.fragements;
+package fr.umontpellier.etu.inteco.Enterprise.fragements.jobHaver;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import fr.umontpellier.etu.inteco.Enterprise.fragements.candidateForAJob.InfoPostFragment;
 import fr.umontpellier.etu.inteco.R;
+import fr.umontpellier.etu.inteco.helper.Helper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +55,22 @@ public class AcceptedCandidatesEnterprise extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_accepted_candidates_enterprise, container, false);
+        View view = inflater.inflate(R.layout.fragment_accepted_candidates_enterprise, container, false);
+
+        MutableLiveData<QueryDocumentSnapshot> listen = new MutableLiveData<>();
+        Helper.getCompanyDocumentReference(FirebaseAuth.getInstance().getCurrentUser(), listen);
+        listen.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
+            @Override
+            public void onChanged(QueryDocumentSnapshot queryDocumentSnapshot) {
+
+
+                assert getActivity() != null;
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container_inside, JobHaverFragment.newInstance(queryDocumentSnapshot))
+                        .commit();
+            }
+        });
+
+        return view;
     }
 }

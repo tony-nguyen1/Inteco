@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Map;
 
-import fr.umontpellier.etu.inteco.Enterprise.fragements.AcceptedCandidatesEnterprise;
+import fr.umontpellier.etu.inteco.Enterprise.fragements.jobHaver.AcceptedCandidatesEnterprise;
 import fr.umontpellier.etu.inteco.Enterprise.fragements.addPost.AddPostEnterprise;
 import fr.umontpellier.etu.inteco.Enterprise.fragements.HomeEnterprise;
 import fr.umontpellier.etu.inteco.Enterprise.fragements.myPosts.MyPostsEnterprise;
