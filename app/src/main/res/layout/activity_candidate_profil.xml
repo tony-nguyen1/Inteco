@@ -123,7 +123,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/contact_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/accept_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="20dp" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/reject_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

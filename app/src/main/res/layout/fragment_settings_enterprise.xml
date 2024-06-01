@@ -82,267 +82,269 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:padding="16dp"
-                android:background="#F9F9F9"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/profileHeader">
+                android:layout_marginTop="8dp"
+                android:background="#F9F9F9"
+                android:padding="16dp"
+                app:layout_constraintTop_toBottomOf="@id/profileHeader"
+                tools:layout_editor_absoluteX="31dp">
 
                 <!-- Company Name Label -->
                 <TextView
                     android:id="@+id/companyNameLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Company Name"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="16dp"
                     tools:ignore="MissingConstraints" />
 
                 <!-- Company Name -->
                 <EditText
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    android:background="@drawable/white_curvy"
                     android:id="@+id/companyName"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/white_curvy"
                     android:hint="Company Name"
-                    android:text="Example Company"
                     android:padding="12dp"
+                    android:text="Example Company"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/companyNameLabel"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="8dp" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/companyNameLabel" />
 
                 <!-- Email Address Label -->
                 <TextView
                     android:id="@+id/emailLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Email Address"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/companyName"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="16dp" />
+                    app:layout_constraintTop_toBottomOf="@id/companyName" />
 
                 <!-- Email Address -->
                 <EditText
                     android:id="@+id/email"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Email Address"
-                    android:text="company@example.com"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/white_curvy"
+                    android:hint="Email Address"
                     android:padding="12dp"
+                    android:text="company@example.com"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/emailLabel"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="8dp" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/emailLabel" />
 
                 <!-- Phone Number Label -->
                 <TextView
                     android:id="@+id/phoneNumberLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Phone Number"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/email"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="16dp" />
+                    app:layout_constraintTop_toBottomOf="@id/email" />
 
                 <!-- Phone Number -->
                 <EditText
                     android:id="@+id/phoneNumber"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Phone Number"
-                    android:text="123-456-7890"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/white_curvy"
+                    android:hint="Phone Number"
                     android:padding="12dp"
+                    android:text="123-456-7890"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/phoneNumberLabel"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="8dp" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/phoneNumberLabel" />
 
                 <!-- City Label -->
                 <TextView
                     android:id="@+id/cityLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="City"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/phoneNumber"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="16dp" />
+                    app:layout_constraintTop_toBottomOf="@id/phoneNumber" />
 
                 <!-- City -->
                 <EditText
                     android:id="@+id/city"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="City"
-                    android:text="New York"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/white_curvy"
+                    android:hint="City"
                     android:padding="12dp"
+                    android:text="New York"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/cityLabel"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="8dp" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cityLabel" />
 
                 <!-- Address Label -->
                 <TextView
                     android:id="@+id/addressLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Address"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/city"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="16dp" />
+                    app:layout_constraintTop_toBottomOf="@id/city" />
 
                 <!-- Address -->
                 <EditText
                     android:id="@+id/address"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Address"
-                    android:text="123 Main St"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/white_curvy"
+                    android:hint="Address"
                     android:padding="12dp"
+                    android:text="123 Main St"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/addressLabel"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="8dp" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/addressLabel" />
 
                 <!-- Website Label -->
                 <TextView
                     android:id="@+id/websiteLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Website"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/address"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="16dp" />
+                    app:layout_constraintTop_toBottomOf="@id/address" />
 
                 <!-- Website -->
                 <EditText
                     android:id="@+id/website"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Website"
-                    android:text="www.example.com"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/white_curvy"
+                    android:hint="Website"
                     android:padding="12dp"
+                    android:text="www.example.com"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/websiteLabel"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="8dp" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/websiteLabel" />
 
                 <!-- Facebook Label -->
                 <TextView
                     android:id="@+id/facebookLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Facebook"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/website"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="16dp" />
+                    app:layout_constraintTop_toBottomOf="@id/website" />
 
                 <!-- Facebook -->
                 <EditText
                     android:id="@+id/facebook"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Facebook"
-                    android:text="facebook.com/example"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/white_curvy"
+                    android:hint="Facebook"
                     android:padding="12dp"
+                    android:text="facebook.com/example"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/facebookLabel"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="8dp" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/facebookLabel" />
 
                 <!-- LinkedIn Label -->
                 <TextView
                     android:id="@+id/linkedinLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="LinkedIn"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/facebook"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="16dp" />
+                    app:layout_constraintTop_toBottomOf="@id/facebook" />
 
                 <!-- LinkedIn -->
                 <EditText
                     android:id="@+id/linkedin"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="LinkedIn"
-                    android:text="linkedin.com/example"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/white_curvy"
+                    android:hint="LinkedIn"
                     android:padding="12dp"
+                    android:text="linkedin.com/example"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/linkedinLabel"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="8dp" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/linkedinLabel" />
 
                 <!-- Instagram Label -->
                 <TextView
                     android:id="@+id/instagramLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Instagram"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/linkedin"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="16dp" />
+                    app:layout_constraintTop_toBottomOf="@id/linkedin" />
 
                 <!-- Instagram -->
                 <EditText
                     android:id="@+id/instagram"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Instagram"
-                    android:text="instagram.com/example"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/white_curvy"
+                    android:hint="Instagram"
                     android:padding="12dp"
+                    android:text="instagram.com/example"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/instagramLabel"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="8dp" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/instagramLabel" />
 
                 <!-- Save Button -->
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/saveButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     android:background="@drawable/heavy_green_button"
+                    android:padding="12dp"
                     android:text="SAVE"
                     android:textColor="@color/white"
-                    android:padding="12dp"
-                    app:layout_constraintTop_toBottomOf="@id/instagram"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="24dp" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/instagram" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -229,26 +229,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:layout_margin="14dp"
+                >
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/button_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Save"
-                    android:background="@drawable/heavy_green_button"
-
-                    android:layout_margin="14dp"
+                    android:background="@drawable/button_soft_green"
+                    android:textColor="@android:color/white"
+                    android:layout_marginRight="5dp"
                     />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/button_apply"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="APPLY NOW"
                     android:background="@drawable/heavy_green_button"
                     android:textColor="@android:color/white"
-                    android:layout_margin="14dp"/>
+                  />
             </LinearLayout>
 
 
