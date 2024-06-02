@@ -142,16 +142,6 @@ public class SettingsEnterprise extends Fragment {
         listen.observe(getViewLifecycleOwner(), new Observer<QueryDocumentSnapshot>() {
             @Override
             public void onChanged(QueryDocumentSnapshot aCompany) {
-//                Map<String,Object> dataCompany = aCompany.getData();
-
-//                ((DocumentReference) aCompany.get("ref")).get().addOnCompleteListener(getActivity(), new OnCompleteListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//
-//                        mCompanyNameEditText.setText(task.getResult().getString("name"));
-//                    }
-//                });
-
                 mCompanyNameEditText.setText(aCompany.getString("name"));
                 mEmailEditText.setText(aCompany.getString("email"));
                 mPhoneNumberEditText.setText(aCompany.getString("phone"));

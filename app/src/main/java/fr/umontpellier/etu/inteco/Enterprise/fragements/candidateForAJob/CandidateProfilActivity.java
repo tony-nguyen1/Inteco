@@ -140,8 +140,8 @@ public class CandidateProfilActivity extends AppCompatActivity {
 
                         File finalLocalFile = localFile;
 
-//                        StorageReference islandRef = storageRef.child("images/"+queryDocumentSnapshot.getString("cv")); // le nom de ce qu'on dl
-                        StorageReference islandRef = storageRef.child("images/doc2749037069907555399.pdf"); // le nom de ce qu'on dl
+                        StorageReference islandRef = storageRef.child("pdf/"+queryDocumentSnapshot.getString("cv")); // le nom de ce qu'on dl
+//                        StorageReference islandRef = storageRef.child("images/doc2749037069907555399.pdf"); // le nom de ce qu'on dl
                         Log.d(TAG, "onChanged: "+islandRef);
 
 
