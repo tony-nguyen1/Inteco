@@ -6,8 +6,6 @@ Inteco met en relation des chercheurs d'emploi et des entreprises. Chaque utilis
 
 **Démonstration vidéo :** https://youtu.be/t7TYONoK8DU
 
-**Rapport :** disponible dans le dossier [`rapport/`](rapport/)
-
 ## Fonctionnalités
 
 ### Comptes et authentification
