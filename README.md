@@ -1,35 +1,67 @@
 # Inteco
 
-pdflatex -output-directory rapport/ rapport/rapport.tex 
+Application mobile Android d'agence d'intérim, développée en Java dans le cadre de l'UE Programmation Mobile du M1 Génie Logiciel (Faculté des Sciences, Université de Montpellier, 2024).
 
-pdflatex -output-directory rapport/ rapport/rapport2.tex 
+Inteco met en relation des chercheurs d'emploi et des entreprises. Chaque utilisateur s'inscrit avec son rôle et accède à une interface adaptée à ses besoins.
 
-# Dates des rendues
+**Démonstration vidéo :** https://youtu.be/t7TYONoK8DU
 
-1. 17 avril 2024: maquettes (voir informations complémentaires sur le dépôt).
+**Rapport :** disponible dans le dossier [`rapport/`](rapport/)
 
-    - La maquette doit être soignée. Montrer le workflow entre les pages. Réduire le nombre d'action pour une bonne UX.
+## Fonctionnalités
 
-    - BD : schéma Entités/Association, JSON schema, XML schema.
+### Comptes et authentification
+- Inscription séparée pour les chercheurs d'emploi et pour les entreprises, en plusieurs étapes avec contrôle des champs obligatoires
+- Connexion unique pour les deux types de comptes
+- Réinitialisation du mot de passe par e-mail
+- Authentification gérée avec Firebase Authentication
 
-    - Architecture : BD utilisateur front-end back-end server les technologies, les protocoles de communication, rest api endpoints tables
+### Côté chercheur d'emploi
+- Page d'accueil avec le suivi des candidatures (en attente, acceptées, refusées)
+- Recherche d'offres par mots-clés du titre et par localisation (ville ou pays), même sans être connecté
+- Remplissage automatique de la localisation grâce au GPS
+- Sauvegarde et suppression d'offres favorites
+- Candidature en quelques clics avec envoi du CV
+- Modification du profil
 
-2. 12/05  2024: Travail intermédiaire (voir informations complémentaires sur le dépôt).
+### Côté entreprise
+- Création d'offres d'emploi (type de poste, contrat, durée, expérience, qualification, localisation, catégorie)
+- Liste des offres publiées avec leur statut (ouverte ou fermée) et le nombre de candidats
+- Consultation du profil des candidats et téléchargement de leur CV
+- Acceptation ou refus des candidatures
+- Récapitulatif des candidats acceptés, avec contact par e-mail ou par téléphone
+- Modification du profil de l'entreprise (coordonnées, site web, réseaux sociaux)
 
-3. 31/05 2024: Travail final (voir informations complémentaires sur le dépôt).
+### Ergonomie
+- Barre de navigation adaptée à chaque type d'utilisateur, avec une activité principale et des fragments
+- Affichage du temps écoulé depuis la publication des offres (« il y a 1 jour », « il y a 1 mois »)
 
-# Links
+## Technologies
+- Java
+- Android SDK (Activities, Fragments, RecyclerView, LiveData, BottomNavigationView)
+- Firebase Authentication
+- Cloud Firestore
+- Firebase Storage (envoi et téléchargement des CV)
+- Localisation GPS
+- Gradle (Kotlin DSL)
+- Git et GitHub
 
-[Maquette Figma](https://www.figma.com/file/3bNyQA7dfm3mrh0eTpXcri/Eco-Boite-d'int%C3%A9rim?type=design&node-id=204-4&mode=design&t=f89lW3UKefU2b3pZ-0)
+## Structure du dépôt
+- `app/` : code source de l'application
+- `rapport/` : rapport du projet
+- `ProjetAndroid2024.pdf` : sujet du projet
 
-[Dollar Green Color Palette](https://www.color-hex.com/color-palette/86230)
+## Lancer le projet
+1. Cloner le dépôt
+   ```bash
+   git clone https://github.com/tony-nguyen1/Inteco.git
+   ```
+2. Ouvrir le dossier dans Android Studio
+3. Ajouter le fichier `google-services.json` d'un projet Firebase dans le dossier `app/`
+4. Laisser Gradle synchroniser les dépendances
+5. Lancer l'application sur un émulateur ou un appareil Android
 
-[Trello](https://trello.com/b/5MKgHEgs/inteco)
 
-[Useful Symbols](https://www.figma.com/file/jjUAZzAHVu6f84k77VfsPK/App-Permissions-Popup-Screen-(Community)?type=design&node-id=1-68&mode=design&t=OXhK4keFbU8Drb9C-0)
-
-git push origin main:dev-backend
-
-COmment faire ?
-Faire l'autheufication par firebase
-QUand on crée un compte on tuilise l'email comme clé primaire dans la base pour stocker les infos liés à cet utilisateur sans enregistrer son password
+## Auteurs
+- Mohamad Satea Almallouhi
+- Tony Nguyen
